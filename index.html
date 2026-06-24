@@ -48,13 +48,12 @@
     }
   </style>
 </head>
-<body class="bg-muji-bg text-muji-text font-sans h-screen flex flex-col justify-between overflow-hidden select-none">
-
+<body class="bg-muji-bg text-muji-text font-sans min-h-[100dvh] flex flex-col justify-between overflow-x-hidden select-none">
   <!-- 背景微光裝飾（極簡無印風） -->
   <div class="absolute inset-0 bg-[radial-gradient(#E8E1D5_1.2px,transparent_1.2px)] [background-size:20px_20px] opacity-70 pointer-events-none"></div>
 
   <!-- 主容器 (限制最大寬度，動態調整內邊距確保五個按鈕一頁呈現) -->
-  <div class="relative w-full max-w-md mx-auto h-full flex flex-col justify-between px-5 pt-8 pb-4 z-10">
+  <div class="relative w-full max-w-md mx-auto min-h-[100dvh] flex flex-col justify-between px-5 pt-6 pb-6 z-10">
     
     <!-- 1. 頭部區域 -->
     <header class="flex flex-col items-center text-center">
@@ -85,7 +84,7 @@
     </header>
 
     <!-- 2. 按鈕導覽區 -->
-    <main class="flex-1 flex flex-col justify-start mt-7 gap-2.5 mb-2">
+    <main class="flex-1 flex flex-col justify-start mt-5 gap-2.5 mb-2">
       
       <!-- 按鈕 1: 股癌選股系統 -->
       <div class="relative group">
