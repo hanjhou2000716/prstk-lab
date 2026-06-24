@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>PRStK Lab</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts: Noto Sans TC & Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'Noto Sans TC', 'sans-serif'],
+          },
+          colors: {
+            muji: {
+              bg: '#FAF8F5',      /* 暖麻白 */
+              text: '#3C3935',    /* 溫潤炭灰 */
+              muted: '#625D56',   /* 亞麻深灰 - 提高清晰度 */
+              border: '#E3DDD5',  /* 溫暖的水泥灰線條 */
+              accent: '#8E7F72',  /* 淺木褐 */
+              hover: '#F5EFE6'    /* 溫暖觸摸色 */
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    /* 隱藏滾動條，確保無印極簡視覺 */
+    body {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+    body::-webkit-scrollbar {
+      display: none;
+    }
+    /* 滑出抽屜動畫 */
+    .drawer-transition {
+      transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+  </style>
+</head>
+<body class="bg-muji-bg text-muji-text font-sans h-screen flex flex-col justify-between overflow-hidden select-none">
+
+  <!-- 背景微光裝飾（極簡無印風） -->
+  <div class="absolute inset-0 bg-[radial-gradient(#E8E1D5_1.2px,transparent_1.2px)] [background-size:20px_20px] opacity-70 pointer-events-none"></div>
+
+  <!-- 主容器 (限制最大寬度，動態調整內邊距確保五個按鈕一頁呈現) -->
+  <div class="relative w-full max-w-md mx-auto h-full flex flex-col justify-between px-5 py-4 z-10">
+    
+    <!-- 1. 頭部區域 -->
+    <header class="flex flex-col items-center text-center">
+      <!-- 標誌圖片 (智慧自適應：放大效果同時確保五個按鈕不超出畫面) -->
+      <div class="h-[15vh] min-h-[110px] max-h-[180px] w-full flex items-center justify-center mb-1">
+        <img 
+          id="logo-img"
+          src="PRStK Lab-Remove.png" 
+          alt="PRStK Lab Logo" 
+          class="max-h-full max-w-[340px] w-auto object-contain transition-opacity duration-300"
+          onerror="handleLogoError()"
+        />
+        <!-- 備用純文字 Logo (若圖片未載入時優雅呈現) -->
+        <div id="logo-fallback" class="hidden flex-col items-center">
+          <span class="text-3xl font-light tracking-[0.25em] text-muji-text">PRStK Lab</span>
+          <span class="text-[11px] uppercase tracking-[0.4em] text-muji-muted mt-1">Quant Trading</span>
+        </div>
+      </div>
+      
+      <!-- 副標題 -->
+      <p class="text-[12px] tracking-[0.2em] text-muji-muted font-normal flex items-center justify-center gap-2 mt-1">
+        <span>量化選股</span>
+        <span class="text-[10px] text-muji-border font-light">|</span>
+        <span>紀律交易</span>
+        <span class="text-[10px] text-muji-border font-light">|</span>
+        <span>策略優化</span>
+      </p>
+    </header>
+
+    <!-- 2. 按鈕導覽區 -->
+    <main class="flex-1 flex flex-col justify-center gap-2.5 my-2">
+      
+      <!-- 按鈕 1: 股癌選股系統 -->
+      <div class="relative group">
+        <a href="https://taiwan-equity-quant-tool.taiquant.workers.dev/?v=20260619-1936" 
+           target="_blank"
+           class="flex items-center justify-between w-full py-3.5 px-4 bg-white border border-muji-border rounded-xl shadow-[0_2px_8px_rgba(215,208,196,0.15)] hover:bg-muji-hover active:scale-[0.99] transition-all duration-200 pr-12">
+          <div class="flex flex-col items-start text-left">
+            <span class="text-[14.5px] font-medium tracking-wide text-muji-text">📈 股癌選股系統</span>
+            <span class="text-[10px] text-muji-muted tracking-wider mt-0.5 font-light pl-[26px]">GOOAYE Innovation</span>
+          </div>
+          <i data-lucide="arrow-up-right" class="w-4 h-4 text-muji-muted opacity-50 group-hover:opacity-100 transition-opacity"></i>
+        </a>
+        <button onclick="openDrawer(0)" 
+                class="absolute right-0 top-0 bottom-0 w-11 flex items-center justify-center border-l border-muji-border border-opacity-30 hover:bg-muji-hover rounded-r-xl transition-colors duration-150"
+                aria-label="詳細資訊">
+          <i data-lucide="info" class="w-4 h-4 text-muji-muted opacity-60 hover:opacity-100 transition-opacity"></i>
+        </button>
+      </div>
+
+      <!-- 按鈕 2: Alpha Signal Lab -->
+      <div class="relative group">
+        <a href="https://quiet-kulfi-38cc53.netlify.app/#maxlab" 
+           target="_blank"
+           class="flex items-center justify-between w-full py-3.5 px-4 bg-white border border-muji-border rounded-xl shadow-[0_2px_8px_rgba(215,208,196,0.15)] hover:bg-muji-hover active:scale-[0.99] transition-all duration-200 pr-12">
+          <div class="flex flex-col items-start text-left">
+            <span class="text-[14.5px] font-medium tracking-wide text-muji-text">🔬 Alpha Signal Lab</span>
+            <span class="text-[10px] text-muji-muted tracking-wider mt-0.5 font-light pl-[26px]">多市場策略研究儀表板</span>
+          </div>
+          <i data-lucide="arrow-up-right" class="w-4 h-4 text-muji-muted opacity-50 group-hover:opacity-100 transition-opacity"></i>
+        </a>
+        <button onclick="openDrawer(1)" 
+                class="absolute right-0 top-0 bottom-0 w-11 flex items-center justify-center border-l border-muji-border border-opacity-30 hover:bg-muji-hover rounded-r-xl transition-colors duration-150"
+                aria-label="詳細資訊">
+          <i data-lucide="info" class="w-4 h-4 text-muji-muted opacity-60 hover:opacity-100 transition-opacity"></i>
+        </button>
+      </div>
+
+      <!-- 按鈕 3: ETF 交叉持股分析 -->
+      <div class="relative group">
+        <a href="https://etfcross.com/" 
+           target="_blank"
+           class="flex items-center justify-between w-full py-3.5 px-4 bg-white border border-muji-border rounded-xl shadow-[0_2px_8px_rgba(215,208,196,0.15)] hover:bg-muji-hover active:scale-[0.99] transition-all duration-200 pr-12">
+          <div class="flex flex-col items-start text-left">
+            <span class="text-[14.5px] font-medium tracking-wide text-muji-text">🔀 ETF 交叉持股分析</span>
+            <span class="text-[10px] text-muji-muted tracking-wider mt-0.5 font-light pl-[26px]">ETFCross</span>
+          </div>
+          <i data-lucide="arrow-up-right" class="w-4 h-4 text-muji-muted opacity-50 group-hover:opacity-100 transition-opacity"></i>
+        </a>
+        <button onclick="openDrawer(2)" 
+                class="absolute right-0 top-0 bottom-0 w-11 flex items-center justify-center border-l border-muji-border border-opacity-30 hover:bg-muji-hover rounded-r-xl transition-colors duration-150"
+                aria-label="詳細資訊">
+          <i data-lucide="info" class="w-4 h-4 text-muji-muted opacity-60 hover:opacity-100 transition-opacity"></i>
+        </button>
+      </div>
+
+      <!-- 按鈕 4: ETF 折溢價監控 -->
+      <div class="relative group">
+        <a href="https://twetf.com/" 
+           target="_blank"
+           class="flex items-center justify-between w-full py-3.5 px-4 bg-white border border-muji-border rounded-xl shadow-[0_2px_8px_rgba(215,208,196,0.15)] hover:bg-muji-hover active:scale-[0.99] transition-all duration-200 pr-12">
+          <div class="flex flex-col items-start text-left">
+            <span class="text-[14.5px] font-medium tracking-wide text-muji-text">⚖️ ETF 折溢價監控</span>
+            <span class="text-[10px] text-muji-muted tracking-wider mt-0.5 font-light pl-[26px]">TWETF</span>
+          </div>
+          <i data-lucide="arrow-up-right" class="w-4 h-4 text-muji-muted opacity-50 group-hover:opacity-100 transition-opacity"></i>
+        </a>
+        <button onclick="openDrawer(3)" 
+                class="absolute right-0 top-0 bottom-0 w-11 flex items-center justify-center border-l border-muji-border border-opacity-30 hover:bg-muji-hover rounded-r-xl transition-colors duration-150"
+                aria-label="詳細資訊">
+          <i data-lucide="info" class="w-4 h-4 text-muji-muted opacity-60 hover:opacity-100 transition-opacity"></i>
+        </button>
+      </div>
+
+      <!-- 按鈕 5: 紀律交易系統 -->
+      <div class="relative group">
+        <a href="https://disciplined-trading.streamlit.app/" 
+           target="_blank"
+           class="flex items-center justify-between w-full py-3.5 px-4 bg-white border border-muji-border rounded-xl shadow-[0_2px_8px_rgba(215,208,196,0.15)] hover:bg-muji-hover active:scale-[0.99] transition-all duration-200 pr-12">
+          <div class="flex flex-col items-start text-left">
+            <span class="text-[14.5px] font-medium tracking-wide text-muji-text">🧘 紀律交易系統</span>
+            <span class="text-[10px] text-muji-muted tracking-wider mt-0.5 font-light pl-[26px]">Disciplined Trading</span>
+          </div>
+          <i data-lucide="arrow-up-right" class="w-4 h-4 text-muji-muted opacity-50 group-hover:opacity-100 transition-opacity"></i>
+        </a>
+        <button onclick="openDrawer(4)" 
+                class="absolute right-0 top-0 bottom-0 w-11 flex items-center justify-center border-l border-muji-border border-opacity-30 hover:bg-muji-hover rounded-r-xl transition-colors duration-150"
+                aria-label="詳細資訊">
+          <i data-lucide="info" class="w-4 h-4 text-muji-muted opacity-60 hover:opacity-100 transition-opacity"></i>
+        </button>
+      </div>
+
+    </main>
+
+    <!-- 3. 頁尾資訊 -->
+    <footer class="text-center flex flex-col items-center gap-2">
+      <!-- 快速分享按鈕 -->
+      <button onclick="shareApp()" class="flex items-center gap-2 px-5 py-1.5 text-[12px] text-muji-muted hover:text-muji-text border border-muji-border rounded-full hover:bg-white transition-all duration-200 shadow-sm mt-1">
+        <i data-lucide="share-2" class="w-3.5 h-3.5"></i>
+        <span class="font-medium tracking-wide">Together Better</span>
+      </button>
+      
+      <p class="text-[9px] text-muji-muted tracking-widest font-light">
+        © 2026 PRStK Lab. All rights reserved.
+      </p>
+    </footer>
+
+  </div>
+
+  <!-- ================= 詳細資訊彈出抽屜 (Drawer) ================= -->
+  <!-- 遮罩背景 -->
+  <div id="drawer-overlay" 
+       onclick="closeDrawer()" 
+       class="fixed inset-0 bg-black/25 backdrop-blur-sm z-40 hidden opacity-0 transition-opacity duration-300">
+  </div>
+
+  <!-- 內容卡片 -->
+  <div id="info-drawer" 
+       class="fixed bottom-0 left-0 right-0 max-w-md mx-auto bg-white rounded-t-3xl shadow-[0_-8px_30px_rgb(0,0,0,0.08)] z-50 transform translate-y-full drawer-transition border-t border-muji-border max-h-[85vh] flex flex-col">
+    
+    <!-- 頂部裝飾條 -->
+    <div class="flex-shrink-0">
+      <div class="w-12 h-1 bg-muji-border rounded-full mx-auto my-3.5 opacity-80"></div>
+    </div>
+    
+    <!-- 抽屜內容 (若內容過長允許內部滾動，確保手機體驗) -->
+    <div class="px-6 pb-8 pt-1 overflow-y-auto flex-1">
+      <!-- 標題與網址 -->
+      <div class="flex justify-between items-start mb-4">
+        <div>
+          <h3 id="drawer-title" class="text-[17px] font-medium tracking-wide text-muji-text">標題</h3>
+          <p id="drawer-subtitle" class="text-[11px] text-muji-muted mt-0.5 tracking-wider font-light"></p>
+        </div>
+        <button onclick="closeDrawer()" class="p-1.5 rounded-full hover:bg-muji-bg text-muji-muted transition-colors flex-shrink-0">
+          <i data-lucide="x" class="w-4.5 h-4.5"></i>
+        </button>
+      </div>
+
+      <!-- 詳細說明區塊 -->
+      <div class="space-y-4">
+        <div>
+          <h4 class="text-[11px] uppercase tracking-[0.15em] text-muji-accent font-semibold flex items-center gap-2 mb-2">
+            <span class="w-1 h-3 bg-muji-accent rounded-sm"></span>
+            核心功能
+          </h4>
+          <ul id="drawer-features" class="text-xs text-muji-text font-light leading-relaxed space-y-1.5 pl-3 list-disc marker:text-muji-accent">
+            <!-- 動態插入 -->
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="text-[11px] uppercase tracking-[0.15em] text-muji-accent font-semibold flex items-center gap-2 mb-2">
+            <span class="w-1 h-3 bg-muji-accent rounded-sm"></span>
+            適合對象
+          </h4>
+          <ul id="drawer-targets" class="text-xs text-muji-text font-light leading-relaxed space-y-1.5 pl-3 list-disc marker:text-muji-accent">
+            <!-- 動態插入 -->
+          </ul>
+        </div>
+      </div>
+
+      <!-- 快速前往按鈕 -->
+      <a id="drawer-link" href="#" target="_blank" 
+         class="mt-6 flex items-center justify-center gap-2 w-full py-3.5 bg-[#5C554E] hover:bg-muji-text text-white text-xs font-light tracking-widest rounded-xl transition-colors duration-200 shadow-sm">
+        <span>開啟系統</span>
+        <i data-lucide="external-link" class="w-3.5 h-3.5"></i>
+      </a>
+    </div>
+  </div>
+
+  <script>
+    // 初始化 Lucide 圖標
+    lucide.createIcons();
+
+    // 防止 Logo 找不到時網頁看起來不美觀的備用機制
+    function handleLogoError() {
+      const img = document.getElementById('logo-img');
+      const fallback = document.getElementById('logo-fallback');
+      if (img) img.style.display = 'none';
+      if (fallback) fallback.classList.remove('hidden');
+    }
+
+    // 各項目詳細資料 (根據新順序重排)
+    const appData = [
+      {
+        title: "📈 股癌選股系統",
+        subtitle: "GOOAYE Innovation",
+        features: [
+          "量化選股：透過演算法篩選符合特定條件台股（如：魚身區間、低本益比、技術指標等）。",
+          "自動化分析：結合基本面、技術面與市場情緒數據，提供精準投資決策參考。"
+        ],
+        targets: [
+          "希望透過客觀量化模型輔助篩選標的的投資人。",
+          "需要高效、快速篩選大量台股股票的專業交易者。"
+        ],
+        link: "https://taiwan-equity-quant-tool.taiquant.workers.dev/?v=20260619-1936"
+      },
+      {
+        title: "🔬 Alpha Signal Lab",
+        subtitle: "多市場策略研究儀表板",
+        features: [
+          "跨市場回測展示：提供比特幣（BTC）、黃金與標普 500（S&P 500）等不同資產級別的量化回測模型。",
+          "複合策略與動態風控：深度結合市場結構與價格行為，並整合 EMA、RSI、MACD 等技術指標，同時納入 ATR（真實波動幅度）進行嚴格的風險控管。"
+        ],
+        targets: [
+          "關注加密貨幣、大宗商品與美股大盤，尋求跨市場交易機會的投資人。",
+          "重視技術分析、演算法回測，並依賴系統化風控模型輔助決策的專業交易者。"
+        ],
+        link: "https://quiet-kulfi-38cc53.netlify.app/#maxlab"
+      },
+      {
+        title: "🔀 ETF 交叉持股分析",
+        subtitle: "ETFCross",
+        features: [
+          "成分股重疊分析：一鍵解析多檔 ETF 之間的持股重疊程度與集中比例。",
+          "多樣性檢查：精確診斷投資組合，避免資金因持有多檔同性質 ETF 而過度集中。"
+        ],
+        targets: [
+          "持有兩檔以上 ETF 的多樣性投資人。",
+          "尋求科學化分散市場風險、建立健全投資配置的投資者。"
+        ],
+        link: "https://etfcross.com/"
+      },
+      {
+        title: "⚖️ ETF 折溢價監控",
+        subtitle: "TWETF",
+        features: [
+          "即時折溢價：極速監控台股 ETF 的即時市價與真實淨值差異。",
+          "歷史趨勢：提供精緻折溢價歷史走勢圖，協助精準掌握無風險套利機會。"
+        ],
+        targets: [
+          "追求套利機會或長期穩定持有的 ETF 投資者。",
+          "需要嚴格監控 ETF 流動性的機構法人與基金經理人。"
+        ],
+        link: "https://twetf.com/"
+      },
+      {
+        title: "🧘 紀律交易系統",
+        subtitle: "Disciplined Trading",
+        features: [
+          "交易紀律工具：提供個人化交易計畫模板、風控規則與停損停利設定。",
+          "策略回測功能：快速回測交易策略歷史表現，掌握台股勝率與損益期望值。"
+        ],
+        targets: [
+          "極度重視交易紀律、期望改掉情緒化交易習慣的投資人。",
+          "希望透過系統化、機械式嚴格執行交易計畫的散戶或專業交易者。"
+        ],
+        link: "https://disciplined-trading.streamlit.app/"
+      }
+    ];
+
+    // 控制滑出式抽屜
+    function openDrawer(index) {
+      const data = appData[index];
+      
+      document.getElementById('drawer-title').innerText = data.title;
+      document.getElementById('drawer-subtitle').innerText = data.subtitle;
+      document.getElementById('drawer-link').href = data.link;
+
+      // 渲染核心功能
+      const featuresUl = document.getElementById('drawer-features');
+      featuresUl.innerHTML = '';
+      data.features.forEach(feat => {
+        const li = document.createElement('li');
+        li.innerText = feat;
+        featuresUl.appendChild(li);
+      });
+
+      // 渲染適合對象
+      const targetsUl = document.getElementById('drawer-targets');
+      targetsUl.innerHTML = '';
+      data.targets.forEach(t => {
+        const li = document.createElement('li');
+        li.innerText = t;
+        targetsUl.appendChild(li);
+      });
+
+      // 顯示遮罩與抽屜
+      const overlay = document.getElementById('drawer-overlay');
+      const drawer = document.getElementById('info-drawer');
+      
+      overlay.classList.remove('hidden');
+      setTimeout(() => {
+        overlay.classList.add('opacity-100');
+        drawer.classList.remove('translate-y-full');
+      }, 10);
+    }
+
+    function closeDrawer() {
+      const overlay = document.getElementById('drawer-overlay');
+      const drawer = document.getElementById('info-drawer');
+      
+      overlay.classList.remove('opacity-100');
+      drawer.classList.add('translate-y-full');
+      
+      setTimeout(() => {
+        overlay.classList.add('hidden');
+      }, 350);
+    }
+
+    // 分享網頁功能
+    function shareApp() {
+      if (navigator.share) {
+        navigator.share({
+          title: 'PRStK Lab',
+          text: 'PRStK Lab - 量化選股 ｜ 紀律交易 ｜ 策略優化',
+          url: window.location.href
+        }).catch(console.error);
+      } else {
+        // 備用複製網址
+        const dummy = document.createElement('input');
+        document.body.appendChild(dummy);
+        dummy.value = window.location.href;
+        dummy.select();
+        document.execCommand('copy');
+        document.body.removeChild(dummy);
+        
+        // 顯示一個精緻的複製提示
+        const toast = document.createElement('div');
+        toast.className = 'fixed bottom-12 left-1/2 -translate-x-1/2 bg-muji-text text-white text-[11px] px-4 py-2.5 rounded-full tracking-widest z-50 shadow-md transition-opacity duration-300 whitespace-nowrap';
+        toast.innerText = 'Together Better 連結已複製';
+        document.body.appendChild(toast);
+        setTimeout(() => {
+          toast.style.opacity = '0';
+          setTimeout(() => document.body.removeChild(toast), 300);
+        }, 1500);
+      }
+    }
+  </script>
+</body>
+</html>
