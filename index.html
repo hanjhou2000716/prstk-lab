@@ -58,13 +58,13 @@
     
     <!-- 1. 頭部區域 -->
     <header class="flex flex-col items-center text-center">
-      <!-- 標誌圖片 (移除 max-h 限制，並將寬度放大兩倍) -->
+       <!-- 標誌圖片 (套用新的尺寸設定) -->
       <div class="w-full flex items-center justify-center mb-2 mt-0">
         <img 
           id="logo-img"
           src="PRStK Lab-Remove.png" 
           alt="PRStK Lab Logo" 
-          class="w-full max-w-[500px] h-auto object-contain transition-opacity duration-300"
+          class="w-[105%] max-w-[400px] h-auto max-h-[15vh] object-contain transition-opacity duration-300"
           onerror="handleLogoError()"
         />
         <!-- 備用純文字 Logo (若圖片未載入時優雅呈現) -->
