@@ -58,29 +58,19 @@
     
     <!-- 1. 頭部區域 -->
     <header class="flex flex-col items-center text-center">
-      <!-- 標誌圖片 (智慧自適應：放大效果同時確保五個按鈕不超出畫面) -->.
-      <div class="h-[25vh] min-h-[200px] max-h-[250px] w-full flex items-center justify-center mb-0.3">
+      <!-- 標誌圖片 -->
+      <!-- 🔴 將這裡的 mb-2 刪除或改為 mb-0 -->
+      <div class="w-full flex items-center justify-center mt-1 mb-0"> 
         <img 
-          id="logo-img"
-          src="PRStK Lab-Remove.png" 
-          alt="PRStK Lab Logo"
-          class="max-h-full max-w-[450px] w-auto object-contain transition-opacity duration-300"
-          onerror="handleLogoError()"
+          ...
         />
-        <!-- 備用純文字 Logo (若圖片未載入時優雅呈現) -->
-        <div id="logo-fallback" class="hidden flex-col items-center">
-          <span class="text-3xl font-light tracking-[0.25em] text-muji-text">PRStK Lab</span>
-          <span class="text-[11px] uppercase tracking-[0.4em] text-muji-muted -mt-2">Quant Trading</span>
-        </div>
+        ...
       </div>
       
       <!-- 副標題 -->
-      <p class="text-[12px] tracking-[0.2em] text-muji-muted font-normal flex items-center justify-center gap-2 mt-1">
-        <span>量化選股</span>
-        <span class="text-[10px] text-muji-border font-light">|</span>
-        <span>紀律交易</span>
-        <span class="text-[10px] text-muji-border font-light">|</span>
-        <span>策略優化</span>
+      <!-- 🔴 確保這裡沒有 mt- 相關的數值，或是直接加入 -mt-1 往上吸 -->
+      <p class="text-[12px] tracking-[0.2em] text-muji-muted font-normal flex items-center justify-center gap-2 -mt-1">
+        ...
       </p>
     </header>
 
