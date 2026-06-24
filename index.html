@@ -58,13 +58,13 @@
     
     <!-- 1. 頭部區域 -->
     <header class="flex flex-col items-center text-center">
-      <!-- 標誌圖片 -->
+      <!-- 標誌圖片 (移除 max-h 限制，並將寬度放大兩倍) -->
       <div class="w-full flex items-center justify-center mb-2 mt-0">
         <img 
           id="logo-img"
           src="PRStK Lab-Remove.png" 
           alt="PRStK Lab Logo" 
-          class="w-[85%] max-w-[320px] h-auto max-h-[14vh] object-contain transition-opacity duration-300"
+          class="w-full max-w-[500px] h-auto object-contain transition-opacity duration-300"
           onerror="handleLogoError()"
         />
         <!-- 備用純文字 Logo (若圖片未載入時優雅呈現) -->
@@ -74,10 +74,13 @@
         </div>
       </div>
       
-      <!-- 副標題 -->
-      <!-- 🔴 確保這裡沒有 mt- 相關的數值，或是直接加入 -mt-1 往上吸 -->
-      <p class="text-[12px] tracking-[0.2em] text-muji-muted font-normal flex items-center justify-center gap-2 -mt-1">
-        ...
+      <!-- 副標題 (還原被 ... 覆蓋掉的文字) -->
+      <p class="text-[12px] tracking-[0.2em] text-muji-muted font-normal flex items-center justify-center gap-2">
+        <span>量化選股</span>
+        <span class="text-[10px] text-muji-border font-light">|</span>
+        <span>紀律交易</span>
+        <span class="text-[10px] text-muji-border font-light">|</span>
+        <span>策略優化</span>
       </p>
     </header>
 
