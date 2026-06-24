@@ -59,12 +59,19 @@
     <!-- 1. 頭部區域 -->
     <header class="flex flex-col items-center text-center">
       <!-- 標誌圖片 -->
-      <!-- 🔴 將這裡的 mb-2 刪除或改為 mb-0 -->
-      <div class="w-full flex items-center justify-center mt-1 mb-0"> 
+      <div class="w-full flex items-center justify-center mb-2 mt-0">
         <img 
-          ...
+          id="logo-img"
+          src="PRStK Lab-Remove.png" 
+          alt="PRStK Lab Logo" 
+          class="w-[85%] max-w-[320px] h-auto max-h-[14vh] object-contain transition-opacity duration-300"
+          onerror="handleLogoError()"
         />
-        ...
+        <!-- 備用純文字 Logo (若圖片未載入時優雅呈現) -->
+        <div id="logo-fallback" class="hidden flex-col items-center">
+          <span class="text-3xl font-light tracking-[0.25em] text-muji-text">PRStK Lab</span>
+          <span class="text-[11px] uppercase tracking-[0.4em] text-muji-muted mt-1">Quant Trading</span>
+        </div>
       </div>
       
       <!-- 副標題 -->
