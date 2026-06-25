@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>PRStK Lab</title>
   
-  <!-- 預留給 Analytics 的區塊 (未來可在此貼上 Google Analytics 或 Umami 追蹤碼) -->
+  <!-- 預留給 Analytics 的區塊 -->
   <!-- <script async src="https://www.googletagmanager.com/gtag/js?id=YOUR-GA-ID"></script> -->
 
   <!-- Tailwind CSS -->
@@ -14,6 +14,10 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
+  
+  <!-- ⭐ 新增：AOS 動畫庫 CSS -->
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+  
   <!-- Lucide Icons -->
   <script src="https://unpkg.com/lucide@latest"></script>
   <script>
@@ -31,8 +35,8 @@
               border: '#E3DDD5',  /* 溫暖的水泥灰線條 */
               accent: '#8E7F72',  /* 淺木褐 */
               hover: '#F5EFE6',   /* 溫暖觸摸色 */
-              brand: '#4A606D',   /* ⭐ 新增：擷取自 Logo 的沉穩灰藍色 */
-              brandLight: '#EEF2F4'/* ⭐ 新增：品牌色超淺底色，用於標籤與 Hover */
+              brand: '#4A606D',   /* 品牌色：沉穩灰藍色 */
+              brandLight: '#EEF2F4'/* 品牌色超淺底色 */
             }
           }
         }
@@ -55,16 +59,16 @@
   </style>
 </head>
 <body class="bg-muji-bg text-muji-text font-sans min-h-[100dvh] flex flex-col justify-between overflow-x-hidden select-none">
-  <!-- 背景微光裝飾（極簡無印風） -->
+  <!-- 背景微光裝飾 -->
   <div class="absolute inset-0 bg-[radial-gradient(#E8E1D5_1.2px,transparent_1.2px)] [background-size:20px_20px] opacity-70 pointer-events-none"></div>
 
-  <!-- 主容器 (限制最大寬度，動態調整內邊距確保五個按鈕一頁呈現) -->
+  <!-- 主容器 -->
   <div class="relative w-full max-w-md mx-auto min-h-[100dvh] flex flex-col justify-between px-5 pt-6 pb-6 z-10">
     
     <!-- 1. 頭部區域 -->
     <header class="flex flex-col items-center text-center">
-       <!-- 標誌圖片 (套用您的尺寸設定) -->
-      <div class="w-full flex items-center justify-center mb-2 mt-0">
+       <!-- 標誌圖片 (加入 AOS 淡入向下動畫) -->
+      <div class="w-full flex items-center justify-center mb-2 mt-0" data-aos="fade-down" data-aos-duration="800">
         <img 
           id="logo-img"
           src="PRStK Lab-Remove.png" 
@@ -72,15 +76,15 @@
           class="w-[95%] max-w-[350px] h-auto max-h-[15vh] object-contain transition-opacity duration-300"
           onerror="handleLogoError()"
         />
-        <!-- 備用純文字 Logo (若圖片未載入時優雅呈現，並套用品牌色) -->
+        <!-- 備用純文字 Logo -->
         <div id="logo-fallback" class="hidden flex-col items-center">
           <span class="text-3xl font-light tracking-[0.25em] text-muji-brand">PRStK Lab</span>
           <span class="text-[11px] uppercase tracking-[0.4em] text-muji-muted mt-1">Quant Trading</span>
         </div>
       </div>
       
-      <!-- 副標題 -->
-      <p class="text-[12px] tracking-[0.2em] text-muji-muted font-normal flex items-center justify-center gap-2">
+      <!-- 副標題 (加入 AOS 淡入動畫) -->
+      <p class="text-[12px] tracking-[0.2em] text-muji-muted font-normal flex items-center justify-center gap-2" data-aos="fade-in" data-aos-delay="200" data-aos-duration="800">
         <span>量化選股</span>
         <span class="text-[10px] text-muji-border font-light">|</span>
         <span>紀律交易</span>
@@ -92,21 +96,21 @@
     <!-- 2. 按鈕導覽區 -->
     <main class="flex-1 flex flex-col justify-start mt-5 gap-2.5 mb-2">
       
-      <!-- ⭐ 新增：引導文案 (微小、精緻的 Muji Style 引導) -->
-      <div class="text-[10px] tracking-[0.15em] text-muji-muted/80 ml-1 mb-1 font-light flex items-center gap-1.5">
+      <!-- 引導文案 -->
+      <div class="text-[10px] tracking-[0.15em] text-muji-muted/80 ml-1 mb-1 font-light flex items-center gap-1.5" data-aos="fade-right" data-aos-delay="200">
         <i data-lucide="compass" class="w-3 h-3"></i> 選擇工具開始分析
       </div>
 
-      <!-- 按鈕 1: 股癌選股系統 -->
-      <div class="relative group">
+      <!-- 按鈕 1: 股癌選股系統 (加入延遲動畫與高級 hover) -->
+      <div class="relative group" data-aos="fade-up" data-aos-delay="100">
         <a href="https://taiwan-equity-quant-tool.taiquant.workers.dev/?v=20260619-1936" 
            target="_blank"
-           class="flex items-center justify-between w-full py-3.5 px-4 bg-white border border-muji-border rounded-xl shadow-[0_2px_8px_rgba(215,208,196,0.15)] hover:border-muji-brand/30 hover:bg-muji-hover active:scale-[0.99] transition-all duration-200 pr-12">
+           class="flex items-center justify-between w-full py-3.5 px-4 bg-white border border-muji-border rounded-xl shadow-[0_2px_8px_rgba(215,208,196,0.15)] hover:shadow-[0_8px_20px_rgba(74,96,109,0.12)] hover:-translate-y-1 hover:border-muji-brand/40 active:scale-[0.99] transition-all duration-300 pr-12">
           <div class="flex flex-col items-start text-left">
             <span class="text-[14.5px] font-medium tracking-wide text-muji-text group-hover:text-muji-brand transition-colors">📈 股癌選股系統</span>
             <span class="text-[10px] text-muji-muted tracking-wider mt-0.5 font-light pl-[26px]">GOOAYE Innovation</span>
           </div>
-          <i data-lucide="arrow-up-right" class="w-4 h-4 text-muji-muted opacity-40 group-hover:text-muji-brand group-hover:opacity-100 transition-all"></i>
+          <i data-lucide="arrow-up-right" class="w-4 h-4 text-muji-muted opacity-40 group-hover:text-muji-brand group-hover:opacity-100 group-hover:translate-x-1 group-hover:-translate-y-1 transition-all duration-300"></i>
         </a>
         <button onclick="openDrawer(0)" 
                 class="absolute right-0 top-0 bottom-0 w-11 flex items-center justify-center border-l border-muji-border border-opacity-30 hover:bg-muji-brandLight rounded-r-xl transition-colors duration-150"
@@ -116,15 +120,15 @@
       </div>
 
       <!-- 按鈕 2: AI 智慧產業地圖 -->
-      <div class="relative group">
+      <div class="relative group" data-aos="fade-up" data-aos-delay="150">
         <a href="https://aistockmap.com" 
            target="_blank"
-           class="flex items-center justify-between w-full py-3.5 px-4 bg-white border border-muji-border rounded-xl shadow-[0_2px_8px_rgba(215,208,196,0.15)] hover:border-muji-brand/30 hover:bg-muji-hover active:scale-[0.99] transition-all duration-200 pr-12">
+           class="flex items-center justify-between w-full py-3.5 px-4 bg-white border border-muji-border rounded-xl shadow-[0_2px_8px_rgba(215,208,196,0.15)] hover:shadow-[0_8px_20px_rgba(74,96,109,0.12)] hover:-translate-y-1 hover:border-muji-brand/40 active:scale-[0.99] transition-all duration-300 pr-12">
           <div class="flex flex-col items-start text-left">
             <span class="text-[14.5px] font-medium tracking-wide text-muji-text group-hover:text-muji-brand transition-colors">🌐 AI 智慧產業地圖</span>
             <span class="text-[10px] text-muji-muted tracking-wider mt-0.5 font-light pl-[26px]">AI Stock Map</span>
           </div>
-          <i data-lucide="arrow-up-right" class="w-4 h-4 text-muji-muted opacity-40 group-hover:text-muji-brand group-hover:opacity-100 transition-all"></i>
+          <i data-lucide="arrow-up-right" class="w-4 h-4 text-muji-muted opacity-40 group-hover:text-muji-brand group-hover:opacity-100 group-hover:translate-x-1 group-hover:-translate-y-1 transition-all duration-300"></i>
         </a>
         <button onclick="openDrawer(1)" 
                 class="absolute right-0 top-0 bottom-0 w-11 flex items-center justify-center border-l border-muji-border border-opacity-30 hover:bg-muji-brandLight rounded-r-xl transition-colors duration-150"
@@ -134,15 +138,15 @@
       </div>
 
       <!-- 按鈕 3: ETF 交叉持股分析 -->
-      <div class="relative group">
+      <div class="relative group" data-aos="fade-up" data-aos-delay="200">
         <a href="https://etfcross.com/" 
            target="_blank"
-           class="flex items-center justify-between w-full py-3.5 px-4 bg-white border border-muji-border rounded-xl shadow-[0_2px_8px_rgba(215,208,196,0.15)] hover:border-muji-brand/30 hover:bg-muji-hover active:scale-[0.99] transition-all duration-200 pr-12">
+           class="flex items-center justify-between w-full py-3.5 px-4 bg-white border border-muji-border rounded-xl shadow-[0_2px_8px_rgba(215,208,196,0.15)] hover:shadow-[0_8px_20px_rgba(74,96,109,0.12)] hover:-translate-y-1 hover:border-muji-brand/40 active:scale-[0.99] transition-all duration-300 pr-12">
           <div class="flex flex-col items-start text-left">
             <span class="text-[14.5px] font-medium tracking-wide text-muji-text group-hover:text-muji-brand transition-colors">🔀 ETF 交叉持股分析</span>
             <span class="text-[10px] text-muji-muted tracking-wider mt-0.5 font-light pl-[26px]">ETFCross</span>
           </div>
-          <i data-lucide="arrow-up-right" class="w-4 h-4 text-muji-muted opacity-40 group-hover:text-muji-brand group-hover:opacity-100 transition-all"></i>
+          <i data-lucide="arrow-up-right" class="w-4 h-4 text-muji-muted opacity-40 group-hover:text-muji-brand group-hover:opacity-100 group-hover:translate-x-1 group-hover:-translate-y-1 transition-all duration-300"></i>
         </a>
         <button onclick="openDrawer(2)" 
                 class="absolute right-0 top-0 bottom-0 w-11 flex items-center justify-center border-l border-muji-border border-opacity-30 hover:bg-muji-brandLight rounded-r-xl transition-colors duration-150"
@@ -152,15 +156,15 @@
       </div>
 
       <!-- 按鈕 4: ETF 折溢價監控 -->
-      <div class="relative group">
+      <div class="relative group" data-aos="fade-up" data-aos-delay="250">
         <a href="https://twetf.com/" 
            target="_blank"
-           class="flex items-center justify-between w-full py-3.5 px-4 bg-white border border-muji-border rounded-xl shadow-[0_2px_8px_rgba(215,208,196,0.15)] hover:border-muji-brand/30 hover:bg-muji-hover active:scale-[0.99] transition-all duration-200 pr-12">
+           class="flex items-center justify-between w-full py-3.5 px-4 bg-white border border-muji-border rounded-xl shadow-[0_2px_8px_rgba(215,208,196,0.15)] hover:shadow-[0_8px_20px_rgba(74,96,109,0.12)] hover:-translate-y-1 hover:border-muji-brand/40 active:scale-[0.99] transition-all duration-300 pr-12">
           <div class="flex flex-col items-start text-left">
             <span class="text-[14.5px] font-medium tracking-wide text-muji-text group-hover:text-muji-brand transition-colors">⚖️ ETF 折溢價監控</span>
             <span class="text-[10px] text-muji-muted tracking-wider mt-0.5 font-light pl-[26px]">TWETF</span>
           </div>
-          <i data-lucide="arrow-up-right" class="w-4 h-4 text-muji-muted opacity-40 group-hover:text-muji-brand group-hover:opacity-100 transition-all"></i>
+          <i data-lucide="arrow-up-right" class="w-4 h-4 text-muji-muted opacity-40 group-hover:text-muji-brand group-hover:opacity-100 group-hover:translate-x-1 group-hover:-translate-y-1 transition-all duration-300"></i>
         </a>
         <button onclick="openDrawer(3)" 
                 class="absolute right-0 top-0 bottom-0 w-11 flex items-center justify-center border-l border-muji-border border-opacity-30 hover:bg-muji-brandLight rounded-r-xl transition-colors duration-150"
@@ -170,15 +174,15 @@
       </div>
 
       <!-- 按鈕 5: 紀律交易系統 -->
-      <div class="relative group">
+      <div class="relative group" data-aos="fade-up" data-aos-delay="300">
         <a href="https://disciplined-trading.streamlit.app/" 
            target="_blank"
-           class="flex items-center justify-between w-full py-3.5 px-4 bg-white border border-muji-border rounded-xl shadow-[0_2px_8px_rgba(215,208,196,0.15)] hover:border-muji-brand/30 hover:bg-muji-hover active:scale-[0.99] transition-all duration-200 pr-12">
+           class="flex items-center justify-between w-full py-3.5 px-4 bg-white border border-muji-border rounded-xl shadow-[0_2px_8px_rgba(215,208,196,0.15)] hover:shadow-[0_8px_20px_rgba(74,96,109,0.12)] hover:-translate-y-1 hover:border-muji-brand/40 active:scale-[0.99] transition-all duration-300 pr-12">
           <div class="flex flex-col items-start text-left">
             <span class="text-[14.5px] font-medium tracking-wide text-muji-text group-hover:text-muji-brand transition-colors">🧘 紀律交易系統</span>
             <span class="text-[10px] text-muji-muted tracking-wider mt-0.5 font-light pl-[26px]">Disciplined Trading</span>
           </div>
-          <i data-lucide="arrow-up-right" class="w-4 h-4 text-muji-muted opacity-40 group-hover:text-muji-brand group-hover:opacity-100 transition-all"></i>
+          <i data-lucide="arrow-up-right" class="w-4 h-4 text-muji-muted opacity-40 group-hover:text-muji-brand group-hover:opacity-100 group-hover:translate-x-1 group-hover:-translate-y-1 transition-all duration-300"></i>
         </a>
         <button onclick="openDrawer(4)" 
                 class="absolute right-0 top-0 bottom-0 w-11 flex items-center justify-center border-l border-muji-border border-opacity-30 hover:bg-muji-brandLight rounded-r-xl transition-colors duration-150"
@@ -190,9 +194,9 @@
     </main>
 
     <!-- 3. 頁尾資訊 -->
-    <footer class="text-center flex flex-col items-center gap-2">
-      <!-- ⭐ 快速分享按鈕 (套用品牌色) -->
-      <button onclick="shareApp()" class="flex items-center gap-2 px-5 py-1.5 text-[12px] text-muji-brand hover:text-white border border-muji-brand/30 rounded-full hover:bg-muji-brand transition-all duration-300 shadow-sm mt-1">
+    <footer class="text-center flex flex-col items-center gap-2" data-aos="fade-up" data-aos-delay="400">
+      <!-- 快速分享按鈕 -->
+      <button onclick="shareApp()" class="flex items-center gap-2 px-5 py-1.5 text-[12px] text-muji-brand hover:text-white border border-muji-brand/30 rounded-full hover:bg-muji-brand hover:-translate-y-0.5 hover:shadow-md transition-all duration-300 shadow-sm mt-1">
         <i data-lucide="share-2" class="w-3.5 h-3.5"></i>
         <span class="font-medium tracking-wide">Together Better</span>
       </button>
@@ -205,7 +209,7 @@
   </div>
 
   <!-- ================= 詳細資訊彈出抽屜 (Drawer) ================= -->
-  <!-- 遮罩背景 (套用品牌色透明度) -->
+  <!-- 遮罩背景 -->
   <div id="drawer-overlay" 
        onclick="closeDrawer()" 
        class="fixed inset-0 bg-muji-brand/20 backdrop-blur-sm z-40 hidden opacity-0 transition-opacity duration-300">
@@ -220,12 +224,10 @@
       <div class="w-12 h-1 bg-muji-border rounded-full mx-auto my-3.5 opacity-80"></div>
     </div>
     
-    <!-- 抽屜內容 (若內容過長允許內部滾動，確保手機體驗) -->
+    <!-- 抽屜內容 -->
     <div class="px-6 pb-8 pt-1 overflow-y-auto flex-1">
-      <!-- 標題與網址 -->
       <div class="flex justify-between items-start mb-4">
         <div>
-          <!-- ⭐ 抽屜標題 (套用品牌色) -->
           <h3 id="drawer-title" class="text-[17px] font-medium tracking-wide text-muji-brand">標題</h3>
           <p id="drawer-subtitle" class="text-[11px] text-muji-muted mt-0.5 tracking-wider font-light"></p>
         </div>
@@ -234,7 +236,6 @@
         </button>
       </div>
 
-      <!-- 詳細說明區塊 -->
       <div class="space-y-4">
         <div>
           <h4 class="text-[11px] uppercase tracking-[0.15em] text-muji-brand font-semibold flex items-center gap-2 mb-2">
@@ -242,7 +243,6 @@
             核心功能
           </h4>
           <ul id="drawer-features" class="text-xs text-muji-text font-light leading-relaxed space-y-1.5 pl-3 list-disc marker:text-muji-brand/60">
-            <!-- 動態插入 -->
           </ul>
         </div>
 
@@ -252,25 +252,33 @@
             適合對象
           </h4>
           <ul id="drawer-targets" class="text-xs text-muji-text font-light leading-relaxed space-y-1.5 pl-3 list-disc marker:text-muji-brand/60">
-            <!-- 動態插入 -->
           </ul>
         </div>
       </div>
 
-      <!-- ⭐ 快速前往按鈕 (套用品牌色) -->
+      <!-- 快速前往按鈕 -->
       <a id="drawer-link" href="#" target="_blank" 
-         class="mt-6 flex items-center justify-center gap-2 w-full py-3.5 bg-muji-brand hover:bg-[#384a54] text-white text-xs font-light tracking-widest rounded-xl transition-colors duration-200 shadow-sm">
+         class="mt-6 flex items-center justify-center gap-2 w-full py-3.5 bg-muji-brand hover:bg-[#384a54] hover:shadow-lg hover:-translate-y-0.5 text-white text-xs font-light tracking-widest rounded-xl transition-all duration-300 shadow-sm">
         <span>開啟系統</span>
         <i data-lucide="external-link" class="w-3.5 h-3.5"></i>
       </a>
     </div>
   </div>
 
+  <!-- ⭐ 新增：AOS 動畫庫 JS 初始化 -->
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
   <script>
+    // 初始化 AOS 動畫
+    AOS.init({
+      duration: 700,
+      easing: 'ease-out-cubic',
+      once: true, // 動畫只播放一次
+      offset: 20
+    });
+
     // 初始化 Lucide 圖標
     lucide.createIcons();
 
-    // 防止 Logo 找不到時網頁看起來不美觀的備用機制
     function handleLogoError() {
       const img = document.getElementById('logo-img');
       const fallback = document.getElementById('logo-fallback');
@@ -278,7 +286,6 @@
       if (fallback) fallback.classList.remove('hidden');
     }
 
-    // 各項目詳細資料 (保留您的排列順序)
     const appData = [
       {
         title: "📈 股癌選股系統",
@@ -347,7 +354,6 @@
       }
     ];
 
-    // 控制滑出式抽屜
     function openDrawer(index) {
       const data = appData[index];
       
@@ -355,7 +361,6 @@
       document.getElementById('drawer-subtitle').innerText = data.subtitle;
       document.getElementById('drawer-link').href = data.link;
 
-      // 渲染核心功能
       const featuresUl = document.getElementById('drawer-features');
       featuresUl.innerHTML = '';
       data.features.forEach(feat => {
@@ -364,7 +369,6 @@
         featuresUl.appendChild(li);
       });
 
-      // 渲染適合對象
       const targetsUl = document.getElementById('drawer-targets');
       targetsUl.innerHTML = '';
       data.targets.forEach(t => {
@@ -373,7 +377,6 @@
         targetsUl.appendChild(li);
       });
 
-      // 顯示遮罩與抽屜
       const overlay = document.getElementById('drawer-overlay');
       const drawer = document.getElementById('info-drawer');
       
@@ -396,7 +399,6 @@
       }, 350);
     }
 
-    // 分享網頁功能
     function shareApp() {
       if (navigator.share) {
         navigator.share({
@@ -405,7 +407,6 @@
           url: window.location.href
         }).catch(console.error);
       } else {
-        // 備用複製網址
         const dummy = document.createElement('input');
         document.body.appendChild(dummy);
         dummy.value = window.location.href;
@@ -413,7 +414,6 @@
         document.execCommand('copy');
         document.body.removeChild(dummy);
         
-        // 顯示一個精緻的複製提示 (套用品牌色)
         const toast = document.createElement('div');
         toast.className = 'fixed bottom-12 left-1/2 -translate-x-1/2 bg-muji-brand text-white text-[11px] px-4 py-2.5 rounded-full tracking-widest z-50 shadow-md transition-opacity duration-300 whitespace-nowrap';
         toast.innerText = 'Together Better 連結已複製';
