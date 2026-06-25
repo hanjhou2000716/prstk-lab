@@ -5,7 +5,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>PRStK Lab</title>
   
-  <!-- 預留給 Analytics 的區塊 -->
+  <!-- ⭐ 新增：App 主畫面圖示與設定 -->
+  <link rel="icon" type="image/png" href="PRStK Lab-Remove.png">
+  <link rel="apple-touch-icon" href="PRStK Lab-Remove.png">
+  <meta name="apple-mobile-web-app-title" content="PRStK Lab">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="theme-color" content="#FAF8F5">
+  <link id="manifest-link" rel="manifest" href="">
+
+  <!-- 預留給 Analytics 的區塊 (未來可在此貼上 Google Analytics 或 Umami 追蹤碼) -->
   <!-- <script async src="https://www.googletagmanager.com/gtag/js?id=YOUR-GA-ID"></script> -->
 
   <!-- Tailwind CSS -->
@@ -15,7 +24,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
   
-  <!-- ⭐ 新增：AOS 動畫庫 CSS -->
+  <!-- AOS 動畫庫 CSS -->
   <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
   
   <!-- Lucide Icons -->
@@ -31,11 +40,11 @@
             muji: {
               bg: '#FAF8F5',      /* 暖麻白 */
               text: '#3C3935',    /* 溫潤炭灰 */
-              muted: '#625D56',   /* 亞麻深灰 - 提高清晰度 */
+              muted: '#625D56',   /* 亞麻深灰 */
               border: '#E3DDD5',  /* 溫暖的水泥灰線條 */
               accent: '#8E7F72',  /* 淺木褐 */
               hover: '#F5EFE6',   /* 溫暖觸摸色 */
-              brand: '#4A606D',   /* 品牌色：沉穩灰藍色 */
+              brand: '#4A606D',   /* 擷取自 Logo 的沉穩灰藍色 */
               brandLight: '#EEF2F4'/* 品牌色超淺底色 */
             }
           }
@@ -73,7 +82,7 @@
           id="logo-img"
           src="PRStK Lab-Remove.png" 
           alt="PRStK Lab Logo" 
-          class="w-[95%] max-w-[350px] h-auto max-h-[15vh] object-contain transition-opacity duration-300"
+          class="w-[75%] max-w-[280px] h-auto object-contain transition-opacity duration-300"
           onerror="handleLogoError()"
         />
         <!-- 備用純文字 Logo -->
@@ -101,13 +110,16 @@
         <i data-lucide="compass" class="w-3 h-3"></i> 選擇工具開始分析
       </div>
 
-      <!-- 按鈕 1: 股癌選股系統 (加入延遲動畫與高級 hover) -->
+      <!-- 按鈕 1: 股癌選股系統 -->
       <div class="relative group" data-aos="fade-up" data-aos-delay="100">
         <a href="https://taiwan-equity-quant-tool.taiquant.workers.dev/?v=20260619-1936" 
            target="_blank"
            class="flex items-center justify-between w-full py-3.5 px-4 bg-white border border-muji-border rounded-xl shadow-[0_2px_8px_rgba(215,208,196,0.15)] hover:shadow-[0_8px_20px_rgba(74,96,109,0.12)] hover:-translate-y-1 hover:border-muji-brand/40 active:scale-[0.99] transition-all duration-300 pr-12">
           <div class="flex flex-col items-start text-left">
-            <span class="text-[14.5px] font-medium tracking-wide text-muji-text group-hover:text-muji-brand transition-colors">📈 股癌選股系統</span>
+            <div class="flex items-center gap-2">
+              <span class="text-[14.5px] font-medium tracking-wide text-muji-text group-hover:text-muji-brand transition-colors">📈 股癌選股系統</span>
+              <span class="px-1.5 py-0.5 rounded text-[9px] font-medium bg-[#FFF5F5] text-[#D97777] border border-[#FDE8E8] tracking-wider">HOT</span>
+            </div>
             <span class="text-[10px] text-muji-muted tracking-wider mt-0.5 font-light pl-[26px]">GOOAYE Innovation</span>
           </div>
           <i data-lucide="arrow-up-right" class="w-4 h-4 text-muji-muted opacity-40 group-hover:text-muji-brand group-hover:opacity-100 group-hover:translate-x-1 group-hover:-translate-y-1 transition-all duration-300"></i>
@@ -119,14 +131,17 @@
         </button>
       </div>
 
-      <!-- 按鈕 2: AI 智慧產業地圖 -->
+      <!-- 按鈕 2: Alpha Signal Lab -->
       <div class="relative group" data-aos="fade-up" data-aos-delay="150">
-        <a href="https://aistockmap.com" 
+        <a href="https://quiet-kulfi-38cc53.netlify.app/#maxlab" 
            target="_blank"
            class="flex items-center justify-between w-full py-3.5 px-4 bg-white border border-muji-border rounded-xl shadow-[0_2px_8px_rgba(215,208,196,0.15)] hover:shadow-[0_8px_20px_rgba(74,96,109,0.12)] hover:-translate-y-1 hover:border-muji-brand/40 active:scale-[0.99] transition-all duration-300 pr-12">
           <div class="flex flex-col items-start text-left">
-            <span class="text-[14.5px] font-medium tracking-wide text-muji-text group-hover:text-muji-brand transition-colors">🌐 AI 智慧產業地圖</span>
-            <span class="text-[10px] text-muji-muted tracking-wider mt-0.5 font-light pl-[26px]">AI Stock Map</span>
+            <div class="flex items-center gap-2">
+              <span class="text-[14.5px] font-medium tracking-wide text-muji-text group-hover:text-muji-brand transition-colors">🔬 Alpha Signal Lab</span>
+              <span class="px-1.5 py-0.5 rounded text-[9px] font-medium bg-muji-brandLight text-muji-brand border border-muji-brand/20 tracking-wider">NEW</span>
+            </div>
+            <span class="text-[10px] text-muji-muted tracking-wider mt-0.5 font-light pl-[26px]">多市場策略研究儀表板</span>
           </div>
           <i data-lucide="arrow-up-right" class="w-4 h-4 text-muji-muted opacity-40 group-hover:text-muji-brand group-hover:opacity-100 group-hover:translate-x-1 group-hover:-translate-y-1 transition-all duration-300"></i>
         </a>
@@ -195,13 +210,12 @@
 
     <!-- 3. 頁尾資訊 -->
     <footer class="text-center flex flex-col items-center gap-2" data-aos="fade-up" data-aos-delay="400">
-      <!-- 快速分享按鈕 -->
       <button onclick="shareApp()" class="flex items-center gap-2 px-5 py-1.5 text-[12px] text-muji-brand hover:text-white border border-muji-brand/30 rounded-full hover:bg-muji-brand hover:-translate-y-0.5 hover:shadow-md transition-all duration-300 shadow-sm mt-1">
         <i data-lucide="share-2" class="w-3.5 h-3.5"></i>
         <span class="font-medium tracking-wide">Together Better</span>
       </button>
       
-      <p class="text-[9px] text-muji-muted tracking-widest font-light">
+      <p class="text-[9px] text-muji-muted tracking-widest font-light mt-1">
         © 2026 PRStK Lab. All rights reserved.
       </p>
     </footer>
@@ -219,12 +233,10 @@
   <div id="info-drawer" 
        class="fixed bottom-0 left-0 right-0 max-w-md mx-auto bg-white rounded-t-3xl shadow-[0_-8px_30px_rgba(74,96,109,0.1)] z-50 transform translate-y-full drawer-transition border-t border-muji-border max-h-[85vh] flex flex-col">
     
-    <!-- 頂部裝飾條 -->
     <div class="flex-shrink-0">
       <div class="w-12 h-1 bg-muji-border rounded-full mx-auto my-3.5 opacity-80"></div>
     </div>
     
-    <!-- 抽屜內容 -->
     <div class="px-6 pb-8 pt-1 overflow-y-auto flex-1">
       <div class="flex justify-between items-start mb-4">
         <div>
@@ -256,7 +268,6 @@
         </div>
       </div>
 
-      <!-- 快速前往按鈕 -->
       <a id="drawer-link" href="#" target="_blank" 
          class="mt-6 flex items-center justify-center gap-2 w-full py-3.5 bg-muji-brand hover:bg-[#384a54] hover:shadow-lg hover:-translate-y-0.5 text-white text-xs font-light tracking-widest rounded-xl transition-all duration-300 shadow-sm">
         <span>開啟系統</span>
@@ -265,19 +276,38 @@
     </div>
   </div>
 
-  <!-- ⭐ 新增：AOS 動畫庫 JS 初始化 -->
+  <!-- AOS 動畫庫 JS 初始化 -->
   <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
   <script>
     // 初始化 AOS 動畫
     AOS.init({
       duration: 700,
       easing: 'ease-out-cubic',
-      once: true, // 動畫只播放一次
+      once: true,
       offset: 20
     });
 
     // 初始化 Lucide 圖標
     lucide.createIcons();
+
+    // ⭐ 動態生成 PWA Manifest (讓 Android 下載成全螢幕獨立 App)
+    const manifestData = {
+      name: "PRStK Lab",
+      short_name: "PRStK Lab",
+      display: "standalone",
+      background_color: "#FAF8F5",
+      theme_color: "#4A606D",
+      icons: [
+        {
+          src: "PRStK Lab-Remove.png",
+          sizes: "192x192 512x512",
+          type: "image/png",
+          purpose: "any maskable"
+        }
+      ]
+    };
+    const manifestBlob = new Blob([JSON.stringify(manifestData)], {type: 'application/manifest+json'});
+    document.getElementById('manifest-link').href = URL.createObjectURL(manifestBlob);
 
     function handleLogoError() {
       const img = document.getElementById('logo-img');
@@ -301,17 +331,17 @@
         link: "https://taiwan-equity-quant-tool.taiquant.workers.dev/?v=20260619-1936"
       },
       {
-        title: "🌐 AI 智慧產業地圖",
-        subtitle: "AI Stock Map",
+        title: "🔬 Alpha Signal Lab",
+        subtitle: "多市場策略研究儀表板",
         features: [
-          "視覺化供應鏈與市場熱力圖：透過互動式節點圖完整呈現產業上下游結構，並以熱力圖讓投資人一眼看出盤面資金集中的板塊與輪動方向。",
-          "深度產業研究與 AI 輔助：整合三大法人、大戶及 ETF 籌碼動向，並提供涵蓋數十個主題的產業資料庫與 AI 一鍵生成摘要、法說會重點解讀。"
+          "跨市場回測展示：提供比特幣（BTC）、黃金與標普 500（S&P 500）等不同資產級別的量化回測模型。",
+          "複合策略與動態風控：深度結合市場結構與價格行為，並整合 EMA、RSI、MACD 等技術指標，同時納入 ATR（真實波動幅度）進行嚴格的風險控管。"
         ],
         targets: [
-          "希望以「機構等級」視角，有邏輯地看清台股供應鏈與產業脈絡的投資人。",
-          "需要快速掌握每日資金流向、追蹤法人動向，並系統化研究新題材的交易者。"
+          "關注加密貨幣、大宗商品與美股大盤，尋求跨市場交易機會的投資人。",
+          "重視技術分析、演算法回測，並依賴系統化風控模型輔助決策的專業交易者。"
         ],
-        link: "https://aistockmap.com"
+        link: "https://quiet-kulfi-38cc53.netlify.app/#maxlab"
       },
       {
         title: "🔀 ETF 交叉持股分析",
