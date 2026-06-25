@@ -1,0 +1,16 @@
+{
+"name": "PRStK Lab",
+"short_name": "PRStK Lab",
+"start_url": ".",
+"display": "standalone",
+"background_color": "#FAF8F5",
+"theme_color": "#4A606D",
+"icons": [
+{
+"src": "PRStK Lab-Remove.png",
+"sizes": "192x192 512x512",
+"type": "image/png",
+"purpose": "any maskable"
+}
+]
+}
