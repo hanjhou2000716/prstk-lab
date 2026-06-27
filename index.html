@@ -61,6 +61,17 @@
       transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
     }
   </style>
+
+  <!-- 提前定義錯誤處理函數，避免 ReferenceError -->
+  <script>
+    // 防止 Logo 找不到時網頁看起來不美觀的備用機制
+    function handleLogoError() {
+      const img = document.getElementById('logo-img');
+      const fallback = document.getElementById('logo-fallback');
+      if (img) img.style.display = 'none';
+      if (fallback) fallback.classList.remove('hidden');
+    }
+  </script>
 </head>
 <body class="bg-muji-bg text-muji-text font-sans min-h-[100dvh] flex flex-col justify-between overflow-x-hidden select-none">
   <!-- 背景微光裝飾（極簡無印風） -->
@@ -105,14 +116,14 @@
         <i data-lucide="compass" class="w-3 h-3"></i> 選擇工具開始分析
       </div>
 
-      <!-- 按鈕 1: AI 智慧產業地圖 -->
+      <!-- 按鈕 1: 智慧股市產業地圖 -->
       <div class="relative group" data-aos="fade-up" data-aos-delay="100">
         <a href="https://aistockmap.com" 
            target="_blank"
            class="flex items-center justify-between w-full py-3.5 px-4 bg-white border border-muji-border rounded-xl shadow-[0_2px_8px_rgba(215,208,196,0.15)] hover:shadow-[0_8px_20px_rgba(74,96,109,0.12)] hover:-translate-y-1 hover:border-muji-brand/40 active:scale-[0.99] transition-all duration-300 pr-12">
           <div class="flex flex-col items-start text-left">
-            <span class="text-[14.5px] font-medium tracking-wide text-muji-text group-hover:text-muji-brand transition-colors">🌐 AI 智慧產業地圖</span>
-            <span class="text-[10px] text-muji-muted tracking-wider mt-0.5 font-light pl-[26px]">AI Stock Map</span>
+            <span class="text-[14.5px] font-medium tracking-wide text-muji-text group-hover:text-muji-brand transition-colors">🧠 智慧股市產業地圖</span>
+            <span class="text-[10px] text-muji-muted tracking-wider mt-0.5 font-light pl-[26px]">NovaWeave</span>
           </div>
           <i data-lucide="arrow-up-right" class="w-4 h-4 text-muji-muted opacity-40 group-hover:text-muji-brand group-hover:opacity-100 group-hover:translate-x-1 group-hover:-translate-y-1 transition-all duration-300"></i>
         </a>
@@ -130,7 +141,7 @@
            class="flex items-center justify-between w-full py-3.5 px-4 bg-white border border-muji-border rounded-xl shadow-[0_2px_8px_rgba(215,208,196,0.15)] hover:shadow-[0_8px_20px_rgba(74,96,109,0.12)] hover:-translate-y-1 hover:border-muji-brand/40 active:scale-[0.99] transition-all duration-300 pr-12">
           <div class="flex flex-col items-start text-left">
             <span class="text-[14.5px] font-medium tracking-wide text-muji-text group-hover:text-muji-brand transition-colors">🔀 ETF 交叉持股分析</span>
-            <span class="text-[10px] text-muji-muted tracking-wider mt-0.5 font-light pl-[26px]">ETFCross</span>
+            <span class="text-[10px] text-muji-muted tracking-wider mt-0.5 font-light pl-[26px]">PrismOverlap</span>
           </div>
           <i data-lucide="arrow-up-right" class="w-4 h-4 text-muji-muted opacity-40 group-hover:text-muji-brand group-hover:opacity-100 group-hover:translate-x-1 group-hover:-translate-y-1 transition-all duration-300"></i>
         </a>
@@ -141,14 +152,14 @@
         </button>
       </div>
 
-      <!-- 按鈕 3: ETF 折溢價監控 -->
+      <!-- 按鈕 3: ETF 折溢價監控系統 -->
       <div class="relative group" data-aos="fade-up" data-aos-delay="200">
         <a href="https://twetf.com/" 
            target="_blank"
            class="flex items-center justify-between w-full py-3.5 px-4 bg-white border border-muji-border rounded-xl shadow-[0_2px_8px_rgba(215,208,196,0.15)] hover:shadow-[0_8px_20px_rgba(74,96,109,0.12)] hover:-translate-y-1 hover:border-muji-brand/40 active:scale-[0.99] transition-all duration-300 pr-12">
           <div class="flex flex-col items-start text-left">
-            <span class="text-[14.5px] font-medium tracking-wide text-muji-text group-hover:text-muji-brand transition-colors">⚖️ ETF 折溢價監控</span>
-            <span class="text-[10px] text-muji-muted tracking-wider mt-0.5 font-light pl-[26px]">TWETF</span>
+            <span class="text-[14.5px] font-medium tracking-wide text-muji-text group-hover:text-muji-brand transition-colors">🚨 ETF 折溢價監控系統</span>
+            <span class="text-[10px] text-muji-muted tracking-wider mt-0.5 font-light pl-[26px]">FluoTrack</span>
           </div>
           <i data-lucide="arrow-up-right" class="w-4 h-4 text-muji-muted opacity-40 group-hover:text-muji-brand group-hover:opacity-100 group-hover:translate-x-1 group-hover:-translate-y-1 transition-all duration-300"></i>
         </a>
@@ -165,8 +176,8 @@
            target="_blank"
            class="flex items-center justify-between w-full py-3.5 px-4 bg-white border border-muji-border rounded-xl shadow-[0_2px_8px_rgba(215,208,196,0.15)] hover:shadow-[0_8px_20px_rgba(74,96,109,0.12)] hover:-translate-y-1 hover:border-muji-brand/40 active:scale-[0.99] transition-all duration-300 pr-12">
           <div class="flex flex-col items-start text-left">
-            <span class="text-[14.5px] font-medium tracking-wide text-muji-text group-hover:text-muji-brand transition-colors">🧘 紀律交易系統</span>
-            <span class="text-[10px] text-muji-muted tracking-wider mt-0.5 font-light pl-[26px]">Disciplined Trading</span>
+            <span class="text-[14.5px] font-medium tracking-wide text-muji-text group-hover:text-muji-brand transition-colors">☯️ 紀律交易系統</span>
+            <span class="text-[10px] text-muji-muted tracking-wider mt-0.5 font-light pl-[26px]">Solitude</span>
           </div>
           <i data-lucide="arrow-up-right" class="w-4 h-4 text-muji-muted opacity-40 group-hover:text-muji-brand group-hover:opacity-100 group-hover:translate-x-1 group-hover:-translate-y-1 transition-all duration-300"></i>
         </a>
@@ -183,8 +194,8 @@
            target="_blank"
            class="flex items-center justify-between w-full py-3.5 px-4 bg-white border border-muji-border rounded-xl shadow-[0_2px_8px_rgba(215,208,196,0.15)] hover:shadow-[0_8px_20px_rgba(74,96,109,0.12)] hover:-translate-y-1 hover:border-muji-brand/40 active:scale-[0.99] transition-all duration-300 pr-12">
           <div class="flex flex-col items-start text-left">
-            <span class="text-[14.5px] font-medium tracking-wide text-muji-text group-hover:text-muji-brand transition-colors">💡 複合資產退休模擬系統</span>
-            <span class="text-[10px] text-muji-muted tracking-wider mt-0.5 font-light pl-[26px]">CapRetire</span>
+            <span class="text-[14.5px] font-medium tracking-wide text-muji-text group-hover:text-muji-brand transition-colors">⏳ 複合資產退休模擬系統</span>
+            <span class="text-[10px] text-muji-muted tracking-wider mt-0.5 font-light pl-[26px]">AevumSandbox</span>
           </div>
           <i data-lucide="arrow-up-right" class="w-4 h-4 text-muji-muted opacity-40 group-hover:text-muji-brand group-hover:opacity-100 group-hover:translate-x-1 group-hover:-translate-y-1 transition-all duration-300"></i>
         </a>
@@ -288,19 +299,11 @@
     // 初始化 Lucide 圖標
     lucide.createIcons();
 
-    // 防止 Logo 找不到時網頁看起來不美觀的備用機制
-    function handleLogoError() {
-      const img = document.getElementById('logo-img');
-      const fallback = document.getElementById('logo-fallback');
-      if (img) img.style.display = 'none';
-      if (fallback) fallback.classList.remove('hidden');
-    }
-
     // 各項目詳細資料
     const appData = [
       {
-        title: "🌐 AI 智慧產業地圖",
-        subtitle: "AI Stock Map",
+        title: "🧠 智慧股市產業地圖",
+        subtitle: "NovaWeave",
         features: [
           "視覺化供應鏈與市場熱力圖：透過互動式節點圖完整呈現產業上下游結構，並以熱力圖讓投資人一眼看出盤面資金集中的板塊與輪動方向。",
           "深度產業研究與 AI 輔助：整合三大法人、大戶及 ETF 籌碼動向，並提供涵蓋數十個主題的產業資料庫與 AI 一鍵生成摘要、法說會重點解讀。"
@@ -313,7 +316,7 @@
       },
       {
         title: "🔀 ETF 交叉持股分析",
-        subtitle: "ETFCross",
+        subtitle: "PrismOverlap",
         features: [
           "成分股重疊分析：一鍵解析多檔 ETF 之間的持股重疊程度與集中比例。",
           "多樣性檢查：精確診斷投資組合，避免資金因持有多檔同性質 ETF 而過度集中。"
@@ -325,8 +328,8 @@
         link: "https://etfcross.com/"
       },
       {
-        title: "⚖️ ETF 折溢價監控",
-        subtitle: "TWETF",
+        title: "🚨 ETF 折溢價監控系統",
+        subtitle: "FluoTrack",
         features: [
           "即時折溢價：極速監控台股 ETF 的即時市價與真實淨值差異。",
           "歷史趨勢：提供精緻折溢價歷史走勢圖，協助精準掌握無風險套利機會。"
@@ -338,8 +341,8 @@
         link: "https://twetf.com/"
       },
       {
-        title: "🧘 紀律交易系統",
-        subtitle: "Disciplined Trading",
+        title: "☯️ 紀律交易系統",
+        subtitle: "Solitude",
         features: [
           "交易紀律工具：提供個人化交易計畫模板、風控規則與停損停利設定。",
           "策略回測功能：快速回測交易策略歷史表現，掌握台股勝率與損益期望值。"
@@ -351,8 +354,8 @@
         link: "https://disciplined-trading.streamlit.app/"
       },
       {
-        title: "💡 複合資產退休模擬系統",
-        subtitle: "CapRetire",
+        title: "⏳ 複合資產退休模擬系統",
+        subtitle: "AevumSandbox",
         features: [
           "科學動態退休框架（LMP+RP+ABW）：以低風險資產鎖定基本生活費，搭配成長型資產並透過「攤還式提領」隨市場動態調整，確保資金安穩花到最後一天。",
           "多資產分群生命週期模擬：支援建立多達 20 個自訂群組，將人生各階段的複雜收入、支出與投資拆分管理，合併模擬出完整的年度現金流與資產趨勢。"
