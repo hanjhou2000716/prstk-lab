@@ -40,7 +40,18 @@
               accent: '#8E7F72',  /* 淺木褐 */
               hover: '#F5EFE6',   /* 溫暖觸摸色 */
               brand: '#4A606D',   /* ⭐ 品牌色：擷取自 Logo 的沉穩灰藍色 */
-              brandLight: '#EEF2F4'/* ⭐ 品牌色超淺底色，用於標籤與 Hover */
+              brandLight: '#EEF2F4',/* ⭐ 品牌色超淺底色，用於標籤與 Hover */
+              up: '#D24D4D',      /* 溫潤磚紅 (漲) */
+              down: '#358550'     /* 溫潤草綠 (跌) */
+            }
+          },
+          animation: {
+            'marquee': 'marquee 35s linear infinite', /* 跑馬燈動畫 */
+          },
+          keyframes: {
+            marquee: {
+              '0%': { transform: 'translateX(0)' },
+              '100%': { transform: 'translateX(-50%)' }, /* 無縫滾動關鍵 */
             }
           }
         }
@@ -62,7 +73,6 @@
     }
   </style>
 
-  <!-- 提前定義錯誤處理函數，避免 ReferenceError -->
   <script>
     function handleLogoError() {
       const img = document.getElementById('logo-img');
@@ -76,18 +86,18 @@
   <!-- 背景微光裝飾（極簡無印風） -->
   <div class="absolute inset-0 bg-[radial-gradient(#E8E1D5_1.2px,transparent_1.2px)] [background-size:20px_20px] opacity-70 pointer-events-none"></div>
 
-  <!-- 主容器 (限制最大寬度，動態調整內邊距確保按鈕群呈現舒適) -->
-  <div class="relative w-full max-w-md mx-auto min-h-[100dvh] flex flex-col justify-between px-5 pt-5 pb-5 z-10">
+  <!-- 主容器 (限制最大寬度，動態調整內邊距確保所有元素一頁呈現) -->
+  <div class="relative w-full max-w-md mx-auto min-h-[100dvh] flex flex-col justify-between px-5 pt-4 pb-4 z-10">
     
     <!-- 1. 頭部區域 -->
     <header class="flex flex-col items-center text-center">
-       <!-- 標誌圖片 (加入 AOS 淡入向下動畫，設定為原本的0.8倍) -->
-      <div class="w-full flex items-center justify-center mb-1 mt-0" data-aos="fade-down" data-aos-duration="800">
+       <!-- 標誌圖片 (0.8倍) -->
+      <div class="w-full flex items-center justify-center mb-0 mt-0" data-aos="fade-down" data-aos-duration="800">
         <img 
           id="logo-img"
           src="PRStK Lab-Remove.png" 
           alt="PRStK Lab Logo" 
-          class="w-[90%] max-w-[280px] h-auto max-h-[12vh] object-contain transition-opacity duration-300"
+          class="w-[90%] max-w-[280px] h-auto max-h-[11vh] object-contain transition-opacity duration-300"
           onerror="handleLogoError()"
         />
         <!-- 備用純文字 Logo -->
@@ -98,13 +108,25 @@
       </div>
       
       <!-- ⭐ Slogan -->
-      <p class="text-[13px] tracking-[0.15em] text-muji-muted font-normal flex items-center justify-center mt-1.5" data-aos="fade-in" data-aos-delay="200" data-aos-duration="800">
+      <p class="text-[13px] tracking-[0.15em] text-muji-muted font-normal flex items-center justify-center mt-1" data-aos="fade-in" data-aos-delay="100" data-aos-duration="800">
         <span>想和你一起慢慢變富。</span>
       </p>
     </header>
 
-    <!-- 2. 按鈕導覽區 (兩欄網格佈局) -->
-    <main class="flex-1 flex flex-col justify-start mt-3 mb-2 w-full">
+    <!-- ⭐ 2. 股市即時跑馬燈 (全新加入) -->
+    <div class="w-full bg-white/80 border border-muji-border/60 rounded-lg overflow-hidden flex items-center h-8 my-3 shadow-[0_2px_8px_rgba(215,208,196,0.06)] backdrop-blur-sm relative" data-aos="fade-up" data-aos-delay="150">
+      <!-- 左右淡出遮罩 (維持極簡高級感) -->
+      <div class="absolute left-0 w-5 h-full bg-gradient-to-r from-muji-bg to-transparent z-10 pointer-events-none"></div>
+      <div class="absolute right-0 w-5 h-full bg-gradient-to-l from-muji-bg to-transparent z-10 pointer-events-none"></div>
+
+      <!-- 滾動內容容器 (由下方 JS 自動生成內容) -->
+      <div class="flex whitespace-nowrap animate-marquee hover:[animation-play-state:paused] items-center h-full w-max cursor-default" id="ticker-content">
+        <!-- 內容在此動態插入 -->
+      </div>
+    </div>
+
+    <!-- 3. 按鈕導覽區 (兩欄網格佈局) -->
+    <main class="flex-1 flex flex-col justify-start mb-1 w-full">
       
       <!-- 引導文案 -->
       <div class="text-[10px] tracking-[0.15em] text-muji-muted/80 ml-1 mb-2 font-light flex items-center gap-1.5" data-aos="fade-right" data-aos-delay="200">
@@ -115,7 +137,7 @@
       <div class="grid grid-cols-2 gap-2.5">
         
         <!-- 卡片 0: 股市智投 -->
-        <div class="relative group h-full" data-aos="fade-up" data-aos-delay="100">
+        <div class="relative group h-full" data-aos="fade-up" data-aos-delay="250">
           <a href="https://www.stockintelli.com/" target="_blank" class="flex flex-col justify-center w-full h-full py-2.5 pl-3 pr-8 bg-white border border-muji-border rounded-xl shadow-sm hover:shadow-md hover:-translate-y-1 hover:border-muji-brand/40 active:scale-[0.98] transition-all duration-300">
             <span class="text-[12px] font-medium tracking-wide text-muji-text group-hover:text-muji-brand transition-colors leading-tight truncate">🦅 股市智投</span>
             <span class="text-[9px] text-muji-muted tracking-wider mt-1 font-light block truncate">StockIntelli</span>
@@ -126,7 +148,7 @@
         </div>
 
         <!-- 卡片 1: 智慧產業地圖 -->
-        <div class="relative group h-full" data-aos="fade-up" data-aos-delay="150">
+        <div class="relative group h-full" data-aos="fade-up" data-aos-delay="300">
           <a href="https://aistockmap.com" target="_blank" class="flex flex-col justify-center w-full h-full py-2.5 pl-3 pr-8 bg-white border border-muji-border rounded-xl shadow-sm hover:shadow-md hover:-translate-y-1 hover:border-muji-brand/40 active:scale-[0.98] transition-all duration-300">
             <span class="text-[12px] font-medium tracking-wide text-muji-text group-hover:text-muji-brand transition-colors leading-tight truncate">🧠 智慧產業地圖</span>
             <span class="text-[9px] text-muji-muted tracking-wider mt-1 font-light block truncate">NovaWeave</span>
@@ -137,7 +159,7 @@
         </div>
 
         <!-- 卡片 2: Google 金融 -->
-        <div class="relative group h-full" data-aos="fade-up" data-aos-delay="200">
+        <div class="relative group h-full" data-aos="fade-up" data-aos-delay="350">
           <a href="https://www.google.com/finance/beta" target="_blank" class="flex flex-col justify-center w-full h-full py-2.5 pl-3 pr-8 bg-white border border-muji-border rounded-xl shadow-sm hover:shadow-md hover:-translate-y-1 hover:border-muji-brand/40 active:scale-[0.98] transition-all duration-300">
             <span class="text-[12px] font-medium tracking-wide text-muji-text group-hover:text-muji-brand transition-colors leading-tight truncate">📈 Google 金融</span>
             <span class="text-[9px] text-muji-muted tracking-wider mt-1 font-light block truncate">Google Finance</span>
@@ -148,7 +170,7 @@
         </div>
 
         <!-- 卡片 3: Yahoo 金融 -->
-        <div class="relative group h-full" data-aos="fade-up" data-aos-delay="250">
+        <div class="relative group h-full" data-aos="fade-up" data-aos-delay="400">
           <a href="https://finance.yahoo.com/" target="_blank" class="flex flex-col justify-center w-full h-full py-2.5 pl-3 pr-8 bg-white border border-muji-border rounded-xl shadow-sm hover:shadow-md hover:-translate-y-1 hover:border-muji-brand/40 active:scale-[0.98] transition-all duration-300">
             <span class="text-[12px] font-medium tracking-wide text-muji-text group-hover:text-muji-brand transition-colors leading-tight truncate">🐯 Yahoo 金融</span>
             <span class="text-[9px] text-muji-muted tracking-wider mt-1 font-light block truncate">Yahoo Finance</span>
@@ -159,7 +181,7 @@
         </div>
 
         <!-- 卡片 4: ETF 重疊分析 -->
-        <div class="relative group h-full" data-aos="fade-up" data-aos-delay="300">
+        <div class="relative group h-full" data-aos="fade-up" data-aos-delay="450">
           <a href="https://etfcross.com/" target="_blank" class="flex flex-col justify-center w-full h-full py-2.5 pl-3 pr-8 bg-white border border-muji-border rounded-xl shadow-sm hover:shadow-md hover:-translate-y-1 hover:border-muji-brand/40 active:scale-[0.98] transition-all duration-300">
             <span class="text-[12px] font-medium tracking-wide text-muji-text group-hover:text-muji-brand transition-colors leading-tight truncate">🔀 ETF 重疊分析</span>
             <span class="text-[9px] text-muji-muted tracking-wider mt-1 font-light block truncate">PrismOverlap</span>
@@ -170,7 +192,7 @@
         </div>
 
         <!-- 卡片 5: ETF 折溢價監控 -->
-        <div class="relative group h-full" data-aos="fade-up" data-aos-delay="350">
+        <div class="relative group h-full" data-aos="fade-up" data-aos-delay="500">
           <a href="https://twetf.com/" target="_blank" class="flex flex-col justify-center w-full h-full py-2.5 pl-3 pr-8 bg-white border border-muji-border rounded-xl shadow-sm hover:shadow-md hover:-translate-y-1 hover:border-muji-brand/40 active:scale-[0.98] transition-all duration-300">
             <span class="text-[12px] font-medium tracking-wide text-muji-text group-hover:text-muji-brand transition-colors leading-tight truncate">🚨 ETF 折溢價監控</span>
             <span class="text-[9px] text-muji-muted tracking-wider mt-1 font-light block truncate">FluoTrack</span>
@@ -181,7 +203,7 @@
         </div>
 
         <!-- 卡片 6: 紀律交易系統 -->
-        <div class="relative group h-full" data-aos="fade-up" data-aos-delay="400">
+        <div class="relative group h-full" data-aos="fade-up" data-aos-delay="550">
           <a href="https://disciplined-trading.streamlit.app/" target="_blank" class="flex flex-col justify-center w-full h-full py-2.5 pl-3 pr-8 bg-white border border-muji-border rounded-xl shadow-sm hover:shadow-md hover:-translate-y-1 hover:border-muji-brand/40 active:scale-[0.98] transition-all duration-300">
             <span class="text-[12px] font-medium tracking-wide text-muji-text group-hover:text-muji-brand transition-colors leading-tight truncate">☯️ 紀律交易系統</span>
             <span class="text-[9px] text-muji-muted tracking-wider mt-1 font-light block truncate">Solitude</span>
@@ -192,7 +214,7 @@
         </div>
 
         <!-- 卡片 7: 退休沙盒模擬 -->
-        <div class="relative group h-full" data-aos="fade-up" data-aos-delay="450">
+        <div class="relative group h-full" data-aos="fade-up" data-aos-delay="600">
           <a href="https://roku-rgb.github.io/when-can-i-retire/#calculator" target="_blank" class="flex flex-col justify-center w-full h-full py-2.5 pl-3 pr-8 bg-white border border-muji-border rounded-xl shadow-sm hover:shadow-md hover:-translate-y-1 hover:border-muji-brand/40 active:scale-[0.98] transition-all duration-300">
             <span class="text-[12px] font-medium tracking-wide text-muji-text group-hover:text-muji-brand transition-colors leading-tight truncate">⏳ 退休沙盒模擬</span>
             <span class="text-[9px] text-muji-muted tracking-wider mt-1 font-light block truncate">AevumSandbox</span>
@@ -205,15 +227,15 @@
       </div>
     </main>
 
-    <!-- 3. 頁尾資訊 -->
-    <footer class="text-center flex flex-col items-center gap-2 mt-auto pt-3" data-aos="fade-up" data-aos-delay="550">
-      <!-- ⭐ Telegram Bot 連結按鈕 -->
+    <!-- 4. 頁尾資訊 -->
+    <footer class="text-center flex flex-col items-center gap-1.5 mt-auto pt-2" data-aos="fade-up" data-aos-delay="650">
+      <!-- ⭐ Telegram Bot 連結按鈕 (使用 send 小飛機圖示) -->
       <a href="https://t.me/olaf_spark_bot" target="_blank" rel="noopener noreferrer" class="flex items-center gap-2 px-6 py-1.5 text-[12px] text-muji-brand hover:text-white border border-muji-brand/30 rounded-full hover:bg-muji-brand hover:-translate-y-0.5 hover:shadow-md transition-all duration-300 shadow-sm">
         <i data-lucide="send" class="w-3.5 h-3.5"></i>
         <span class="font-medium tracking-wide">Together Better</span>
       </a>
       
-      <p class="text-[9px] text-muji-muted tracking-widest font-light mt-1">
+      <p class="text-[9px] text-muji-muted tracking-widest font-light mt-0.5">
         © 2026 PRStK Lab. All rights reserved.
       </p>
     </footer>
@@ -279,9 +301,10 @@
     </div>
   </div>
 
-  <!-- AOS 動畫庫 JS 初始化 -->
+  <!-- AOS 動畫庫 JS & Ticker 初始化 -->
   <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
   <script>
+    // 初始化 AOS 動畫
     AOS.init({
       duration: 700,
       easing: 'ease-out-cubic',
@@ -289,9 +312,55 @@
       offset: 20
     });
 
+    // 初始化 Lucide 圖標
     lucide.createIcons();
 
-    // 依照新的網格順序對應陣列資料
+    // ==========================================
+    // 跑馬燈 (Ticker) 數據與渲染
+    // ==========================================
+    const tickerSymbols = [
+      { name: '台股加權', price: '23,250.30', pct: '+0.65', isUp: true },
+      { name: 'S&P500', price: '5,460.48', pct: '-0.23', isUp: false },
+      { name: '納斯達克', price: '17,688.88', pct: '+0.25', isUp: true },
+      { name: '費半', price: '5,700.12', pct: '-0.35', isUp: false },
+      { name: '006208', price: '115.40', pct: '+1.05', isUp: true },
+      { name: '00685L', price: '180.50', pct: '+1.98', isUp: true },
+      { name: '2330', price: '960.00', pct: '+1.59', isUp: true },
+      { name: 'QQQM', price: '202.15', pct: '+0.42', isUp: true },
+      { name: 'NVDA', price: '135.80', pct: '-0.88', isUp: false },
+      { name: 'TSM adr', price: '175.20', pct: '+1.45', isUp: true }
+    ];
+
+    function renderTicker() {
+      const container = document.getElementById('ticker-content');
+      let htmlString = '';
+
+      tickerSymbols.forEach(item => {
+        // 台灣看盤習慣：漲紅跌綠
+        const colorClass = item.isUp ? 'text-muji-up' : 'text-muji-down';
+        const sign = item.isUp ? '▲' : '▼';
+        
+        htmlString += `
+          <div class="flex items-center gap-1.5 mx-3.5">
+            <span class="text-[10.5px] font-medium text-muji-text tracking-wider">${item.name}</span>
+            <span class="text-[10.5px] font-semibold tracking-wide ${colorClass}">
+              ${item.price} ${sign} (${item.pct}%)
+            </span>
+          </div>
+          <div class="w-px h-3 bg-muji-border/50"></div>
+        `;
+      });
+
+      // 複製一次數據，達到無縫滾動效果
+      container.innerHTML = htmlString + htmlString;
+    }
+
+    // 頁面載入時渲染跑馬燈
+    document.addEventListener('DOMContentLoaded', renderTicker);
+
+    // ==========================================
+    // 卡片資訊彈出抽屜設定
+    // ==========================================
     const appData = [
       {
         title: "🦅 股市智投",
