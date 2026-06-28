@@ -14,6 +14,7 @@
 
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
+  
   <!-- Google Fonts: Noto Sans TC & Inter -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -24,6 +25,7 @@
   
   <!-- Lucide Icons -->
   <script src="https://unpkg.com/lucide@latest"></script>
+  
   <script>
     tailwind.config = {
       theme: {
@@ -40,18 +42,7 @@
               accent: '#8E7F72',  /* 淺木褐 */
               hover: '#F5EFE6',   /* 溫暖觸摸色 */
               brand: '#4A606D',   /* ⭐ 品牌色：擷取自 Logo 的沉穩灰藍色 */
-              brandLight: '#EEF2F4',/* ⭐ 品牌色超淺底色，用於標籤與 Hover */
-              up: '#D24D4D',      /* 溫潤磚紅 (漲) */
-              down: '#358550'     /* 溫潤草綠 (跌) */
-            }
-          },
-          animation: {
-            'marquee': 'marquee 35s linear infinite', /* 跑馬燈動畫 */
-          },
-          keyframes: {
-            marquee: {
-              '0%': { transform: 'translateX(0)' },
-              '100%': { transform: 'translateX(-50%)' }, /* 無縫滾動關鍵 */
+              brandLight: '#EEF2F4'/* ⭐ 品牌色超淺底色，用於標籤與 Hover */
             }
           }
         }
@@ -73,6 +64,7 @@
     }
   </style>
 
+  <!-- 提前定義錯誤處理函數，避免 ReferenceError -->
   <script>
     function handleLogoError() {
       const img = document.getElementById('logo-img');
@@ -82,6 +74,7 @@
     }
   </script>
 </head>
+
 <body class="bg-muji-bg text-muji-text font-sans min-h-[100dvh] flex flex-col justify-between overflow-x-hidden select-none">
   <!-- 背景微光裝飾（極簡無印風） -->
   <div class="absolute inset-0 bg-[radial-gradient(#E8E1D5_1.2px,transparent_1.2px)] [background-size:20px_20px] opacity-70 pointer-events-none"></div>
@@ -107,22 +100,44 @@
         </div>
       </div>
       
-      <!-- ⭐ Slogan -->
+      <!-- Slogan -->
       <p class="text-[13px] tracking-[0.15em] text-muji-muted font-normal flex items-center justify-center mt-1" data-aos="fade-in" data-aos-delay="100" data-aos-duration="800">
         <span>想和你一起慢慢變富。</span>
       </p>
     </header>
 
-    <!-- ⭐ 2. 股市即時跑馬燈 (全新加入) -->
-    <div class="w-full bg-white/80 border border-muji-border/60 rounded-lg overflow-hidden flex items-center h-8 my-3 shadow-[0_2px_8px_rgba(215,208,196,0.06)] backdrop-blur-sm relative" data-aos="fade-up" data-aos-delay="150">
-      <!-- 左右淡出遮罩 (維持極簡高級感) -->
-      <div class="absolute left-0 w-5 h-full bg-gradient-to-r from-muji-bg to-transparent z-10 pointer-events-none"></div>
-      <div class="absolute right-0 w-5 h-full bg-gradient-to-l from-muji-bg to-transparent z-10 pointer-events-none"></div>
+    <!-- ⭐ 2. 股市即時跑馬燈 (TradingView 官方外掛，保證穩定零延遲) -->
+    <div class="w-full bg-white/80 border border-muji-border/60 rounded-lg overflow-hidden flex items-center h-[46px] my-3 shadow-[0_2px_8px_rgba(215,208,196,0.06)] backdrop-blur-sm relative" data-aos="fade-up" data-aos-delay="150">
+      <!-- 左右淡出遮罩 (維持極簡高級感，使用 z-20 蓋過外掛邊緣) -->
+      <div class="absolute left-0 w-6 h-full bg-gradient-to-r from-muji-bg to-transparent z-20 pointer-events-none"></div>
+      <div class="absolute right-0 w-6 h-full bg-gradient-to-l from-muji-bg to-transparent z-20 pointer-events-none"></div>
 
-      <!-- 滾動內容容器 (由下方 JS 自動生成內容) -->
-      <div class="flex whitespace-nowrap animate-marquee hover:[animation-play-state:paused] items-center h-full w-max cursor-default" id="ticker-content">
-        <!-- 內容在此動態插入 -->
+      <!-- TradingView Widget BEGIN -->
+      <div class="tradingview-widget-container" style="width: 100%; height: 100%;">
+        <div class="tradingview-widget-container__widget" style="width: 100%; height: 100%;"></div>
+        <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-ticker-tape.js" async>
+        {
+        "symbols": [
+          { "description": "台股加權", "proName": "TWSE:TAIEX" },
+          { "description": "S&P500", "proName": "SP:SPX" },
+          { "description": "納斯達克", "proName": "NASDAQ:IXIC" },
+          { "description": "費半", "proName": "TVC:SOX" },
+          { "description": "006208", "proName": "TWSE:006208" },
+          { "description": "00685L", "proName": "TWSE:00685L" },
+          { "description": "2330", "proName": "TWSE:2330" },
+          { "description": "QQQM", "proName": "NASDAQ:QQQM" },
+          { "description": "NVDA", "proName": "NASDAQ:NVDA" },
+          { "description": "TSM adr", "proName": "NYSE:TSM" }
+        ],
+        "showSymbolLogo": false,
+        "colorTheme": "light",
+        "isTransparent": true,
+        "displayMode": "regular",
+        "locale": "zh_TW"
+        }
+        </script>
       </div>
+      <!-- TradingView Widget END -->
     </div>
 
     <!-- 3. 按鈕導覽區 (兩欄網格佈局) -->
@@ -238,9 +253,73 @@
       <p class="text-[9px] text-muji-muted tracking-widest font-light mt-0.5">
         © 2026 PRStK Lab. All rights reserved.
       </p>
+    </footer>
+
+  </div>
+
+  <!-- ================= 詳細資訊彈出抽屜 (Drawer) ================= -->
+  <!-- 遮罩背景 -->
+  <div id="drawer-overlay" 
+       onclick="closeDrawer()" 
+       class="fixed inset-0 bg-muji-brand/20 backdrop-blur-sm z-40 hidden opacity-0 transition-opacity duration-300">
+  </div>
+
+  <!-- 內容卡片 -->
+  <div id="info-drawer" 
+       class="fixed bottom-0 left-0 right-0 max-w-md mx-auto bg-white rounded-t-3xl shadow-[0_-8px_30px_rgba(74,96,109,0.1)] z-50 transform translate-y-full drawer-transition border-t border-muji-border max-h-[85vh] flex flex-col">
+    
+    <!-- 頂部裝飾條 -->
+    <div class="flex-shrink-0">
+      <div class="w-12 h-1 bg-muji-border rounded-full mx-auto my-3.5 opacity-80"></div>
+    </div>
+    
+    <!-- 抽屜內容 -->
+    <div class="px-6 pb-8 pt-1 overflow-y-auto flex-1">
+      <!-- 標題與網址 -->
+      <div class="flex justify-between items-start mb-4">
+        <div>
+          <h3 id="drawer-title" class="text-[17px] font-medium tracking-wide text-muji-brand">標題</h3>
+          <p id="drawer-subtitle" class="text-[11px] text-muji-muted mt-0.5 tracking-wider font-light"></p>
+        </div>
+        <button onclick="closeDrawer()" class="p-1.5 rounded-full hover:bg-muji-brandLight text-muji-muted hover:text-muji-brand transition-colors flex-shrink-0">
+          <i data-lucide="x" class="w-4.5 h-4.5"></i>
+        </button>
+      </div>
+
+      <!-- 詳細說明區塊 -->
+      <div class="space-y-4">
+        <div>
+          <h4 class="text-[11px] uppercase tracking-[0.15em] text-muji-brand font-semibold flex items-center gap-2 mb-2">
+            <span class="w-1 h-3 bg-muji-brand/60 rounded-sm"></span>
+            核心功能
+          </h4>
+          <ul id="drawer-features" class="text-xs text-muji-text font-light leading-relaxed space-y-1.5 pl-3 list-disc marker:text-muji-brand/60">
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="text-[11px] uppercase tracking-[0.15em] text-muji-brand font-semibold flex items-center gap-2 mb-2">
+            <span class="w-1 h-3 bg-muji-brand/60 rounded-sm"></span>
+            適合對象
+          </h4>
+          <ul id="drawer-targets" class="text-xs text-muji-text font-light leading-relaxed space-y-1.5 pl-3 list-disc marker:text-muji-brand/60">
+          </ul>
+        </div>
+      </div>
+
+      <!-- 快速前往按鈕 -->
+      <a id="drawer-link" href="#" target="_blank" 
+         class="mt-6 flex items-center justify-center gap-2 w-full py-3.5 bg-muji-brand hover:bg-[#384a54] hover:shadow-lg hover:-translate-y-0.5 text-white text-xs font-light tracking-widest rounded-xl transition-all duration-300 shadow-sm">
+        <span>開啟系統</span>
+        <i data-lucide="external-link" class="w-3.5 h-3.5"></i>
+      </a>
+    </div>
+  </div>
+
   <!-- AOS 動畫庫 JS 初始化 -->
   <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
   <script>
+    // 初始化 AOS 動畫
     AOS.init({
       duration: 700,
       easing: 'ease-out-cubic',
@@ -248,125 +327,9 @@
       offset: 20
     });
 
+    // 初始化 Lucide 圖標
     lucide.createIcons();
 
-    // ==========================================
-    // 跑馬燈 (Ticker) 即時數據與渲染
-    // ==========================================
-    const staticTickerSymbols = [
-      { name: '台股加權', price: '加載中', pct: '0.00', isUp: true },
-      { name: 'S&P500', price: '加載中', pct: '0.00', isUp: true },
-      { name: '納斯達克', price: '加載中', pct: '0.00', isUp: true },
-      { name: '費半', price: '加載中', pct: '0.00', isUp: true },
-      { name: '006208', price: '加載中', pct: '0.00', isUp: true },
-      { name: '00685L', price: '加載中', pct: '0.00', isUp: true },
-      { name: '2330', price: '加載中', pct: '0.00', isUp: true },
-      { name: 'QQQM', price: '加載中', pct: '0.00', isUp: true },
-      { name: 'NVDA', price: '加載中', pct: '0.00', isUp: true },
-      { name: 'TSM adr', price: '加載中', pct: '0.00', isUp: true }
-    ];
-
-    function renderTickerDOM(data) {
-      const container = document.getElementById('ticker-content');
-      if (!container) return;
-      let htmlString = '';
-
-      data.forEach(item => {
-        // 台灣看盤習慣：漲紅跌綠
-        const colorClass = item.isUp ? 'text-muji-up' : 'text-muji-down';
-        const sign = item.price === '加載中' ? '' : (item.isUp ? '▲' : '▼');
-        const pctString = item.price === '加載中' ? '0.00' : item.pct;
-        
-        htmlString += `
-          <div class="flex items-center gap-1.5 mx-3.5">
-            <span class="text-[10.5px] font-medium text-muji-text tracking-wider">${item.name}</span>
-            <span class="text-[10.5px] font-semibold tracking-wide ${colorClass}">
-              ${item.price} ${sign} (${pctString}%)
-            </span>
-          </div>
-          <div class="w-px h-3 bg-muji-border/50"></div>
-        `;
-      });
-
-      // 複製一次數據，達到無縫滾動效果
-      container.innerHTML = htmlString + htmlString;
-    }
-
-    async function fetchLiveTickerData() {
-      const symbols = ['^TWII', '^GSPC', '^IXIC', '^SOX', '006208.TW', '00685L.TW', '2330.TW', 'QQQM', 'NVDA', 'TSM'];
-      const mapping = {
-        '^TWII': '台股加權',
-        '^GSPC': 'S&P500',
-        '^IXIC': '納斯達克',
-        '^SOX': '費半',
-        '006208.TW': '006208',
-        '00685L.TW': '00685L',
-        '2330.TW': '2330',
-        'QQQM': 'QQQM',
-        'NVDA': 'NVDA',
-        'TSM': 'TSM adr'
-      };
-
-      const promises = symbols.map(async (sym) => {
-        try {
-          // 改用 Yahoo Finance v8 API，繞過近期 v7 的 Crumb 阻擋限制
-          const url = `https://query1.finance.yahoo.com/v8/finance/chart/${sym}?interval=1d&range=1d`;
-          // 使用 AllOrigins get 代理，解決直接 fetch 被 CORS 或 403 阻擋的問題
-          const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(url)}`;
-          
-          const response = await fetch(proxyUrl);
-          if (!response.ok) throw new Error('網路請求失敗');
-          
-          const data = await response.json();
-          // 將 AllOrigins 回傳的 string 內容轉為 JSON
-          const parsedContent = JSON.parse(data.contents);
-          
-          const meta = parsedContent.chart.result[0].meta;
-          const price = meta.regularMarketPrice;
-          const prevClose = meta.chartPreviousClose || meta.previousClose;
-          
-          const pctVal = ((price - prevClose) / prevClose) * 100;
-          const isUp = pctVal >= 0;
-          
-          return {
-            name: mapping[sym],
-            price: price.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }),
-            pct: (isUp ? '+' : '') + pctVal.toFixed(2),
-            isUp: isUp
-          };
-        } catch (error) {
-          console.warn(`無法獲取 ${sym} 即時股價`, error);
-          return null;
-        }
-      });
-
-      const results = await Promise.all(promises);
-      
-      // 若有單一標的抓取失敗，則回退顯示「加載中」或其他預設值
-      return results.map((res, idx) => res || staticTickerSymbols[idx]);
-    }
-
-    async function initTicker() {
-      // 1. 先渲染加載中狀態，避免畫面空白
-      renderTickerDOM(staticTickerSymbols);
-      
-      // 2. 非同步獲取即時資料並重新渲染
-      const liveData = await fetchLiveTickerData();
-      renderTickerDOM(liveData);
-      
-      // 3. 設定定時器，每 3 分鐘 (180000毫秒) 自動刷新一次
-      setInterval(async () => {
-        const updatedData = await fetchLiveTickerData();
-        renderTickerDOM(updatedData);
-      }, 180000);
-    }
-
-    // 頁面載入時初始化跑馬燈
-    document.addEventListener('DOMContentLoaded', initTicker);
-
-    // ==========================================
-    // 卡片資訊彈出抽屜設定
-    // ==========================================
     // 依照新的網格順序對應陣列資料
     const appData = [
       {
