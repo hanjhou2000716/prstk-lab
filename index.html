@@ -253,7 +253,6 @@
     // ==========================================
     // 跑馬燈 (Ticker) 即時數據與渲染
     // ==========================================
-    // 備用靜態數據 (防止 API 請求時畫面跳動)
     const staticTickerSymbols = [
       { name: '台股加權', price: '加載中', pct: '0.00', isUp: true },
       { name: 'S&P500', price: '加載中', pct: '0.00', isUp: true },
@@ -269,19 +268,20 @@
 
     function renderTickerDOM(data) {
       const container = document.getElementById('ticker-content');
+      if (!container) return;
       let htmlString = '';
 
       data.forEach(item => {
-        if (!item) return;
         // 台灣看盤習慣：漲紅跌綠
         const colorClass = item.isUp ? 'text-muji-up' : 'text-muji-down';
-        const sign = item.isUp ? '▲' : '▼';
+        const sign = item.price === '加載中' ? '' : (item.isUp ? '▲' : '▼');
+        const pctString = item.price === '加載中' ? '0.00' : item.pct;
         
         htmlString += `
           <div class="flex items-center gap-1.5 mx-3.5">
             <span class="text-[10.5px] font-medium text-muji-text tracking-wider">${item.name}</span>
             <span class="text-[10.5px] font-semibold tracking-wide ${colorClass}">
-              ${item.price} ${item.price === '加載中' ? '' : sign} (${item.pct}%)
+              ${item.price} ${sign} (${pctString}%)
             </span>
           </div>
           <div class="w-px h-3 bg-muji-border/50"></div>
@@ -293,61 +293,68 @@
     }
 
     async function fetchLiveTickerData() {
-      // 使用 Yahoo Finance API 與 AllOrigins CORS 代理伺服器來繞過前端跨域限制
-      const symbols = '^TWII,^GSPC,^IXIC,^SOX,006208.TW,00685L.TW,2330.TW,QQQM,NVDA,TSM';
-      const url = `https://query1.finance.yahoo.com/v7/finance/quote?symbols=${symbols}`;
-      const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`;
+      const symbols = ['^TWII', '^GSPC', '^IXIC', '^SOX', '006208.TW', '00685L.TW', '2330.TW', 'QQQM', 'NVDA', 'TSM'];
+      const mapping = {
+        '^TWII': '台股加權',
+        '^GSPC': 'S&P500',
+        '^IXIC': '納斯達克',
+        '^SOX': '費半',
+        '006208.TW': '006208',
+        '00685L.TW': '00685L',
+        '2330.TW': '2330',
+        'QQQM': 'QQQM',
+        'NVDA': 'NVDA',
+        'TSM': 'TSM adr'
+      };
+
+      const promises = symbols.map(async (sym) => {
+        try {
+          // 改用 Yahoo Finance v8 API，繞過近期 v7 的 Crumb 阻擋限制
+          const url = `https://query1.finance.yahoo.com/v8/finance/chart/${sym}?interval=1d&range=1d`;
+          // 使用 AllOrigins get 代理，解決直接 fetch 被 CORS 或 403 阻擋的問題
+          const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(url)}`;
+          
+          const response = await fetch(proxyUrl);
+          if (!response.ok) throw new Error('網路請求失敗');
+          
+          const data = await response.json();
+          // 將 AllOrigins 回傳的 string 內容轉為 JSON
+          const parsedContent = JSON.parse(data.contents);
+          
+          const meta = parsedContent.chart.result[0].meta;
+          const price = meta.regularMarketPrice;
+          const prevClose = meta.chartPreviousClose || meta.previousClose;
+          
+          const pctVal = ((price - prevClose) / prevClose) * 100;
+          const isUp = pctVal >= 0;
+          
+          return {
+            name: mapping[sym],
+            price: price.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }),
+            pct: (isUp ? '+' : '') + pctVal.toFixed(2),
+            isUp: isUp
+          };
+        } catch (error) {
+          console.warn(`無法獲取 ${sym} 即時股價`, error);
+          return null;
+        }
+      });
+
+      const results = await Promise.all(promises);
       
-      try {
-        const response = await fetch(proxyUrl);
-        if (!response.ok) throw new Error('網路請求失敗');
-        const data = await response.json();
-        const results = data.quoteResponse.result;
-        
-        // Yahoo API 符號對應 UI 顯示名稱
-        const mapping = {
-          '^TWII': '台股加權',
-          '^GSPC': 'S&P500',
-          '^IXIC': '納斯達克',
-          '^SOX': '費半',
-          '006208.TW': '006208',
-          '00685L.TW': '00685L',
-          '2330.TW': '2330',
-          'QQQM': 'QQQM',
-          'NVDA': 'NVDA',
-          'TSM': 'TSM adr'
-        };
-        
-        // 確保陣列的顯示順序符合要求
-        const order = ['^TWII', '^GSPC', '^IXIC', '^SOX', '006208.TW', '00685L.TW', '2330.TW', 'QQQM', 'NVDA', 'TSM'];
-        
-        return order.map(sym => {
-          const quote = results.find(q => q.symbol === sym);
-          if (quote) {
-            // 處理小數點與千分位格式
-            const price = quote.regularMarketPrice ? quote.regularMarketPrice.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : 'N/A';
-            const pctVal = quote.regularMarketChangePercent || 0;
-            const pct = pctVal.toFixed(2);
-            const isUp = pctVal >= 0;
-            return { name: mapping[sym], price, pct: (isUp ? '+' : '') + pct, isUp };
-          }
-          return staticTickerSymbols.find(item => item.name === mapping[sym]);
-        });
-      } catch (error) {
-        console.warn("無法獲取即時股價，使用備用數據", error);
-        return staticTickerSymbols;
-      }
+      // 若有單一標的抓取失敗，則回退顯示「加載中」或其他預設值
+      return results.map((res, idx) => res || staticTickerSymbols[idx]);
     }
 
     async function initTicker() {
-      // 1. 先渲染加載中狀態，避免畫面空轉跳動
+      // 1. 先渲染加載中狀態，避免畫面空白
       renderTickerDOM(staticTickerSymbols);
       
-      // 2. 獲取即時資料並重新渲染
+      // 2. 非同步獲取即時資料並重新渲染
       const liveData = await fetchLiveTickerData();
       renderTickerDOM(liveData);
       
-      // 3. 設定定時器，每 3 分鐘 (180000毫秒) 自動刷新一次即時數據
+      // 3. 設定定時器，每 3 分鐘 (180000毫秒) 自動刷新一次
       setInterval(async () => {
         const updatedData = await fetchLiveTickerData();
         renderTickerDOM(updatedData);
