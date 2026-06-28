@@ -5,16 +5,24 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>PRStK Lab</title>
 
+  <!-- App 圖示設定 (iOS 與 Android) -->
   <link rel="apple-touch-icon" href="PRStK app.png">
   <link rel="manifest" href="manifest.json">
 
+  <!-- 預留給 Analytics 的區塊 -->
+  <!-- <script async src="https://www.googletagmanager.com/gtag/js?id=YOUR-GA-ID"></script> -->
+
+  <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts: Noto Sans TC & Inter -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
   
+  <!-- AOS 動畫庫 CSS -->
   <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
   
+  <!-- Lucide Icons -->
   <script src="https://unpkg.com/lucide@latest"></script>
   <script>
     tailwind.config = {
@@ -54,6 +62,7 @@
     }
   </style>
 
+  <!-- 提前定義錯誤處理函數，避免 ReferenceError -->
   <script>
     function handleLogoError() {
       const img = document.getElementById('logo-img');
@@ -64,12 +73,16 @@
   </script>
 </head>
 <body class="bg-muji-bg text-muji-text font-sans min-h-[100dvh] flex flex-col justify-between overflow-x-hidden select-none">
+  <!-- 背景微光裝飾（極簡無印風） -->
   <div class="absolute inset-0 bg-[radial-gradient(#E8E1D5_1.2px,transparent_1.2px)] [background-size:20px_20px] opacity-70 pointer-events-none"></div>
 
-  <div class="relative w-full max-w-md mx-auto min-h-[100dvh] flex flex-col justify-between px-5 pt-6 pb-6 z-10">
+  <!-- 主容器 (限制最大寬度，動態調整內邊距確保按鈕群呈現舒適) -->
+  <div class="relative w-full max-w-md mx-auto min-h-[100dvh] flex flex-col justify-between px-5 pt-5 pb-5 z-10">
     
+    <!-- 1. 頭部區域 -->
     <header class="flex flex-col items-center text-center">
-       <div class="w-full flex items-center justify-center mb-1 mt-0" data-aos="fade-down" data-aos-duration="800">
+       <!-- 標誌圖片 (加入 AOS 淡入向下動畫，設定為原本的0.8倍) -->
+      <div class="w-full flex items-center justify-center mb-1 mt-0" data-aos="fade-down" data-aos-duration="800">
         <img 
           id="logo-img"
           src="PRStK Lab-Remove.png" 
@@ -77,170 +90,155 @@
           class="w-[90%] max-w-[280px] h-auto max-h-[12vh] object-contain transition-opacity duration-300"
           onerror="handleLogoError()"
         />
+        <!-- 備用純文字 Logo -->
         <div id="logo-fallback" class="hidden flex-col items-center">
           <span class="text-3xl font-light tracking-[0.25em] text-muji-brand">PRStK Lab</span>
           <span class="text-[11px] uppercase tracking-[0.4em] text-muji-muted mt-1">Quant Trading</span>
         </div>
       </div>
       
+      <!-- ⭐ Slogan -->
       <p class="text-[13px] tracking-[0.15em] text-muji-muted font-normal flex items-center justify-center mt-1.5" data-aos="fade-in" data-aos-delay="200" data-aos-duration="800">
-        <span>想和你一起慢慢變富。</span>
+        <span>我想和你一起慢慢變富。</span>
       </p>
     </header>
 
-    <main class="flex-1 flex flex-col justify-start mt-4 gap-2.5 mb-2">
+    <!-- 2. 按鈕導覽區 (兩欄網格佈局) -->
+    <main class="flex-1 flex flex-col justify-start mt-3 mb-2 w-full">
       
-      <div class="text-[10px] tracking-[0.15em] text-muji-muted/80 ml-1 mb-0.5 font-light flex items-center gap-1.5" data-aos="fade-right" data-aos-delay="200">
+      <!-- 引導文案 -->
+      <div class="text-[10px] tracking-[0.15em] text-muji-muted/80 ml-1 mb-2 font-light flex items-center gap-1.5" data-aos="fade-right" data-aos-delay="200">
         <i data-lucide="compass" class="w-3 h-3"></i> 選擇工具開始分析
       </div>
 
-      <div class="relative group" data-aos="fade-up" data-aos-delay="100">
-        <a href="https://www.stockintelli.com/" 
-           target="_blank"
-           class="flex items-center justify-between w-full py-3 px-4 bg-white border border-muji-border rounded-xl shadow-[0_2px_8px_rgba(215,208,196,0.15)] hover:shadow-[0_8px_20px_rgba(74,96,109,0.12)] hover:-translate-y-1 hover:border-muji-brand/40 active:scale-[0.99] transition-all duration-300 pr-12">
-          <div class="flex flex-col items-start text-left">
-            <span class="text-[14.5px] font-medium tracking-wide text-muji-text group-hover:text-muji-brand transition-colors">🦅 股市智投</span>
-            <span class="text-[10px] text-muji-muted tracking-wider mt-0.5 font-light pl-[26px]">StockIntelli</span>
-          </div>
-          <i data-lucide="arrow-up-right" class="w-4 h-4 text-muji-muted opacity-40 group-hover:text-muji-brand group-hover:opacity-100 group-hover:translate-x-1 group-hover:-translate-y-1 transition-all duration-300"></i>
-        </a>
-        <button onclick="openDrawer(0)" 
-                class="absolute right-0 top-0 bottom-0 w-11 flex items-center justify-center border-l border-muji-border border-opacity-30 hover:bg-muji-brandLight rounded-r-xl transition-colors duration-150"
-                aria-label="詳細資訊">
-          <i data-lucide="info" class="w-4 h-4 text-muji-muted opacity-60 hover:text-muji-brand hover:opacity-100 transition-colors"></i>
-        </button>
-      </div>
+      <!-- 網格容器：兩欄 -->
+      <div class="grid grid-cols-2 gap-2.5">
+        
+        <!-- 卡片 0: 股市智投 -->
+        <div class="relative group h-full" data-aos="fade-up" data-aos-delay="100">
+          <a href="https://www.stockintelli.com/" target="_blank" class="flex flex-col justify-center w-full h-full py-3 pl-3 pr-9 bg-white border border-muji-border rounded-xl shadow-sm hover:shadow-md hover:-translate-y-1 hover:border-muji-brand/40 active:scale-[0.98] transition-all duration-300">
+            <span class="text-[12.5px] font-medium tracking-wide text-muji-text group-hover:text-muji-brand transition-colors leading-tight">🦅 股市智投</span>
+            <span class="text-[9px] text-muji-muted tracking-wider mt-1 font-light block">StockIntelli</span>
+          </a>
+          <button onclick="openDrawer(0)" class="absolute right-0 top-0 bottom-0 w-9 flex items-center justify-center border-l border-muji-border border-opacity-30 hover:bg-muji-brandLight rounded-r-xl transition-colors duration-150" aria-label="詳細資訊">
+            <i data-lucide="info" class="w-3.5 h-3.5 text-muji-muted opacity-60 hover:text-muji-brand hover:opacity-100 transition-colors"></i>
+          </button>
+        </div>
 
-      <div class="relative group" data-aos="fade-up" data-aos-delay="150">
-        <a href="https://aistockmap.com" 
-           target="_blank"
-           class="flex items-center justify-between w-full py-3 px-4 bg-white border border-muji-border rounded-xl shadow-[0_2px_8px_rgba(215,208,196,0.15)] hover:shadow-[0_8px_20px_rgba(74,96,109,0.12)] hover:-translate-y-1 hover:border-muji-brand/40 active:scale-[0.99] transition-all duration-300 pr-12">
-          <div class="flex flex-col items-start text-left">
-            <span class="text-[14.5px] font-medium tracking-wide text-muji-text group-hover:text-muji-brand transition-colors">🧠 智慧股市產業地圖</span>
-            <span class="text-[10px] text-muji-muted tracking-wider mt-0.5 font-light pl-[26px]">NovaWeave</span>
-          </div>
-          <i data-lucide="arrow-up-right" class="w-4 h-4 text-muji-muted opacity-40 group-hover:text-muji-brand group-hover:opacity-100 group-hover:translate-x-1 group-hover:-translate-y-1 transition-all duration-300"></i>
-        </a>
-        <button onclick="openDrawer(1)" 
-                class="absolute right-0 top-0 bottom-0 w-11 flex items-center justify-center border-l border-muji-border border-opacity-30 hover:bg-muji-brandLight rounded-r-xl transition-colors duration-150"
-                aria-label="詳細資訊">
-          <i data-lucide="info" class="w-4 h-4 text-muji-muted opacity-60 hover:text-muji-brand hover:opacity-100 transition-colors"></i>
-        </button>
-      </div>
+        <!-- 卡片 1: 智慧股市產業地圖 -->
+        <div class="relative group h-full" data-aos="fade-up" data-aos-delay="150">
+          <a href="https://aistockmap.com" target="_blank" class="flex flex-col justify-center w-full h-full py-3 pl-3 pr-9 bg-white border border-muji-border rounded-xl shadow-sm hover:shadow-md hover:-translate-y-1 hover:border-muji-brand/40 active:scale-[0.98] transition-all duration-300">
+            <span class="text-[12.5px] font-medium tracking-wide text-muji-text group-hover:text-muji-brand transition-colors leading-tight">🧠 智慧股市產業地圖</span>
+            <span class="text-[9px] text-muji-muted tracking-wider mt-1 font-light block">NovaWeave</span>
+          </a>
+          <button onclick="openDrawer(1)" class="absolute right-0 top-0 bottom-0 w-9 flex items-center justify-center border-l border-muji-border border-opacity-30 hover:bg-muji-brandLight rounded-r-xl transition-colors duration-150" aria-label="詳細資訊">
+            <i data-lucide="info" class="w-3.5 h-3.5 text-muji-muted opacity-60 hover:text-muji-brand hover:opacity-100 transition-colors"></i>
+          </button>
+        </div>
 
-      <div class="relative group" data-aos="fade-up" data-aos-delay="200">
-        <a href="https://www.google.com/finance/beta" 
-           target="_blank"
-           class="flex items-center justify-between w-full py-3 px-4 bg-white border border-muji-border rounded-xl shadow-[0_2px_8px_rgba(215,208,196,0.15)] hover:shadow-[0_8px_20px_rgba(74,96,109,0.12)] hover:-translate-y-1 hover:border-muji-brand/40 active:scale-[0.99] transition-all duration-300 pr-12">
-          <div class="flex flex-col items-start text-left">
-            <span class="text-[14.5px] font-medium tracking-wide text-muji-text group-hover:text-muji-brand transition-colors">📈 Google 金融</span>
-            <span class="text-[10px] text-muji-muted tracking-wider mt-0.5 font-light pl-[26px]">Google Finance</span>
-          </div>
-          <i data-lucide="arrow-up-right" class="w-4 h-4 text-muji-muted opacity-40 group-hover:text-muji-brand group-hover:opacity-100 group-hover:translate-x-1 group-hover:-translate-y-1 transition-all duration-300"></i>
-        </a>
-        <button onclick="openDrawer(2)" 
-                class="absolute right-0 top-0 bottom-0 w-11 flex items-center justify-center border-l border-muji-border border-opacity-30 hover:bg-muji-brandLight rounded-r-xl transition-colors duration-150"
-                aria-label="詳細資訊">
-          <i data-lucide="info" class="w-4 h-4 text-muji-muted opacity-60 hover:text-muji-brand hover:opacity-100 transition-colors"></i>
-        </button>
-      </div>
+        <!-- 卡片 2: Google 金融 -->
+        <div class="relative group h-full" data-aos="fade-up" data-aos-delay="200">
+          <a href="https://www.google.com/finance/beta" target="_blank" class="flex flex-col justify-center w-full h-full py-3 pl-3 pr-9 bg-white border border-muji-border rounded-xl shadow-sm hover:shadow-md hover:-translate-y-1 hover:border-muji-brand/40 active:scale-[0.98] transition-all duration-300">
+            <span class="text-[12.5px] font-medium tracking-wide text-muji-text group-hover:text-muji-brand transition-colors leading-tight">📈 Google 金融</span>
+            <span class="text-[9px] text-muji-muted tracking-wider mt-1 font-light block">Google Finance</span>
+          </a>
+          <button onclick="openDrawer(2)" class="absolute right-0 top-0 bottom-0 w-9 flex items-center justify-center border-l border-muji-border border-opacity-30 hover:bg-muji-brandLight rounded-r-xl transition-colors duration-150" aria-label="詳細資訊">
+            <i data-lucide="info" class="w-3.5 h-3.5 text-muji-muted opacity-60 hover:text-muji-brand hover:opacity-100 transition-colors"></i>
+          </button>
+        </div>
 
-      <div class="relative group" data-aos="fade-up" data-aos-delay="250">
-        <a href="https://etfcross.com/" 
-           target="_blank"
-           class="flex items-center justify-between w-full py-3 px-4 bg-white border border-muji-border rounded-xl shadow-[0_2px_8px_rgba(215,208,196,0.15)] hover:shadow-[0_8px_20px_rgba(74,96,109,0.12)] hover:-translate-y-1 hover:border-muji-brand/40 active:scale-[0.99] transition-all duration-300 pr-12">
-          <div class="flex flex-col items-start text-left">
-            <span class="text-[14.5px] font-medium tracking-wide text-muji-text group-hover:text-muji-brand transition-colors">🔀 ETF 交叉持股分析</span>
-            <span class="text-[10px] text-muji-muted tracking-wider mt-0.5 font-light pl-[26px]">PrismOverlap</span>
-          </div>
-          <i data-lucide="arrow-up-right" class="w-4 h-4 text-muji-muted opacity-40 group-hover:text-muji-brand group-hover:opacity-100 group-hover:translate-x-1 group-hover:-translate-y-1 transition-all duration-300"></i>
-        </a>
-        <button onclick="openDrawer(3)" 
-                class="absolute right-0 top-0 bottom-0 w-11 flex items-center justify-center border-l border-muji-border border-opacity-30 hover:bg-muji-brandLight rounded-r-xl transition-colors duration-150"
-                aria-label="詳細資訊">
-          <i data-lucide="info" class="w-4 h-4 text-muji-muted opacity-60 hover:text-muji-brand hover:opacity-100 transition-colors"></i>
-        </button>
-      </div>
+        <!-- 卡片 3: Yahoo 金融 -->
+        <div class="relative group h-full" data-aos="fade-up" data-aos-delay="250">
+          <a href="https://finance.yahoo.com/" target="_blank" class="flex flex-col justify-center w-full h-full py-3 pl-3 pr-9 bg-white border border-muji-border rounded-xl shadow-sm hover:shadow-md hover:-translate-y-1 hover:border-muji-brand/40 active:scale-[0.98] transition-all duration-300">
+            <span class="text-[12.5px] font-medium tracking-wide text-muji-text group-hover:text-muji-brand transition-colors leading-tight">🐯 Yahoo 金融</span>
+            <span class="text-[9px] text-muji-muted tracking-wider mt-1 font-light block">Yahoo Finance</span>
+          </a>
+          <button onclick="openDrawer(3)" class="absolute right-0 top-0 bottom-0 w-9 flex items-center justify-center border-l border-muji-border border-opacity-30 hover:bg-muji-brandLight rounded-r-xl transition-colors duration-150" aria-label="詳細資訊">
+            <i data-lucide="info" class="w-3.5 h-3.5 text-muji-muted opacity-60 hover:text-muji-brand hover:opacity-100 transition-colors"></i>
+          </button>
+        </div>
 
-      <div class="relative group" data-aos="fade-up" data-aos-delay="300">
-        <a href="https://twetf.com/" 
-           target="_blank"
-           class="flex items-center justify-between w-full py-3 px-4 bg-white border border-muji-border rounded-xl shadow-[0_2px_8px_rgba(215,208,196,0.15)] hover:shadow-[0_8px_20px_rgba(74,96,109,0.12)] hover:-translate-y-1 hover:border-muji-brand/40 active:scale-[0.99] transition-all duration-300 pr-12">
-          <div class="flex flex-col items-start text-left">
-            <span class="text-[14.5px] font-medium tracking-wide text-muji-text group-hover:text-muji-brand transition-colors">🚨 ETF 折溢價監控系統</span>
-            <span class="text-[10px] text-muji-muted tracking-wider mt-0.5 font-light pl-[26px]">FluoTrack</span>
-          </div>
-          <i data-lucide="arrow-up-right" class="w-4 h-4 text-muji-muted opacity-40 group-hover:text-muji-brand group-hover:opacity-100 group-hover:translate-x-1 group-hover:-translate-y-1 transition-all duration-300"></i>
-        </a>
-        <button onclick="openDrawer(4)" 
-                class="absolute right-0 top-0 bottom-0 w-11 flex items-center justify-center border-l border-muji-border border-opacity-30 hover:bg-muji-brandLight rounded-r-xl transition-colors duration-150"
-                aria-label="詳細資訊">
-          <i data-lucide="info" class="w-4 h-4 text-muji-muted opacity-60 hover:text-muji-brand hover:opacity-100 transition-colors"></i>
-        </button>
-      </div>
+        <!-- 卡片 4: ETF 交叉持股分析 -->
+        <div class="relative group h-full" data-aos="fade-up" data-aos-delay="300">
+          <a href="https://etfcross.com/" target="_blank" class="flex flex-col justify-center w-full h-full py-3 pl-3 pr-9 bg-white border border-muji-border rounded-xl shadow-sm hover:shadow-md hover:-translate-y-1 hover:border-muji-brand/40 active:scale-[0.98] transition-all duration-300">
+            <span class="text-[12.5px] font-medium tracking-wide text-muji-text group-hover:text-muji-brand transition-colors leading-tight">🔀 ETF 交叉持股</span>
+            <span class="text-[9px] text-muji-muted tracking-wider mt-1 font-light block">PrismOverlap</span>
+          </a>
+          <button onclick="openDrawer(4)" class="absolute right-0 top-0 bottom-0 w-9 flex items-center justify-center border-l border-muji-border border-opacity-30 hover:bg-muji-brandLight rounded-r-xl transition-colors duration-150" aria-label="詳細資訊">
+            <i data-lucide="info" class="w-3.5 h-3.5 text-muji-muted opacity-60 hover:text-muji-brand hover:opacity-100 transition-colors"></i>
+          </button>
+        </div>
 
-      <div class="relative group" data-aos="fade-up" data-aos-delay="350">
-        <a href="https://disciplined-trading.streamlit.app/" 
-           target="_blank"
-           class="flex items-center justify-between w-full py-3 px-4 bg-white border border-muji-border rounded-xl shadow-[0_2px_8px_rgba(215,208,196,0.15)] hover:shadow-[0_8px_20px_rgba(74,96,109,0.12)] hover:-translate-y-1 hover:border-muji-brand/40 active:scale-[0.99] transition-all duration-300 pr-12">
-          <div class="flex flex-col items-start text-left">
-            <span class="text-[14.5px] font-medium tracking-wide text-muji-text group-hover:text-muji-brand transition-colors">☯️ 紀律交易系統</span>
-            <span class="text-[10px] text-muji-muted tracking-wider mt-0.5 font-light pl-[26px]">Solitude</span>
-          </div>
-          <i data-lucide="arrow-up-right" class="w-4 h-4 text-muji-muted opacity-40 group-hover:text-muji-brand group-hover:opacity-100 group-hover:translate-x-1 group-hover:-translate-y-1 transition-all duration-300"></i>
-        </a>
-        <button onclick="openDrawer(5)" 
-                class="absolute right-0 top-0 bottom-0 w-11 flex items-center justify-center border-l border-muji-border border-opacity-30 hover:bg-muji-brandLight rounded-r-xl transition-colors duration-150"
-                aria-label="詳細資訊">
-          <i data-lucide="info" class="w-4 h-4 text-muji-muted opacity-60 hover:text-muji-brand hover:opacity-100 transition-colors"></i>
-        </button>
-      </div>
+        <!-- 卡片 5: ETF 折溢價監控系統 -->
+        <div class="relative group h-full" data-aos="fade-up" data-aos-delay="350">
+          <a href="https://twetf.com/" target="_blank" class="flex flex-col justify-center w-full h-full py-3 pl-3 pr-9 bg-white border border-muji-border rounded-xl shadow-sm hover:shadow-md hover:-translate-y-1 hover:border-muji-brand/40 active:scale-[0.98] transition-all duration-300">
+            <span class="text-[12.5px] font-medium tracking-wide text-muji-text group-hover:text-muji-brand transition-colors leading-tight">🚨 ETF 折溢價監控</span>
+            <span class="text-[9px] text-muji-muted tracking-wider mt-1 font-light block">FluoTrack</span>
+          </a>
+          <button onclick="openDrawer(5)" class="absolute right-0 top-0 bottom-0 w-9 flex items-center justify-center border-l border-muji-border border-opacity-30 hover:bg-muji-brandLight rounded-r-xl transition-colors duration-150" aria-label="詳細資訊">
+            <i data-lucide="info" class="w-3.5 h-3.5 text-muji-muted opacity-60 hover:text-muji-brand hover:opacity-100 transition-colors"></i>
+          </button>
+        </div>
 
-      <div class="relative group" data-aos="fade-up" data-aos-delay="400">
-        <a href="https://roku-rgb.github.io/when-can-i-retire/#calculator" 
-           target="_blank"
-           class="flex items-center justify-between w-full py-3 px-4 bg-white border border-muji-border rounded-xl shadow-[0_2px_8px_rgba(215,208,196,0.15)] hover:shadow-[0_8px_20px_rgba(74,96,109,0.12)] hover:-translate-y-1 hover:border-muji-brand/40 active:scale-[0.99] transition-all duration-300 pr-12">
-          <div class="flex flex-col items-start text-left">
-            <span class="text-[14.5px] font-medium tracking-wide text-muji-text group-hover:text-muji-brand transition-colors">⏳ 複合資產退休模擬系統</span>
-            <span class="text-[10px] text-muji-muted tracking-wider mt-0.5 font-light pl-[26px]">AevumSandbox</span>
-          </div>
-          <i data-lucide="arrow-up-right" class="w-4 h-4 text-muji-muted opacity-40 group-hover:text-muji-brand group-hover:opacity-100 group-hover:translate-x-1 group-hover:-translate-y-1 transition-all duration-300"></i>
-        </a>
-        <button onclick="openDrawer(6)" 
-                class="absolute right-0 top-0 bottom-0 w-11 flex items-center justify-center border-l border-muji-border border-opacity-30 hover:bg-muji-brandLight rounded-r-xl transition-colors duration-150"
-                aria-label="詳細資訊">
-          <i data-lucide="info" class="w-4 h-4 text-muji-muted opacity-60 hover:text-muji-brand hover:opacity-100 transition-colors"></i>
-        </button>
-      </div>
+        <!-- 卡片 6: 紀律交易系統 -->
+        <div class="relative group h-full" data-aos="fade-up" data-aos-delay="400">
+          <a href="https://disciplined-trading.streamlit.app/" target="_blank" class="flex flex-col justify-center w-full h-full py-3 pl-3 pr-9 bg-white border border-muji-border rounded-xl shadow-sm hover:shadow-md hover:-translate-y-1 hover:border-muji-brand/40 active:scale-[0.98] transition-all duration-300">
+            <span class="text-[12.5px] font-medium tracking-wide text-muji-text group-hover:text-muji-brand transition-colors leading-tight">☯️ 紀律交易系統</span>
+            <span class="text-[9px] text-muji-muted tracking-wider mt-1 font-light block">Solitude</span>
+          </a>
+          <button onclick="openDrawer(6)" class="absolute right-0 top-0 bottom-0 w-9 flex items-center justify-center border-l border-muji-border border-opacity-30 hover:bg-muji-brandLight rounded-r-xl transition-colors duration-150" aria-label="詳細資訊">
+            <i data-lucide="info" class="w-3.5 h-3.5 text-muji-muted opacity-60 hover:text-muji-brand hover:opacity-100 transition-colors"></i>
+          </button>
+        </div>
 
+        <!-- 卡片 7: 複合資產退休模擬系統 -->
+        <div class="relative group h-full" data-aos="fade-up" data-aos-delay="450">
+          <a href="https://roku-rgb.github.io/when-can-i-retire/#calculator" target="_blank" class="flex flex-col justify-center w-full h-full py-3 pl-3 pr-9 bg-white border border-muji-border rounded-xl shadow-sm hover:shadow-md hover:-translate-y-1 hover:border-muji-brand/40 active:scale-[0.98] transition-all duration-300">
+            <span class="text-[12.5px] font-medium tracking-wide text-muji-text group-hover:text-muji-brand transition-colors leading-tight">⏳ 複合資產退休模擬</span>
+            <span class="text-[9px] text-muji-muted tracking-wider mt-1 font-light block">AevumSandbox</span>
+          </a>
+          <button onclick="openDrawer(7)" class="absolute right-0 top-0 bottom-0 w-9 flex items-center justify-center border-l border-muji-border border-opacity-30 hover:bg-muji-brandLight rounded-r-xl transition-colors duration-150" aria-label="詳細資訊">
+            <i data-lucide="info" class="w-3.5 h-3.5 text-muji-muted opacity-60 hover:text-muji-brand hover:opacity-100 transition-colors"></i>
+          </button>
+        </div>
+
+      </div>
     </main>
 
-    <footer class="text-center flex flex-col items-center gap-2 mt-2" data-aos="fade-up" data-aos-delay="500">
-      <button onclick="shareApp()" class="flex items-center gap-2 px-5 py-1.5 text-[12px] text-muji-brand hover:text-white border border-muji-brand/30 rounded-full hover:bg-muji-brand hover:-translate-y-0.5 hover:shadow-md transition-all duration-300 shadow-sm">
-        <i data-lucide="share-2" class="w-3.5 h-3.5"></i>
+    <!-- 3. 頁尾資訊 -->
+    <footer class="text-center flex flex-col items-center gap-2 mt-auto pt-4" data-aos="fade-up" data-aos-delay="550">
+      <!-- ⭐ Telegram Bot 連結按鈕 (使用 send 小飛機圖示) -->
+      <a href="https://t.me/olaf_spark_bot" target="_blank" rel="noopener noreferrer" class="flex items-center gap-2 px-6 py-1.5 text-[12px] text-muji-brand hover:text-white border border-muji-brand/30 rounded-full hover:bg-muji-brand hover:-translate-y-0.5 hover:shadow-md transition-all duration-300 shadow-sm">
+        <i data-lucide="send" class="w-3.5 h-3.5"></i>
         <span class="font-medium tracking-wide">Together Better</span>
-      </button>
+      </a>
       
-      <p class="text-[9px] text-muji-muted tracking-widest font-light mt-0.5">
+      <p class="text-[9px] text-muji-muted tracking-widest font-light mt-1">
         © 2026 PRStK Lab. All rights reserved.
       </p>
     </footer>
 
   </div>
 
+  <!-- ================= 詳細資訊彈出抽屜 (Drawer) ================= -->
+  <!-- 遮罩背景 -->
   <div id="drawer-overlay" 
        onclick="closeDrawer()" 
        class="fixed inset-0 bg-muji-brand/20 backdrop-blur-sm z-40 hidden opacity-0 transition-opacity duration-300">
   </div>
 
+  <!-- 內容卡片 -->
   <div id="info-drawer" 
        class="fixed bottom-0 left-0 right-0 max-w-md mx-auto bg-white rounded-t-3xl shadow-[0_-8px_30px_rgba(74,96,109,0.1)] z-50 transform translate-y-full drawer-transition border-t border-muji-border max-h-[85vh] flex flex-col">
     
+    <!-- 頂部裝飾條 -->
     <div class="flex-shrink-0">
       <div class="w-12 h-1 bg-muji-border rounded-full mx-auto my-3.5 opacity-80"></div>
     </div>
     
+    <!-- 抽屜內容 -->
     <div class="px-6 pb-8 pt-1 overflow-y-auto flex-1">
+      <!-- 標題與網址 -->
       <div class="flex justify-between items-start mb-4">
         <div>
           <h3 id="drawer-title" class="text-[17px] font-medium tracking-wide text-muji-brand">標題</h3>
@@ -251,6 +249,7 @@
         </button>
       </div>
 
+      <!-- 詳細說明區塊 -->
       <div class="space-y-4">
         <div>
           <h4 class="text-[11px] uppercase tracking-[0.15em] text-muji-brand font-semibold flex items-center gap-2 mb-2">
@@ -271,6 +270,7 @@
         </div>
       </div>
 
+      <!-- 快速前往按鈕 -->
       <a id="drawer-link" href="#" target="_blank" 
          class="mt-6 flex items-center justify-center gap-2 w-full py-3.5 bg-muji-brand hover:bg-[#384a54] hover:shadow-lg hover:-translate-y-0.5 text-white text-xs font-light tracking-widest rounded-xl transition-all duration-300 shadow-sm">
         <span>開啟系統</span>
@@ -279,6 +279,7 @@
     </div>
   </div>
 
+  <!-- AOS 動畫庫 JS 初始化 -->
   <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
   <script>
     AOS.init({
@@ -290,6 +291,7 @@
 
     lucide.createIcons();
 
+    // 依照新的網格順序對應陣列資料
     const appData = [
       {
         title: "🦅 股市智投",
@@ -329,6 +331,19 @@
           "偏好簡潔直觀介面，希望一站式同步個人追蹤清單與核心財經新聞的日常交易者。"
         ],
         link: "https://www.google.com/finance/beta"
+      },
+      {
+        title: "🐯 Yahoo 金融",
+        subtitle: "Yahoo Finance",
+        features: [
+          "全球市場數據與深度研究：提供全球股市、基金、外匯與加密貨幣的即時報價，並整合歷史數據、財務報表及獨家分析師評等，提供全方位的市場洞察。",
+          "個人化資產管理與新聞流：支援跨裝置同步自選股名單與虛擬投資組合，並根據用戶關注的標的，即時推送國際權威財經媒體的深度新聞與影音報導。"
+        ],
+        targets: [
+          "需要依賴豐富歷史數據、公司財務細節與專業分析師觀點進行深度研究的投資人。",
+          "擁有跨國、跨資產配置，且希望隨時掌握國際第一手財經時事脈動的自主交易者。"
+        ],
+        link: "https://finance.yahoo.com/"
       },
       {
         title: "🔀 ETF 交叉持股分析",
@@ -427,32 +442,6 @@
       setTimeout(() => {
         overlay.classList.add('hidden');
       }, 350);
-    }
-
-    function shareApp() {
-      if (navigator.share) {
-        navigator.share({
-          title: 'PRStK Lab',
-          text: 'PRStK Lab - 想和你一起慢慢變富。',
-          url: window.location.href
-        }).catch(console.error);
-      } else {
-        const dummy = document.createElement('input');
-        document.body.appendChild(dummy);
-        dummy.value = window.location.href;
-        dummy.select();
-        document.execCommand('copy');
-        document.body.removeChild(dummy);
-        
-        const toast = document.createElement('div');
-        toast.className = 'fixed bottom-12 left-1/2 -translate-x-1/2 bg-muji-brand text-white text-[11px] px-4 py-2.5 rounded-full tracking-widest z-50 shadow-md transition-opacity duration-300 whitespace-nowrap';
-        toast.innerText = 'Together Better 連結已複製';
-        document.body.appendChild(toast);
-        setTimeout(() => {
-          toast.style.opacity = '0';
-          setTimeout(() => document.body.removeChild(toast), 300);
-        }, 1500);
-      }
     }
   </script>
 </body>
