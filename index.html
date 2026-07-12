@@ -9,9 +9,6 @@
   <link rel="apple-touch-icon" href="PRStK app.png">
   <link rel="manifest" href="manifest.json">
 
-  <!-- 預留給 Analytics 的區塊 -->
-  <!-- <script async src="https://www.googletagmanager.com/gtag/js?id=YOUR-GA-ID"></script> -->
-
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- Google Fonts: Noto Sans TC & Inter -->
@@ -62,9 +59,10 @@
     .drawer-transition {
       transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
     }
-    /* 卡片懸浮動畫優化 */
+    /* 卡片懸浮動畫優化，加入 hardware acceleration 避免卡頓 */
     .card-hover-effect {
       transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+      will-change: transform, box-shadow;
     }
     .card-hover-effect:hover {
       transform: translateY(-3px);
@@ -84,7 +82,6 @@
     }
   </style>
 
-  <!-- 提前定義錯誤處理函數，避免 ReferenceError -->
   <script>
     function handleLogoError() {
       const img = document.getElementById('logo-img');
@@ -121,7 +118,7 @@
       </div>
       
       <!-- ⭐ 乾淨純粹的 Slogan -->
-      <p class="text-[13px] tracking-[0.2em] text-muji-muted font-normal flex items-center justify-center mt-3" data-aos="fade-in" data-aos-delay="200" data-aos-duration="1000">
+      <p class="text-[13px] tracking-[0.2em] text-muji-muted font-normal flex items-center justify-center mt-3" data-aos="fade-in" data-aos-delay="100" data-aos-duration="1000">
         <span>想和你一起慢慢變富。</span>
       </p>
     </header>
@@ -130,18 +127,18 @@
     <main class="flex-1 flex flex-col justify-start w-full space-y-8">
       
       <!-- 引導文案 (稍微淡化，不搶分類標題的視覺) -->
-      <div class="text-[10px] tracking-[0.15em] text-muji-muted/60 ml-1 font-light flex items-center gap-1.5 -mb-2" data-aos="fade-right" data-aos-delay="300">
+      <div class="text-[10px] tracking-[0.15em] text-muji-muted/60 ml-1 font-light flex items-center gap-1.5 -mb-2" data-aos="fade-right">
         <i data-lucide="compass" class="w-3 h-3"></i> 探索量化工具
       </div>
 
       <!-- [分類 1] 洞察 ‧ 市場全景鳥瞰 -->
-      <section data-aos="fade-up" data-aos-delay="350">
+      <section data-aos="fade-up">
         <h2 class="text-[12px] font-semibold text-muji-section tracking-[0.1em] flex items-center gap-2 mb-3 pl-1">
           <i data-lucide="eye" class="w-3.5 h-3.5"></i>
           洞察 ‧ 市場全景鳥瞰
         </h2>
         <div class="grid grid-cols-2 gap-3.5">
-          <!-- 卡片 0: 股市智投 -->
+          <!-- 0: 股市智投 -->
           <div class="relative group h-full">
             <a href="https://www.stockintelli.com/" target="_blank" class="flex flex-col justify-center w-full h-full min-h-[76px] py-4 pl-3.5 pr-9 bg-white border border-muji-border/80 rounded-2xl shadow-sm card-hover-effect">
               <span class="text-[13px] font-medium tracking-wide text-muji-text group-hover:text-muji-brand transition-colors leading-tight truncate">🦅 股市智投</span>
@@ -152,7 +149,7 @@
             </button>
           </div>
 
-          <!-- 卡片 1: 智慧產業地圖 -->
+          <!-- 1: 智慧產業地圖 -->
           <div class="relative group h-full">
             <a href="https://aistockmap.com" target="_blank" class="flex flex-col justify-center w-full h-full min-h-[76px] py-4 pl-3.5 pr-9 bg-white border border-muji-border/80 rounded-2xl shadow-sm card-hover-effect">
               <span class="text-[13px] font-medium tracking-wide text-muji-text group-hover:text-muji-brand transition-colors leading-tight truncate">🧠 智慧產業地圖</span>
@@ -162,85 +159,76 @@
               <i data-lucide="info" class="w-4 h-4 text-muji-muted/50 hover:text-muji-brand transition-colors"></i>
             </button>
           </div>
-        </div>
-      </section>
 
-      <!-- [分類 2] 矩陣 ‧ 量化策略尋寶 -->
-      <section data-aos="fade-up" data-aos-delay="400">
-        <h2 class="text-[12px] font-semibold text-muji-section tracking-[0.1em] flex items-center gap-2 mb-3 pl-1">
-          <i data-lucide="cpu" class="w-3.5 h-3.5"></i>
-          矩陣 ‧ 量化策略尋寶
-        </h2>
-        <div class="grid grid-cols-2 gap-3.5">
-          <!-- 卡片 2: 量化策略研究 -->
+          <!-- 2: 潮汐資金流 (New) -->
           <div class="relative group h-full">
-            <a href="https://www.quantgems.com/" target="_blank" class="flex flex-col justify-center w-full h-full min-h-[76px] py-4 pl-3.5 pr-9 bg-white border border-muji-border/80 rounded-2xl shadow-sm card-hover-effect">
-              <span class="text-[13px] font-medium tracking-wide text-muji-text group-hover:text-muji-brand transition-colors leading-tight truncate">🤖 量化策略研究</span>
-              <span class="text-[10px] text-muji-muted/80 tracking-wider mt-1.5 font-light block truncate">QuantGems</span>
+            <a href="https://tide-tw.app/#" target="_blank" class="flex flex-col justify-center w-full h-full min-h-[76px] py-4 pl-3.5 pr-9 bg-white border border-muji-border/80 rounded-2xl shadow-sm card-hover-effect">
+              <span class="text-[13px] font-medium tracking-wide text-muji-text group-hover:text-muji-brand transition-colors leading-tight truncate">🧭 潮汐資金流</span>
+              <span class="text-[10px] text-muji-muted/80 tracking-wider mt-1.5 font-light block truncate">TideFlow</span>
             </a>
             <button onclick="openDrawer(2)" class="absolute right-0 top-0 bottom-0 w-10 flex items-center justify-center border-l border-muji-border/30 hover:bg-muji-brandLight rounded-r-2xl transition-colors duration-200" aria-label="詳細資訊">
               <i data-lucide="info" class="w-4 h-4 text-muji-muted/50 hover:text-muji-brand transition-colors"></i>
             </button>
           </div>
 
-          <!-- 卡片 3: 波段區間定位 -->
+          <!-- 3: 交易解構情報台 (New) -->
           <div class="relative group h-full">
-            <a href="https://twetq.com/" target="_blank" class="flex flex-col justify-center w-full h-full min-h-[76px] py-4 pl-3.5 pr-9 bg-white border border-muji-border/80 rounded-2xl shadow-sm card-hover-effect">
-              <span class="text-[13px] font-medium tracking-wide text-muji-text group-hover:text-muji-brand transition-colors leading-tight truncate">🌊 波段區間定位</span>
-              <span class="text-[10px] text-muji-muted/80 tracking-wider mt-1.5 font-light block truncate">EchoEquity</span>
+            <a href="https://threads.hypertridemeng.com/" target="_blank" class="flex flex-col justify-center w-full h-full min-h-[76px] py-4 pl-3.5 pr-9 bg-white border border-muji-border/80 rounded-2xl shadow-sm card-hover-effect">
+              <span class="text-[13px] font-medium tracking-wide text-muji-text group-hover:text-muji-brand transition-colors leading-tight truncate">🕸️ 交易解構情報台</span>
+              <span class="text-[10px] text-muji-muted/80 tracking-wider mt-1.5 font-light block truncate">TradeLens</span>
             </a>
             <button onclick="openDrawer(3)" class="absolute right-0 top-0 bottom-0 w-10 flex items-center justify-center border-l border-muji-border/30 hover:bg-muji-brandLight rounded-r-2xl transition-colors duration-200" aria-label="詳細資訊">
-              <i data-lucide="info" class="w-4 h-4 text-muji-muted/50 hover:text-muji-brand transition-colors"></i>
-            </button>
-          </div>
-
-          <!-- 卡片 4: 量子矩陣平台 -->
-          <div class="relative group h-full">
-            <a href="https://quants.tw/" target="_blank" class="flex flex-col justify-center w-full h-full min-h-[76px] py-4 pl-3.5 pr-9 bg-white border border-muji-border/80 rounded-2xl shadow-sm card-hover-effect">
-              <span class="text-[13px] font-medium tracking-wide text-muji-text group-hover:text-muji-brand transition-colors leading-tight truncate">🔬 量子矩陣平台</span>
-              <span class="text-[10px] text-muji-muted/80 tracking-wider mt-1.5 font-light block truncate">Quants.tw</span>
-            </a>
-            <button onclick="openDrawer(4)" class="absolute right-0 top-0 bottom-0 w-10 flex items-center justify-center border-l border-muji-border/30 hover:bg-muji-brandLight rounded-r-2xl transition-colors duration-200" aria-label="詳細資訊">
-              <i data-lucide="info" class="w-4 h-4 text-muji-muted/50 hover:text-muji-brand transition-colors"></i>
-            </button>
-          </div>
-
-          <!-- 卡片 5: 極智再平衡系統 -->
-          <div class="relative group h-full">
-            <a href="https://jj-invest-public.vercel.app/?utm_source=ig&utm_medium=social&utm_content=link_in_bio&fbclid=PAZXh0bgNhZW0CMTEAc3J0YwZhcHBfaWQPNTY3MDY3MzQzMzUyNDI3AAGnP-G0RoKTrpoLr0Ri0BXxWFwJxbvcjQKkuxTtG4IdJYu4B_KwQ2M0pX00RqU_aem_1R9Dxdc_rccKo-udGFOzYw" target="_blank" class="flex flex-col justify-center w-full h-full min-h-[76px] py-4 pl-3.5 pr-9 bg-white border border-muji-border/80 rounded-2xl shadow-sm card-hover-effect">
-              <span class="text-[13px] font-medium tracking-wide text-muji-text group-hover:text-muji-brand transition-colors leading-tight truncate">⚖️ 極智再平衡系統</span>
-              <span class="text-[10px] text-muji-muted/80 tracking-wider mt-1.5 font-light block truncate">BetaAlign</span>
-            </a>
-            <button onclick="openDrawer(5)" class="absolute right-0 top-0 bottom-0 w-10 flex items-center justify-center border-l border-muji-border/30 hover:bg-muji-brandLight rounded-r-2xl transition-colors duration-200" aria-label="詳細資訊">
               <i data-lucide="info" class="w-4 h-4 text-muji-muted/50 hover:text-muji-brand transition-colors"></i>
             </button>
           </div>
         </div>
       </section>
 
-      <!-- [分類 3] 脈動 ‧ 全球財經同步 -->
-      <section data-aos="fade-up" data-aos-delay="450">
+      <!-- [分類 2] 矩陣 ‧ 量化策略尋寶 -->
+      <section data-aos="fade-up">
         <h2 class="text-[12px] font-semibold text-muji-section tracking-[0.1em] flex items-center gap-2 mb-3 pl-1">
-          <i data-lucide="globe" class="w-3.5 h-3.5"></i>
-          脈動 ‧ 全球財經同步
+          <i data-lucide="cpu" class="w-3.5 h-3.5"></i>
+          矩陣 ‧ 量化策略尋寶
         </h2>
         <div class="grid grid-cols-2 gap-3.5">
-          <!-- 卡片 6: Google 金融 -->
+          <!-- 4: 量化策略研究 -->
           <div class="relative group h-full">
-            <a href="https://www.google.com/finance/beta" target="_blank" class="flex flex-col justify-center w-full h-full min-h-[76px] py-4 pl-3.5 pr-9 bg-white border border-muji-border/80 rounded-2xl shadow-sm card-hover-effect">
-              <span class="text-[13px] font-medium tracking-wide text-muji-text group-hover:text-muji-brand transition-colors leading-tight truncate">📈 Google 金融</span>
-              <span class="text-[10px] text-muji-muted/80 tracking-wider mt-1.5 font-light block truncate">Google Finance</span>
+            <a href="https://www.quantgems.com/" target="_blank" class="flex flex-col justify-center w-full h-full min-h-[76px] py-4 pl-3.5 pr-9 bg-white border border-muji-border/80 rounded-2xl shadow-sm card-hover-effect">
+              <span class="text-[13px] font-medium tracking-wide text-muji-text group-hover:text-muji-brand transition-colors leading-tight truncate">🤖 量化策略研究</span>
+              <span class="text-[10px] text-muji-muted/80 tracking-wider mt-1.5 font-light block truncate">QuantGems</span>
+            </a>
+            <button onclick="openDrawer(4)" class="absolute right-0 top-0 bottom-0 w-10 flex items-center justify-center border-l border-muji-border/30 hover:bg-muji-brandLight rounded-r-2xl transition-colors duration-200" aria-label="詳細資訊">
+              <i data-lucide="info" class="w-4 h-4 text-muji-muted/50 hover:text-muji-brand transition-colors"></i>
+            </button>
+          </div>
+
+          <!-- 5: 波段區間定位 -->
+          <div class="relative group h-full">
+            <a href="https://twetq.com/" target="_blank" class="flex flex-col justify-center w-full h-full min-h-[76px] py-4 pl-3.5 pr-9 bg-white border border-muji-border/80 rounded-2xl shadow-sm card-hover-effect">
+              <span class="text-[13px] font-medium tracking-wide text-muji-text group-hover:text-muji-brand transition-colors leading-tight truncate">🌊 波段區間定位</span>
+              <span class="text-[10px] text-muji-muted/80 tracking-wider mt-1.5 font-light block truncate">EchoEquity</span>
+            </a>
+            <button onclick="openDrawer(5)" class="absolute right-0 top-0 bottom-0 w-10 flex items-center justify-center border-l border-muji-border/30 hover:bg-muji-brandLight rounded-r-2xl transition-colors duration-200" aria-label="詳細資訊">
+              <i data-lucide="info" class="w-4 h-4 text-muji-muted/50 hover:text-muji-brand transition-colors"></i>
+            </button>
+          </div>
+
+          <!-- 6: 量子矩陣平台 -->
+          <div class="relative group h-full">
+            <a href="https://quants.tw/" target="_blank" class="flex flex-col justify-center w-full h-full min-h-[76px] py-4 pl-3.5 pr-9 bg-white border border-muji-border/80 rounded-2xl shadow-sm card-hover-effect">
+              <span class="text-[13px] font-medium tracking-wide text-muji-text group-hover:text-muji-brand transition-colors leading-tight truncate">🔬 量子矩陣平台</span>
+              <span class="text-[10px] text-muji-muted/80 tracking-wider mt-1.5 font-light block truncate">Quants.tw</span>
             </a>
             <button onclick="openDrawer(6)" class="absolute right-0 top-0 bottom-0 w-10 flex items-center justify-center border-l border-muji-border/30 hover:bg-muji-brandLight rounded-r-2xl transition-colors duration-200" aria-label="詳細資訊">
               <i data-lucide="info" class="w-4 h-4 text-muji-muted/50 hover:text-muji-brand transition-colors"></i>
             </button>
           </div>
 
-          <!-- 卡片 7: Yahoo 金融 -->
+          <!-- 7: 極智再平衡系統 -->
           <div class="relative group h-full">
-            <a href="https://finance.yahoo.com/" target="_blank" class="flex flex-col justify-center w-full h-full min-h-[76px] py-4 pl-3.5 pr-9 bg-white border border-muji-border/80 rounded-2xl shadow-sm card-hover-effect">
-              <span class="text-[13px] font-medium tracking-wide text-muji-text group-hover:text-muji-brand transition-colors leading-tight truncate">🐯 Yahoo 金融</span>
-              <span class="text-[10px] text-muji-muted/80 tracking-wider mt-1.5 font-light block truncate">Yahoo Finance</span>
+            <a href="https://jj-invest-public.vercel.app/?utm_source=ig&utm_medium=social&utm_content=link_in_bio&fbclid=PAZXh0bgNhZW0CMTEAc3J0YwZhcHBfaWQPNTY3MDY3MzQzMzUyNDI3AAGnP-G0RoKTrpoLr0Ri0BXxWFwJxbvcjQKkuxTtG4IdJYu4B_KwQ2M0pX00RqU_aem_1R9Dxdc_rccKo-udGFOzYw" target="_blank" class="flex flex-col justify-center w-full h-full min-h-[76px] py-4 pl-3.5 pr-9 bg-white border border-muji-border/80 rounded-2xl shadow-sm card-hover-effect">
+              <span class="text-[13px] font-medium tracking-wide text-muji-text group-hover:text-muji-brand transition-colors leading-tight truncate">⚖️ 極智再平衡系統</span>
+              <span class="text-[10px] text-muji-muted/80 tracking-wider mt-1.5 font-light block truncate">BetaAlign</span>
             </a>
             <button onclick="openDrawer(7)" class="absolute right-0 top-0 bottom-0 w-10 flex items-center justify-center border-l border-muji-border/30 hover:bg-muji-brandLight rounded-r-2xl transition-colors duration-200" aria-label="詳細資訊">
               <i data-lucide="info" class="w-4 h-4 text-muji-muted/50 hover:text-muji-brand transition-colors"></i>
@@ -249,29 +237,29 @@
         </div>
       </section>
 
-      <!-- [分類 4] 稜鏡 ‧ ETF 深度透視 -->
-      <section data-aos="fade-up" data-aos-delay="500">
+      <!-- [分類 3] 脈動 ‧ 全球財經同步 -->
+      <section data-aos="fade-up">
         <h2 class="text-[12px] font-semibold text-muji-section tracking-[0.1em] flex items-center gap-2 mb-3 pl-1">
-          <i data-lucide="layers" class="w-3.5 h-3.5"></i>
-          稜鏡 ‧ ETF 深度透視
+          <i data-lucide="globe" class="w-3.5 h-3.5"></i>
+          脈動 ‧ 全球財經同步
         </h2>
         <div class="grid grid-cols-2 gap-3.5">
-          <!-- 卡片 8: ETF 重疊分析 -->
+          <!-- 8: Google 金融 -->
           <div class="relative group h-full">
-            <a href="https://etfcross.com/" target="_blank" class="flex flex-col justify-center w-full h-full min-h-[76px] py-4 pl-3.5 pr-9 bg-white border border-muji-border/80 rounded-2xl shadow-sm card-hover-effect">
-              <span class="text-[13px] font-medium tracking-wide text-muji-text group-hover:text-muji-brand transition-colors leading-tight truncate">🔀 ETF 重疊分析</span>
-              <span class="text-[10px] text-muji-muted/80 tracking-wider mt-1.5 font-light block truncate">PrismOverlap</span>
+            <a href="https://www.google.com/finance/beta" target="_blank" class="flex flex-col justify-center w-full h-full min-h-[76px] py-4 pl-3.5 pr-9 bg-white border border-muji-border/80 rounded-2xl shadow-sm card-hover-effect">
+              <span class="text-[13px] font-medium tracking-wide text-muji-text group-hover:text-muji-brand transition-colors leading-tight truncate">📈 Google 金融</span>
+              <span class="text-[10px] text-muji-muted/80 tracking-wider mt-1.5 font-light block truncate">Google Finance</span>
             </a>
             <button onclick="openDrawer(8)" class="absolute right-0 top-0 bottom-0 w-10 flex items-center justify-center border-l border-muji-border/30 hover:bg-muji-brandLight rounded-r-2xl transition-colors duration-200" aria-label="詳細資訊">
               <i data-lucide="info" class="w-4 h-4 text-muji-muted/50 hover:text-muji-brand transition-colors"></i>
             </button>
           </div>
 
-          <!-- 卡片 9: ETF 折溢價監控 -->
+          <!-- 9: Yahoo 金融 -->
           <div class="relative group h-full">
-            <a href="https://twetf.com/" target="_blank" class="flex flex-col justify-center w-full h-full min-h-[76px] py-4 pl-3.5 pr-9 bg-white border border-muji-border/80 rounded-2xl shadow-sm card-hover-effect">
-              <span class="text-[13px] font-medium tracking-wide text-muji-text group-hover:text-muji-brand transition-colors leading-tight truncate">🚨 ETF 折溢價監控</span>
-              <span class="text-[10px] text-muji-muted/80 tracking-wider mt-1.5 font-light block truncate">FluoTrack</span>
+            <a href="https://finance.yahoo.com/" target="_blank" class="flex flex-col justify-center w-full h-full min-h-[76px] py-4 pl-3.5 pr-9 bg-white border border-muji-border/80 rounded-2xl shadow-sm card-hover-effect">
+              <span class="text-[13px] font-medium tracking-wide text-muji-text group-hover:text-muji-brand transition-colors leading-tight truncate">🐯 Yahoo 金融</span>
+              <span class="text-[10px] text-muji-muted/80 tracking-wider mt-1.5 font-light block truncate">Yahoo Finance</span>
             </a>
             <button onclick="openDrawer(9)" class="absolute right-0 top-0 bottom-0 w-10 flex items-center justify-center border-l border-muji-border/30 hover:bg-muji-brandLight rounded-r-2xl transition-colors duration-200" aria-label="詳細資訊">
               <i data-lucide="info" class="w-4 h-4 text-muji-muted/50 hover:text-muji-brand transition-colors"></i>
@@ -280,31 +268,62 @@
         </div>
       </section>
 
-      <!-- [分類 5] 守望 ‧ 紀律與長線藍圖 -->
-      <section data-aos="fade-up" data-aos-delay="550">
+      <!-- [分類 4] 稜鏡 ‧ ETF 深度透視 -->
+      <section data-aos="fade-up">
         <h2 class="text-[12px] font-semibold text-muji-section tracking-[0.1em] flex items-center gap-2 mb-3 pl-1">
-          <i data-lucide="shield-check" class="w-3.5 h-3.5"></i>
-          守望 ‧ 紀律與長線藍圖
+          <i data-lucide="layers" class="w-3.5 h-3.5"></i>
+          稜鏡 ‧ ETF 深度透視
         </h2>
         <div class="grid grid-cols-2 gap-3.5">
-          <!-- 卡片 10: 紀律交易系統 -->
+          <!-- 10: ETF 重疊分析 -->
           <div class="relative group h-full">
-            <a href="https://disciplined-trading.streamlit.app/" target="_blank" class="flex flex-col justify-center w-full h-full min-h-[76px] py-4 pl-3.5 pr-9 bg-white border border-muji-border/80 rounded-2xl shadow-sm card-hover-effect">
-              <span class="text-[13px] font-medium tracking-wide text-muji-text group-hover:text-muji-brand transition-colors leading-tight truncate">☯️ 紀律交易系統</span>
-              <span class="text-[10px] text-muji-muted/80 tracking-wider mt-1.5 font-light block truncate">Solitude</span>
+            <a href="https://etfcross.com/" target="_blank" class="flex flex-col justify-center w-full h-full min-h-[76px] py-4 pl-3.5 pr-9 bg-white border border-muji-border/80 rounded-2xl shadow-sm card-hover-effect">
+              <span class="text-[13px] font-medium tracking-wide text-muji-text group-hover:text-muji-brand transition-colors leading-tight truncate">🔀 ETF 重疊分析</span>
+              <span class="text-[10px] text-muji-muted/80 tracking-wider mt-1.5 font-light block truncate">PrismOverlap</span>
             </a>
             <button onclick="openDrawer(10)" class="absolute right-0 top-0 bottom-0 w-10 flex items-center justify-center border-l border-muji-border/30 hover:bg-muji-brandLight rounded-r-2xl transition-colors duration-200" aria-label="詳細資訊">
               <i data-lucide="info" class="w-4 h-4 text-muji-muted/50 hover:text-muji-brand transition-colors"></i>
             </button>
           </div>
 
-          <!-- 卡片 11: 退休沙盒模擬 -->
+          <!-- 11: ETF 折溢價監控 -->
+          <div class="relative group h-full">
+            <a href="https://twetf.com/" target="_blank" class="flex flex-col justify-center w-full h-full min-h-[76px] py-4 pl-3.5 pr-9 bg-white border border-muji-border/80 rounded-2xl shadow-sm card-hover-effect">
+              <span class="text-[13px] font-medium tracking-wide text-muji-text group-hover:text-muji-brand transition-colors leading-tight truncate">🚨 ETF 折溢價監控</span>
+              <span class="text-[10px] text-muji-muted/80 tracking-wider mt-1.5 font-light block truncate">FluoTrack</span>
+            </a>
+            <button onclick="openDrawer(11)" class="absolute right-0 top-0 bottom-0 w-10 flex items-center justify-center border-l border-muji-border/30 hover:bg-muji-brandLight rounded-r-2xl transition-colors duration-200" aria-label="詳細資訊">
+              <i data-lucide="info" class="w-4 h-4 text-muji-muted/50 hover:text-muji-brand transition-colors"></i>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- [分類 5] 守望 ‧ 紀律與長線藍圖 -->
+      <section data-aos="fade-up">
+        <h2 class="text-[12px] font-semibold text-muji-section tracking-[0.1em] flex items-center gap-2 mb-3 pl-1">
+          <i data-lucide="shield-check" class="w-3.5 h-3.5"></i>
+          守望 ‧ 紀律與長線藍圖
+        </h2>
+        <div class="grid grid-cols-2 gap-3.5">
+          <!-- 12: 紀律交易系統 -->
+          <div class="relative group h-full">
+            <a href="https://disciplined-trading.streamlit.app/" target="_blank" class="flex flex-col justify-center w-full h-full min-h-[76px] py-4 pl-3.5 pr-9 bg-white border border-muji-border/80 rounded-2xl shadow-sm card-hover-effect">
+              <span class="text-[13px] font-medium tracking-wide text-muji-text group-hover:text-muji-brand transition-colors leading-tight truncate">☯️ 紀律交易系統</span>
+              <span class="text-[10px] text-muji-muted/80 tracking-wider mt-1.5 font-light block truncate">Solitude</span>
+            </a>
+            <button onclick="openDrawer(12)" class="absolute right-0 top-0 bottom-0 w-10 flex items-center justify-center border-l border-muji-border/30 hover:bg-muji-brandLight rounded-r-2xl transition-colors duration-200" aria-label="詳細資訊">
+              <i data-lucide="info" class="w-4 h-4 text-muji-muted/50 hover:text-muji-brand transition-colors"></i>
+            </button>
+          </div>
+
+          <!-- 13: 退休沙盒模擬 -->
           <div class="relative group h-full">
             <a href="https://roku-rgb.github.io/when-can-i-retire/#calculator" target="_blank" class="flex flex-col justify-center w-full h-full min-h-[76px] py-4 pl-3.5 pr-9 bg-white border border-muji-border/80 rounded-2xl shadow-sm card-hover-effect">
               <span class="text-[13px] font-medium tracking-wide text-muji-text group-hover:text-muji-brand transition-colors leading-tight truncate">⏳ 退休沙盒模擬</span>
               <span class="text-[10px] text-muji-muted/80 tracking-wider mt-1.5 font-light block truncate">AevumSandbox</span>
             </a>
-            <button onclick="openDrawer(11)" class="absolute right-0 top-0 bottom-0 w-10 flex items-center justify-center border-l border-muji-border/30 hover:bg-muji-brandLight rounded-r-2xl transition-colors duration-200" aria-label="詳細資訊">
+            <button onclick="openDrawer(13)" class="absolute right-0 top-0 bottom-0 w-10 flex items-center justify-center border-l border-muji-border/30 hover:bg-muji-brandLight rounded-r-2xl transition-colors duration-200" aria-label="詳細資訊">
               <i data-lucide="info" class="w-4 h-4 text-muji-muted/50 hover:text-muji-brand transition-colors"></i>
             </button>
           </div>
@@ -314,7 +333,7 @@
     </main>
 
     <!-- ================= 3. 頁尾資訊 ================= -->
-    <footer class="text-center flex flex-col items-center gap-2.5 mt-10 pt-4 pb-2 border-t border-muji-border/50" data-aos="fade-up" data-aos-delay="600">
+    <footer class="text-center flex flex-col items-center gap-2.5 mt-10 pt-4 pb-2 border-t border-muji-border/50" data-aos="fade-up">
       <!-- ⭐ Telegram Bot 連結按鈕 -->
       <a href="https://t.me/olaf_spark_bot" target="_blank" rel="noopener noreferrer" class="flex items-center gap-2.5 px-7 py-2.5 text-[13px] text-muji-brand hover:text-white border border-muji-brand/30 rounded-full hover:bg-muji-brand hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 shadow-sm bg-white/50 backdrop-blur-sm">
         <i data-lucide="send" class="w-3.5 h-3.5"></i>
@@ -395,17 +414,19 @@
   <!-- AOS 動畫庫 JS 初始化 -->
   <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
   <script>
+    // 優化動畫：取消個別過長的 delay，改由整組 fade-up 解決卡頓感
     AOS.init({
-      duration: 800,
+      duration: 600,
       easing: 'ease-out-cubic',
       once: true,
-      offset: 30
+      offset: 10
     });
 
     lucide.createIcons();
 
-    // 依照網格順序對應陣列資料 (共12個工具)
+    // 依照網格順序對應陣列資料 (共14個工具)
     const appData = [
+      // 0
       {
         title: "🦅 股市智投",
         subtitle: "StockIntelli",
@@ -419,6 +440,7 @@
         ],
         link: "https://www.stockintelli.com/"
       },
+      // 1
       {
         title: "🧠 智慧產業地圖",
         subtitle: "NovaWeave",
@@ -432,6 +454,35 @@
         ],
         link: "https://aistockmap.com"
       },
+      // 2 (New)
+      {
+        title: "🧭 潮汐資金流",
+        subtitle: "TideFlow",
+        features: [
+          "視覺化資金輪動：透過板塊泡泡圖直觀呈現產業資金的流入流出與加速進場狀態，一目了然漲潮與退潮區間。",
+          "籌碼排行與勝率回測：提供法人買賣與「越跌越買」等多維度排行榜，並內建多空投票機制來累積與驗證個人看盤勝率。"
+        ],
+        targets: [
+          "需要快速掌握盤面資金流向與產業輪動節奏的投資人。",
+          "偏好跟隨法人籌碼趨勢進行佈局的波段交易者。"
+        ],
+        link: "https://tide-tw.app/#"
+      },
+      // 3 (New)
+      {
+        title: "🕸️ 交易解構情報台",
+        subtitle: "TradeLens",
+        features: [
+          "社群大數據清洗：從海量公開貼文中去重與清洗，精煉出真正具備實戰參考價值的交易訊號與觀點脈絡。",
+          "實戰流派深度拆解：將市場活躍帳號歸納為五大操作流派，逐一拆解其核心手法、風控停損紀律與操作侷限性邊界。"
+        ],
+        targets: [
+          "希望學習多種市場實戰交易手法與建立專屬操作框架的投資人。",
+          "需要過濾社群雜訊、尋找高價值市場情報與籌碼脈絡的專業交易者。"
+        ],
+        link: "https://threads.hypertridemeng.com/"
+      },
+      // 4
       {
         title: "🤖 量化策略研究",
         subtitle: "QuantGems",
@@ -445,6 +496,7 @@
         ],
         link: "https://www.quantgems.com/"
       },
+      // 5
       {
         title: "🌊 波段區間定位",
         subtitle: "EchoEquity",
@@ -458,6 +510,7 @@
         ],
         link: "https://twetq.com/"
       },
+      // 6
       {
         title: "🔬 量子矩陣平台",
         subtitle: "Quants.tw",
@@ -471,6 +524,7 @@
         ],
         link: "https://quants.tw/"
       },
+      // 7
       {
         title: "⚖️ 極智再平衡系統",
         subtitle: "BetaAlign",
@@ -484,6 +538,7 @@
         ],
         link: "https://jj-invest-public.vercel.app/?utm_source=ig&utm_medium=social&utm_content=link_in_bio&fbclid=PAZXh0bgNhZW0CMTEAc3J0YwZhcHBfaWQPNTY3MDY3MzQzMzUyNDI3AAGnP-G0RoKTrpoLr0Ri0BXxWFwJxbvcjQKkuxTtG4IdJYu4B_KwQ2M0pX00RqU_aem_1R9Dxdc_rccKo-udGFOzYw"
       },
+      // 8
       {
         title: "📈 Google 金融",
         subtitle: "Google Finance",
@@ -497,6 +552,7 @@
         ],
         link: "https://www.google.com/finance/beta"
       },
+      // 9
       {
         title: "🐯 Yahoo 金融",
         subtitle: "Yahoo Finance",
@@ -510,6 +566,7 @@
         ],
         link: "https://finance.yahoo.com/"
       },
+      // 10
       {
         title: "🔀 ETF 重疊分析",
         subtitle: "PrismOverlap",
@@ -523,6 +580,7 @@
         ],
         link: "https://etfcross.com/"
       },
+      // 11
       {
         title: "🚨 ETF 折溢價監控",
         subtitle: "FluoTrack",
@@ -536,6 +594,7 @@
         ],
         link: "https://twetf.com/"
       },
+      // 12
       {
         title: "☯️ 紀律交易系統",
         subtitle: "Solitude",
@@ -549,6 +608,7 @@
         ],
         link: "https://disciplined-trading.streamlit.app/"
       },
+      // 13
       {
         title: "⏳ 退休沙盒模擬",
         subtitle: "AevumSandbox",
