@@ -160,7 +160,7 @@
             </button>
           </div>
 
-          <!-- 2: 潮汐資金流 (New) -->
+          <!-- 2: 潮汐資金流 -->
           <div class="relative group h-full">
             <a href="https://tide-tw.app/#" target="_blank" class="flex flex-col justify-center w-full h-full min-h-[76px] py-4 pl-3.5 pr-9 bg-white border border-muji-border/80 rounded-2xl shadow-sm card-hover-effect">
               <span class="text-[13px] font-medium tracking-wide text-muji-text group-hover:text-muji-brand transition-colors leading-tight truncate">🧭 潮汐資金流</span>
@@ -171,7 +171,7 @@
             </button>
           </div>
 
-          <!-- 3: 交易解構情報台 (New) -->
+          <!-- 3: 交易解構情報台 -->
           <div class="relative group h-full">
             <a href="https://threads.hypertridemeng.com/" target="_blank" class="flex flex-col justify-center w-full h-full min-h-[76px] py-4 pl-3.5 pr-9 bg-white border border-muji-border/80 rounded-2xl shadow-sm card-hover-effect">
               <span class="text-[13px] font-medium tracking-wide text-muji-text group-hover:text-muji-brand transition-colors leading-tight truncate">🕸️ 交易解構情報台</span>
@@ -327,6 +327,17 @@
               <i data-lucide="info" class="w-4 h-4 text-muji-muted/50 hover:text-muji-brand transition-colors"></i>
             </button>
           </div>
+          
+          <!-- 14: 台指槓桿矩陣 (New) -->
+          <div class="relative group h-full">
+            <a href="https://hilarious-narwhal-c43429.netlify.app" target="_blank" class="flex flex-col justify-center w-full h-full min-h-[76px] py-4 pl-3.5 pr-9 bg-white border border-muji-border/80 rounded-2xl shadow-sm card-hover-effect">
+              <span class="text-[13px] font-medium tracking-wide text-muji-text group-hover:text-muji-brand transition-colors leading-tight truncate">🧮 台指槓桿矩陣</span>
+              <span class="text-[10px] text-muji-muted/80 tracking-wider mt-1.5 font-light block truncate">Leverage Matrix</span>
+            </a>
+            <button onclick="openDrawer(14)" class="absolute right-0 top-0 bottom-0 w-10 flex items-center justify-center border-l border-muji-border/30 hover:bg-muji-brandLight rounded-r-2xl transition-colors duration-200" aria-label="詳細資訊">
+              <i data-lucide="info" class="w-4 h-4 text-muji-muted/50 hover:text-muji-brand transition-colors"></i>
+            </button>
+          </div>
         </div>
       </section>
 
@@ -424,7 +435,7 @@
 
     lucide.createIcons();
 
-    // 依照網格順序對應陣列資料 (共14個工具)
+    // 依照網格順序對應陣列資料 (共15個工具)
     const appData = [
       // 0
       {
@@ -454,7 +465,7 @@
         ],
         link: "https://aistockmap.com"
       },
-      // 2 (New)
+      // 2 
       {
         title: "🧭 潮汐資金流",
         subtitle: "TideFlow",
@@ -468,7 +479,7 @@
         ],
         link: "https://tide-tw.app/#"
       },
-      // 3 (New)
+      // 3 
       {
         title: "🕸️ 交易解構情報台",
         subtitle: "TradeLens",
@@ -621,6 +632,20 @@
           "面臨複雜財務情境的雙薪家庭或中產階級：有房貸、子女教育費、多重收入交織，需要進行分段、動態模擬的投資人。"
         ],
         link: "https://roku-rgb.github.io/when-can-i-retire/#calculator"
+      },
+      // 14 (New)
+      {
+        title: "🧮 台指槓桿矩陣",
+        subtitle: "Leverage Matrix",
+        features: [
+          "多規格全支援：全面支援台指期大台、小台、微台等不同契約規模的計算與切換。",
+          "動態槓桿估算：僅需輸入目前大盤指數與期貨帳戶可用餘額，系統即自動精確估算出當前的實質槓桿倍數。"
+        ],
+        targets: [
+          "需要隨時監控保證金水位、精準管理曝險部位的台指期交易者。",
+          "欲建立資金風控機制，避免盲目過度擴張信用槓桿的專業投資人。"
+        ],
+        link: "https://hilarious-narwhal-c43429.netlify.app"
       }
     ];
 
