@@ -1,0 +1,13 @@
+{
+  "name": "prstk-lab",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "build:css": "tailwindcss -i ./src/styles.css -o ./assets/styles.css --minify",
+    "build": "npm run build:css",
+    "validate": "node scripts/validate-inline-js.cjs"
+  },
+  "devDependencies": {
+    "tailwindcss": "3.4.17"
+  }
+}

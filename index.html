@@ -2,15 +2,14 @@
 <html lang="zh-TW">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>PRStK Lab</title>
 
   <!-- App 圖示設定 (iOS 與 Android) -->
   <link rel="apple-touch-icon" href="PRStK app.png">
   <link rel="manifest" href="manifest.json">
 
-  <!-- Tailwind CSS -->
-  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="assets/styles.css">
   <!-- Google Fonts: Noto Sans TC & Inter -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -20,32 +19,8 @@
   <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
   
   <!-- Lucide Icons -->
-  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="https://unpkg.com/lucide@0.468.0"></script>
   
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          fontFamily: {
-            sans: ['Inter', 'Noto Sans TC', 'sans-serif'],
-          },
-          colors: {
-            muji: {
-              bg: '#FAF8F5',      /* 暖麻白 */
-              text: '#3C3935',    /* 溫潤炭灰 */
-              muted: '#625D56',   /* 亞麻深灰 - 提高清晰度 */
-              border: '#E3DDD5',  /* 溫暖的水泥灰線條 */
-              accent: '#8E7F72',  /* 淺木褐 */
-              hover: '#F5EFE6',   /* 溫暖觸摸色 */
-              brand: '#4A606D',   /* ⭐ 品牌色：擷取自 Logo 的沉穩灰藍色 */
-              brandLight: '#EEF2F4',/* ⭐ 品牌色超淺底色，用於標籤與 Hover */
-              section: '#8B979F'  /* 柔和的分類標題色 */
-            }
-          }
-        }
-      }
-    }
-  </script>
   
   <style>
     /* 隱藏滾動條，確保無印極簡視覺 */
@@ -55,6 +30,10 @@
     }
     body::-webkit-scrollbar {
       display: none;
+    }
+    :focus-visible {
+      outline: 3px solid #D97745;
+      outline-offset: 3px;
     }
     /* 滑出抽屜動畫 */
     .drawer-transition {
@@ -69,6 +48,16 @@
       transform: translateY(-3px);
       box-shadow: 0 8px 24px -6px rgba(74, 96, 109, 0.15);
       border-color: rgba(74, 96, 109, 0.3);
+    }
+    .tool-card { animation: card-enter 420ms cubic-bezier(0.16, 1, 0.3, 1) both; }
+    .tool-card.is-favorite .favorite-icon { fill: #D97745; stroke: #D97745; }
+    .filter-chip[aria-pressed="true"] { background: #1F3546; border-color: #1F3546; color: #fff; }
+    @keyframes card-enter {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration: 1ms !important; transition-duration: 1ms !important; scroll-behavior: auto !important; }
     }
     /* 自訂抽屜內部滾動條 */
     .custom-scrollbar::-webkit-scrollbar {
@@ -93,12 +82,12 @@
   </script>
 </head>
 
-<body class="bg-muji-bg text-muji-text font-sans min-h-[100dvh] flex flex-col justify-between overflow-x-hidden select-none">
+<body class="bg-muji-bg text-muji-text font-sans min-h-[100dvh] flex flex-col justify-between overflow-x-hidden">
   <!-- 背景微光裝飾（極簡無印風） -->
   <div class="absolute inset-0 bg-[radial-gradient(#E8E1D5_1px,transparent_1px)] [background-size:24px_24px] opacity-60 pointer-events-none fixed"></div>
 
   <!-- 主容器 (加寬一點點以容納分類標題，但仍保持適合手機閱讀的尺寸) -->
-  <div class="relative w-full max-w-[460px] mx-auto min-h-[100dvh] flex flex-col justify-between px-5 pt-10 pb-6 z-10">
+  <div class="relative w-full max-w-[1120px] mx-auto min-h-[100dvh] flex flex-col justify-between px-5 sm:px-8 lg:px-10 pt-10 pb-6 z-10">
     
     <!-- ================= 1. 頭部區域 ================= -->
     <header class="flex flex-col items-center text-center mb-6">
@@ -131,6 +120,21 @@
       <div class="text-[10px] tracking-[0.15em] text-muji-muted/60 ml-1 font-light flex items-center gap-1.5 -mb-2" data-aos="fade-right">
         <i data-lucide="compass" class="w-3 h-3"></i> 探索量化工具
       </div>
+
+      <section class="rounded-3xl border border-muji-border/80 bg-white/80 p-4 sm:p-5 shadow-sm backdrop-blur-sm" aria-label="工具搜尋與篩選" data-aos="fade-up">
+        <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+          <label class="relative block flex-1">
+            <span class="sr-only">搜尋工具</span>
+            <i data-lucide="search" class="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-muji-muted"></i>
+            <input id="tool-search" type="search" autocomplete="off" placeholder="搜尋工具、功能或適合對象" class="w-full rounded-xl border border-muji-border bg-muji-bg/70 py-3 pl-10 pr-4 text-sm text-muji-text placeholder:text-muji-muted/60 transition focus:border-muji-brand focus:bg-white focus:outline-none" />
+          </label>
+          <button id="favorites-filter" type="button" aria-pressed="false" class="filter-chip inline-flex items-center justify-center gap-2 rounded-xl border border-muji-border bg-white px-4 py-3 text-xs font-medium text-muji-brand transition hover:border-orange hover:text-orange">
+            <i data-lucide="heart" class="h-4 w-4"></i> 我的收藏
+          </button>
+        </div>
+        <div id="category-filters" class="mt-4 flex gap-2 overflow-x-auto pb-1" aria-label="工具分類"></div>
+        <p id="tool-result-summary" class="mt-3 text-xs text-muji-muted" aria-live="polite"></p>
+      </section>
 
       <!-- [分類 1] 洞察 ‧ 市場全景鳥瞰 -->
       <section data-aos="fade-up">
@@ -249,7 +253,7 @@
 
           <!-- 9: 極智再平衡系統 -->
           <div class="relative group h-full">
-            <a href="https://jj-invest-public.vercel.app/?utm_source=ig&utm_medium=social&utm_content=link_in_bio&fbclid=PAZXh0bgNhZW0CMTEAc3J0YwZhcHBfaWQPNTY3MDY3MzQzMzUyNDI3AAGnP-G0RoKTrpoLr0Ri0BXxWFwJxbvcjQKkuxTtG4IdJYu4B_KwQ2M0pX00RqU_aem_1R9Dxdc_rccKo-udGFOzYw" target="_blank" class="flex flex-col justify-center w-full h-full min-h-[76px] py-4 pl-3.5 pr-9 bg-white border border-muji-border/80 rounded-2xl shadow-sm card-hover-effect">
+            <a href="https://jj-invest-public.vercel.app/" target="_blank" class="flex flex-col justify-center w-full h-full min-h-[76px] py-4 pl-3.5 pr-9 bg-white border border-muji-border/80 rounded-2xl shadow-sm card-hover-effect">
               <span class="text-[13px] font-medium tracking-wide text-muji-text group-hover:text-muji-brand transition-colors leading-tight truncate">⚖️ 極智再平衡系統</span>
               <span class="text-[10px] text-muji-muted/80 tracking-wider mt-1.5 font-light block truncate">BetaAlign</span>
             </a>
@@ -405,19 +409,19 @@
 
   <!-- ================= 詳細資訊彈出抽屜 (Drawer) ================= -->
   <!-- 遮罩背景 -->
-  <div id="drawer-overlay" 
+  <div id="drawer-overlay" aria-hidden="true"
        onclick="closeDrawer()" 
        class="fixed inset-0 bg-muji-text/30 backdrop-blur-[2px] z-40 hidden opacity-0 transition-opacity duration-400">
   </div>
 
   <!-- 內容卡片 -->
-  <div id="info-drawer" 
+  <div id="info-drawer" role="dialog" aria-modal="true" aria-labelledby="drawer-title" tabindex="-1"
        class="fixed bottom-0 left-0 right-0 max-w-md mx-auto bg-white rounded-t-[28px] shadow-[0_-12px_40px_rgba(74,96,109,0.15)] z-50 transform translate-y-full drawer-transition border-t border-muji-border max-h-[85vh] flex flex-col">
     
     <!-- 頂部滑動裝飾條 -->
-    <div class="flex-shrink-0 pt-3.5 pb-1 cursor-pointer flex justify-center" onclick="closeDrawer()">
+    <button type="button" data-drawer-close aria-label="關閉詳細資訊" class="flex-shrink-0 pt-3.5 pb-1 cursor-pointer flex justify-center w-full">
       <div class="w-12 h-1.5 bg-muji-border/80 rounded-full hover:bg-muji-brand/40 transition-colors"></div>
-    </div>
+    </button>
     
     <!-- 抽屜內容 -->
     <div class="px-7 pb-8 pt-2 overflow-y-auto flex-1 custom-scrollbar">
@@ -428,7 +432,7 @@
           <h3 id="drawer-title" class="text-[19px] font-semibold tracking-wider text-muji-text">標題</h3>
           <p id="drawer-subtitle" class="text-[11px] text-muji-brand mt-1.5 tracking-widest font-medium bg-muji-brandLight inline-block px-2.5 py-0.5 rounded-md"></p>
         </div>
-        <button onclick="closeDrawer()" class="p-2 rounded-full hover:bg-muji-bg text-muji-muted hover:text-muji-brand transition-all flex-shrink-0 active:scale-95 bg-white shadow-sm border border-muji-border/30">
+        <button type="button" data-drawer-close aria-label="關閉詳細資訊" class="p-2 rounded-full hover:bg-muji-bg text-muji-muted hover:text-muji-brand transition-all flex-shrink-0 active:scale-95 bg-white shadow-sm border border-muji-border/30">
           <i data-lucide="x" class="w-4.5 h-4.5"></i>
         </button>
       </div>
@@ -458,7 +462,7 @@
 
       <!-- 快速前往按鈕 -->
       <div class="mt-8 pt-1">
-        <a id="drawer-link" href="#" target="_blank" 
+        <a id="drawer-link" href="#" target="_blank" rel="noopener noreferrer"
            class="group flex items-center justify-center gap-2.5 w-full py-4 bg-muji-brand hover:bg-[#384a54] text-white text-[13.5px] font-medium tracking-widest rounded-xl transition-all duration-300 shadow-[0_4px_15px_rgba(74,96,109,0.2)] hover:shadow-[0_6px_20px_rgba(74,96,109,0.3)] hover:-translate-y-0.5 active:scale-[0.98]">
           <span>開啟系統</span>
           <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-1.5 transition-transform"></i>
@@ -479,6 +483,14 @@
     });
 
     lucide.createIcons();
+
+    // Secure every external destination, including future cards added in HTML.
+    document.querySelectorAll('a[target="_blank"]').forEach(link => {
+      link.rel = 'noopener noreferrer';
+    });
+
+    let previousFocus = null;
+    let closeTimer = null;
 
     // 依照網格順序對應陣列資料 (共19個工具)
     const appData = [
@@ -620,7 +632,7 @@
           "想擺脫情緒干擾，追求讓長期投資變得更簡單、更有紀律的資產配置投資人。",
           "專注於正二（槓桿 ETF）與指數化投資，需要自動化工具輔助計算再平衡權重的交易者。"
         ],
-        link: "https://jj-invest-public.vercel.app/?utm_source=ig&utm_medium=social&utm_content=link_in_bio&fbclid=PAZXh0bgNhZW0CMTEAc3J0YwZhcHBfaWQPNTY3MDY3MzQzMzUyNDI3AAGnP-G0RoKTrpoLr0Ri0BXxWFwJxbvcjQKkuxTtG4IdJYu4B_KwQ2M0pX00RqU_aem_1R9Dxdc_rccKo-udGFOzYw"
+        link: "https://jj-invest-public.vercel.app/"
       },
       // 10
       {
@@ -750,40 +762,170 @@
       }
     ];
 
+    const categories = [
+      { id: 'insight', label: '洞察', icon: 'eye' },
+      { id: 'strategy', label: '矩陣', icon: 'chart-no-axes-combined' },
+      { id: 'market', label: '脈動', icon: 'globe' },
+      { id: 'etf', label: '稜鏡', icon: 'layers' },
+      { id: 'discipline', label: '守望', icon: 'shield-check' }
+    ];
+
+    const storageKey = 'prstk-lab-favorites';
+    const readFavorites = () => {
+      try { return new Set(JSON.parse(localStorage.getItem(storageKey) || '[]')); }
+      catch { return new Set(); }
+    };
+    const saveFavorites = favorites => {
+      try { localStorage.setItem(storageKey, JSON.stringify([...favorites])); }
+      catch { /* Browsing remains fully usable when storage is unavailable. */ }
+    };
+
+    const favorites = readFavorites();
+    let activeCategory = 'all';
+    let favoritesOnly = false;
+    const toolSearch = document.getElementById('tool-search');
+    const favoritesFilter = document.getElementById('favorites-filter');
+    const categoryFilters = document.getElementById('category-filters');
+    const resultSummary = document.getElementById('tool-result-summary');
+    const contentSections = [...document.querySelectorAll('main > section')]
+      .filter(section => !section.querySelector('#tool-search'));
+    const toolCards = [];
+
+    const makeFilterChip = (id, label, icon) => {
+      const button = document.createElement('button');
+      const iconElement = document.createElement('i');
+      button.type = 'button';
+      button.dataset.category = id;
+      button.setAttribute('aria-pressed', id === 'all' ? 'true' : 'false');
+      button.className = 'filter-chip inline-flex shrink-0 items-center gap-1.5 rounded-full border border-muji-border bg-white px-3 py-2 text-xs text-muji-brand transition hover:border-sage hover:text-muji-brand';
+      iconElement.setAttribute('data-lucide', icon);
+      iconElement.className = 'h-3.5 w-3.5';
+      button.append(iconElement, document.createTextNode(label));
+      return button;
+    };
+
+    categoryFilters.append(makeFilterChip('all', '全部工具', 'grid-2x2'));
+    categories.forEach(category => categoryFilters.append(makeFilterChip(category.id, category.label, category.icon)));
+
+    contentSections.forEach((section, categoryIndex) => {
+      const category = categories[categoryIndex];
+      const grid = section.querySelector(':scope > div.grid');
+      section.dataset.category = category.id;
+      grid?.classList.replace('grid-cols-2', 'grid-cols-1');
+      grid?.classList.add('sm:grid-cols-2', 'lg:grid-cols-3');
+
+      section.querySelectorAll('button[onclick^="openDrawer"]').forEach((detailButton, index) => {
+        const toolIndex = toolCards.length;
+        const card = detailButton.parentElement;
+        const tool = appData[toolIndex];
+        card.classList.add('tool-card');
+        card.dataset.toolIndex = toolIndex;
+        card.dataset.category = category.id;
+        card.style.animationDelay = `${Math.min(index * 45, 180)}ms`;
+        if (favorites.has(toolIndex)) card.classList.add('is-favorite');
+
+        const favoriteButton = document.createElement('button');
+        const favoriteIcon = document.createElement('i');
+        favoriteButton.type = 'button';
+        favoriteButton.className = 'absolute right-10 top-0 z-10 flex h-9 w-9 items-center justify-center rounded-bl-xl border-l border-muji-border/30 bg-white/70 text-muji-muted transition hover:bg-muji-brandLight hover:text-orange';
+        favoriteButton.setAttribute('aria-label', `收藏 ${tool.subtitle}`);
+        favoriteButton.setAttribute('aria-pressed', String(favorites.has(toolIndex)));
+        favoriteIcon.setAttribute('data-lucide', 'heart');
+        favoriteIcon.className = 'favorite-icon h-3.5 w-3.5';
+        favoriteButton.appendChild(favoriteIcon);
+        favoriteButton.addEventListener('click', () => {
+          if (favorites.has(toolIndex)) favorites.delete(toolIndex);
+          else favorites.add(toolIndex);
+          saveFavorites(favorites);
+          favoriteButton.setAttribute('aria-pressed', String(favorites.has(toolIndex)));
+          card.classList.toggle('is-favorite', favorites.has(toolIndex));
+          applyFilters();
+        });
+        card.appendChild(favoriteButton);
+        toolCards.push({ card, section, tool, toolIndex });
+      });
+    });
+
+    function applyFilters() {
+      const query = toolSearch.value.trim().toLocaleLowerCase('zh-TW');
+      let visibleCount = 0;
+      toolCards.forEach(({ card, tool, toolIndex }) => {
+        const searchableText = [tool.title, tool.subtitle, ...tool.features, ...tool.targets].join(' ').toLocaleLowerCase('zh-TW');
+        const matchesQuery = !query || searchableText.includes(query);
+        const matchesCategory = activeCategory === 'all' || card.dataset.category === activeCategory;
+        const matchesFavorite = !favoritesOnly || favorites.has(toolIndex);
+        const visible = matchesQuery && matchesCategory && matchesFavorite;
+        card.hidden = !visible;
+        if (visible) visibleCount += 1;
+      });
+      contentSections.forEach(section => {
+        section.hidden = ![...section.querySelectorAll('.tool-card')].some(card => !card.hidden);
+      });
+      resultSummary.textContent = visibleCount ? `顯示 ${visibleCount} 個工具` : '沒有符合的工具，請嘗試其他關鍵字或篩選條件。';
+    }
+
+    categoryFilters.addEventListener('click', event => {
+      const button = event.target.closest('button[data-category]');
+      if (!button) return;
+      activeCategory = button.dataset.category;
+      categoryFilters.querySelectorAll('button').forEach(chip => {
+        chip.setAttribute('aria-pressed', String(chip === button));
+      });
+      applyFilters();
+    });
+    toolSearch.addEventListener('input', applyFilters);
+    favoritesFilter.addEventListener('click', () => {
+      favoritesOnly = !favoritesOnly;
+      favoritesFilter.setAttribute('aria-pressed', String(favoritesOnly));
+      applyFilters();
+    });
+    applyFilters();
+    lucide.createIcons();
+
+    function renderList(list, items, markerClass) {
+      list.replaceChildren();
+      items.forEach(item => {
+        const li = document.createElement('li');
+        const marker = document.createElement('span');
+        const text = document.createElement('span');
+        li.className = 'flex items-start gap-3 relative';
+        marker.className = `mt-2.5 w-1.5 h-1.5 rounded-full ${markerClass} flex-shrink-0`;
+        text.className = 'flex-1';
+        text.textContent = item;
+        li.append(marker, text);
+        list.appendChild(li);
+      });
+    }
+
     function openDrawer(index) {
       const data = appData[index];
+      if (!data) return;
+      previousFocus = document.activeElement;
       
       document.getElementById('drawer-title').innerText = data.title;
       document.getElementById('drawer-subtitle').innerText = data.subtitle;
       document.getElementById('drawer-link').href = data.link;
 
-      // 渲染核心功能 (加入自訂圓點)
       const featuresUl = document.getElementById('drawer-features');
-      featuresUl.innerHTML = '';
-      data.features.forEach(feat => {
-        const li = document.createElement('li');
-        li.className = "flex items-start gap-3 relative";
-        li.innerHTML = `<span class="mt-2.5 w-1.5 h-1.5 rounded-full bg-muji-brand/60 flex-shrink-0"></span><span class="flex-1">${feat}</span>`;
-        featuresUl.appendChild(li);
-      });
+      renderList(featuresUl, data.features, 'bg-muji-brand/60');
 
-      // 渲染適合對象 (加入自訂圓點)
       const targetsUl = document.getElementById('drawer-targets');
-      targetsUl.innerHTML = '';
-      data.targets.forEach(t => {
-        const li = document.createElement('li');
-        li.className = "flex items-start gap-3 relative";
-        li.innerHTML = `<span class="mt-2.5 w-1.5 h-1.5 rounded-full bg-muji-accent/60 flex-shrink-0"></span><span class="flex-1">${t}</span>`;
-        targetsUl.appendChild(li);
-      });
+      renderList(targetsUl, data.targets, 'bg-muji-accent/60');
 
       const overlay = document.getElementById('drawer-overlay');
       const drawer = document.getElementById('info-drawer');
       
+      document.querySelectorAll('[data-drawer-trigger]').forEach(button => {
+        button.setAttribute('aria-expanded', 'false');
+      });
+      const trigger = document.querySelector(`[data-drawer-trigger="${index}"]`);
+      trigger?.setAttribute('aria-expanded', 'true');
       overlay.classList.remove('hidden');
+      overlay.setAttribute('aria-hidden', 'false');
       setTimeout(() => {
         overlay.classList.add('opacity-100');
         drawer.classList.remove('translate-y-full');
+        drawer.querySelector('[data-drawer-close]')?.focus();
       }, 10);
     }
 
@@ -793,11 +935,33 @@
       
       overlay.classList.remove('opacity-100');
       drawer.classList.add('translate-y-full');
+      overlay.setAttribute('aria-hidden', 'true');
+      document.querySelectorAll('[data-drawer-trigger]').forEach(button => button.setAttribute('aria-expanded', 'false'));
       
-      setTimeout(() => {
+      clearTimeout(closeTimer);
+      closeTimer = setTimeout(() => {
         overlay.classList.add('hidden');
+        previousFocus?.focus?.();
       }, 400); // 對應 css 動畫的 0.4s
     }
+
+    document.querySelectorAll('button[onclick^="openDrawer"]').forEach((button, index) => {
+      button.dataset.drawerTrigger = index;
+      button.setAttribute('aria-controls', 'info-drawer');
+      button.setAttribute('aria-expanded', 'false');
+      const name = appData[index]?.subtitle || '工具';
+      button.setAttribute('aria-label', `查看 ${name} 的詳細資訊`);
+    });
+
+    document.querySelectorAll('[data-drawer-close]').forEach(button => {
+      button.addEventListener('click', closeDrawer);
+    });
+
+    document.addEventListener('keydown', event => {
+      if (event.key === 'Escape' && !document.getElementById('info-drawer').classList.contains('translate-y-full')) {
+        closeDrawer();
+      }
+    });
   </script>
 </body>
 </html>
