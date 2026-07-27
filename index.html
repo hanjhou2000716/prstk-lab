@@ -208,6 +208,17 @@
               <i data-lucide="info" class="w-4 h-4 text-muji-muted/50 hover:text-muji-brand transition-colors"></i>
             </button>
           </div>
+
+          <!-- 21: 台股每日分析 -->
+          <div class="relative group h-full">
+            <a href="https://7388chichi.pages.dev/" target="_blank" class="flex flex-col justify-center w-full h-full min-h-[76px] py-4 pl-3.5 pr-9 bg-white border border-muji-border/80 rounded-2xl shadow-sm card-hover-effect">
+              <span class="text-[13px] font-medium tracking-wide text-muji-text group-hover:text-muji-brand transition-colors leading-tight truncate">📡 台股每日分析</span>
+              <span class="text-[10px] text-muji-muted/80 tracking-wider mt-1.5 font-light block truncate">TWStock Pulse</span>
+            </a>
+            <button onclick="openDrawer(21)" class="absolute right-0 top-0 bottom-0 w-10 flex items-center justify-center border-l border-muji-border/30 hover:bg-muji-brandLight rounded-r-2xl transition-colors duration-200" aria-label="詳細資訊">
+              <i data-lucide="info" class="w-4 h-4 text-muji-muted/50 hover:text-muji-brand transition-colors"></i>
+            </button>
+          </div>
         </div>
       </section>
 
@@ -406,6 +417,28 @@
               <span class="text-[10px] text-muji-muted/80 tracking-wider mt-1.5 font-light block truncate">Margin Copilot</span>
             </a>
             <button onclick="openDrawer(19)" class="absolute right-0 top-0 bottom-0 w-10 flex items-center justify-center border-l border-muji-border/30 hover:bg-muji-brandLight rounded-r-2xl transition-colors duration-200" aria-label="詳細資訊">
+              <i data-lucide="info" class="w-4 h-4 text-muji-muted/50 hover:text-muji-brand transition-colors"></i>
+            </button>
+          </div>
+
+          <!-- 22: 退休咖 -->
+          <div class="relative group h-full">
+            <a href="https://www.retirementplantw.com/tools/compound-interest" target="_blank" class="flex flex-col justify-center w-full h-full min-h-[76px] py-4 pl-3.5 pr-9 bg-white border border-muji-border/80 rounded-2xl shadow-sm card-hover-effect">
+              <span class="text-[13px] font-medium tracking-wide text-muji-text group-hover:text-muji-brand transition-colors leading-tight truncate">🌴 退休咖</span>
+              <span class="text-[10px] text-muji-muted/80 tracking-wider mt-1.5 font-light block truncate">RetireYield</span>
+            </a>
+            <button onclick="openDrawer(22)" class="absolute right-0 top-0 bottom-0 w-10 flex items-center justify-center border-l border-muji-border/30 hover:bg-muji-brandLight rounded-r-2xl transition-colors duration-200" aria-label="詳細資訊">
+              <i data-lucide="info" class="w-4 h-4 text-muji-muted/50 hover:text-muji-brand transition-colors"></i>
+            </button>
+          </div>
+
+          <!-- 23: 倉位精算師 -->
+          <div class="relative group h-full">
+            <a href="https://web-concept-five.vercel.app/" target="_blank" class="flex flex-col justify-center w-full h-full min-h-[76px] py-4 pl-3.5 pr-9 bg-white border border-muji-border/80 rounded-2xl shadow-sm card-hover-effect">
+              <span class="text-[13px] font-medium tracking-wide text-muji-text group-hover:text-muji-brand transition-colors leading-tight truncate">🎛️ 倉位精算師</span>
+              <span class="text-[10px] text-muji-muted/80 tracking-wider mt-1.5 font-light block truncate">POSITION</span>
+            </a>
+            <button onclick="openDrawer(23)" class="absolute right-0 top-0 bottom-0 w-10 flex items-center justify-center border-l border-muji-border/30 hover:bg-muji-brandLight rounded-r-2xl transition-colors duration-200" aria-label="詳細資訊">
               <i data-lucide="info" class="w-4 h-4 text-muji-muted/50 hover:text-muji-brand transition-colors"></i>
             </button>
           </div>
@@ -809,6 +842,48 @@
           "偏好數據驅動、需要一站式快速評估個股基本面與技術趨勢的專業交易者。"
         ],
         link: "https://stock-vision-engine.vercel.app/"
+      },
+      // 21
+      {
+        title: "📡 台股每日分析",
+        subtitle: "TWStock Pulse",
+        features: [
+          "每日盤後自動化解析：整合台股每日大盤與重點個股數據，快速產出結構化的盤後動態與趨勢判讀。",
+          "關鍵市場訊號追蹤：自動捕捉當日資金去向與市場焦點，協助投資人高效梳理盤面重點。"
+        ],
+        targets: [
+          "需要快速掌握台股每日盤後重點、縮短複盤時間的忙碌上班族與投資人。",
+          "偏好追蹤每日市場情緒與短中線行情變化的台股交易者。"
+        ],
+        link: "https://7388chichi.pages.dev/"
+      },
+      // 22
+      {
+        title: "🌴 退休咖",
+        subtitle: "RetireYield",
+        features: [
+          "複利效應動態試算：直觀模擬不同投入金額、年化報酬率與投資年限下的資產複利加乘效果。",
+          "退休藍圖與目標推算：試算定期定額資產成長曲線，精準計算達到財務自由（FIRE）目標所需的累積時間。"
+        ],
+        targets: [
+          "正在規劃長期退休資產、想了解複利威力與目標達成率的長期存股族。",
+          "希望試算定期定額效果、提早規劃財務自由路徑的指數化投資人。"
+        ],
+        link: "https://www.retirementplantw.com/tools/compound-interest"
+      },
+      // 23
+      {
+        title: "🎛️ 倉位精算師",
+        subtitle: "POSITION",
+        features: [
+          "部位規模與風控精算：依據個人帳戶資金與風險承受度，精算每筆交易最佳下單股數與部位佔比。",
+          "動態風險敞口模擬：即時試算不同停損距離下的預期虧損，協助建構紀律化的資金管理體系。"
+        ],
+        targets: [
+          "重視風險控制與資金管理，希望避免過度槓桿或重倉單一標的的交易者。",
+          "需要科學化、數據化工具輔助計算最佳部位規模的波段或量化投資人。"
+        ],
+        link: "https://web-concept-five.vercel.app/"
       }
     ];
 
