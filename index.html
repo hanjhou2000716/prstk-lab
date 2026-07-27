@@ -251,17 +251,6 @@
             </button>
           </div>
 
-          <!-- 9: 極智再平衡系統 -->
-          <div class="relative group h-full">
-            <a href="https://jj-invest-public.vercel.app/" target="_blank" class="flex flex-col justify-center w-full h-full min-h-[76px] py-4 pl-3.5 pr-9 bg-white border border-muji-border/80 rounded-2xl shadow-sm card-hover-effect">
-              <span class="text-[13px] font-medium tracking-wide text-muji-text group-hover:text-muji-brand transition-colors leading-tight truncate">⚖️ 極智再平衡系統</span>
-              <span class="text-[10px] text-muji-muted/80 tracking-wider mt-1.5 font-light block truncate">BetaAlign</span>
-            </a>
-            <button onclick="openDrawer(9)" class="absolute right-0 top-0 bottom-0 w-10 flex items-center justify-center border-l border-muji-border/30 hover:bg-muji-brandLight rounded-r-2xl transition-colors duration-200" aria-label="詳細資訊">
-              <i data-lucide="info" class="w-4 h-4 text-muji-muted/50 hover:text-muji-brand transition-colors"></i>
-            </button>
-          </div>
-          
           <!-- 10: 量子研究室 -->
           <div class="relative group h-full">
             <a href="https://studio.finlab.finance/chat" target="_blank" class="flex flex-col justify-center w-full h-full min-h-[76px] py-4 pl-3.5 pr-9 bg-white border border-muji-border/80 rounded-2xl shadow-sm card-hover-effect">
@@ -384,6 +373,28 @@
               <span class="text-[10px] text-muji-muted/80 tracking-wider mt-1.5 font-light block truncate">AttnPulse</span>
             </a>
             <button onclick="openDrawer(18)" class="absolute right-0 top-0 bottom-0 w-10 flex items-center justify-center border-l border-muji-border/30 hover:bg-muji-brandLight rounded-r-2xl transition-colors duration-200" aria-label="詳細資訊">
+              <i data-lucide="info" class="w-4 h-4 text-muji-muted/50 hover:text-muji-brand transition-colors"></i>
+            </button>
+          </div>
+
+          <!-- 9: 極智再平衡系統 -->
+          <div class="relative group h-full">
+            <a href="https://jj-invest-public.vercel.app/" target="_blank" class="flex flex-col justify-center w-full h-full min-h-[76px] py-4 pl-3.5 pr-9 bg-white border border-muji-border/80 rounded-2xl shadow-sm card-hover-effect">
+              <span class="text-[13px] font-medium tracking-wide text-muji-text group-hover:text-muji-brand transition-colors leading-tight truncate">⚖️ 極智再平衡系統</span>
+              <span class="text-[10px] text-muji-muted/80 tracking-wider mt-1.5 font-light block truncate">BetaAlign</span>
+            </a>
+            <button onclick="openDrawer(9)" class="absolute right-0 top-0 bottom-0 w-10 flex items-center justify-center border-l border-muji-border/30 hover:bg-muji-brandLight rounded-r-2xl transition-colors duration-200" aria-label="詳細資訊">
+              <i data-lucide="info" class="w-4 h-4 text-muji-muted/50 hover:text-muji-brand transition-colors"></i>
+            </button>
+          </div>
+
+          <!-- 19: 槓桿領航員 -->
+          <div class="relative group h-full">
+            <a href="https://hanjhou2000716.github.io/Margin_Copilot/" target="_blank" class="flex flex-col justify-center w-full h-full min-h-[76px] py-4 pl-3.5 pr-9 bg-white border border-muji-border/80 rounded-2xl shadow-sm card-hover-effect">
+              <span class="text-[13px] font-medium tracking-wide text-muji-text group-hover:text-muji-brand transition-colors leading-tight truncate">🧭 槓桿領航員</span>
+              <span class="text-[10px] text-muji-muted/80 tracking-wider mt-1.5 font-light block truncate">Margin Copilot</span>
+            </a>
+            <button onclick="openDrawer(19)" class="absolute right-0 top-0 bottom-0 w-10 flex items-center justify-center border-l border-muji-border/30 hover:bg-muji-brandLight rounded-r-2xl transition-colors duration-200" aria-label="詳細資訊">
               <i data-lucide="info" class="w-4 h-4 text-muji-muted/50 hover:text-muji-brand transition-colors"></i>
             </button>
           </div>
@@ -759,6 +770,20 @@
           "希望提早預判風險、規避個股遭列處置降槓桿風險的台股投資人。"
         ],
         link: "https://attnup.com/trending"
+      },
+      // 19
+      {
+        title: "🧭 槓桿領航員",
+        subtitle: "Margin Copilot",
+        features: [
+          "整戶維持率動態監管：即時整合股票質押、融資做多與融券做空部位，自動計算總擔保品市值、總負債與整體維持率，並透過無印風視覺燈號即時預警展期線（166%）與斷頭追繳線（130%）。",
+          "壓力測試與去槓桿試算：內建 DEVTPS S10 財務力學模型與大盤暴跌模擬滑桿（0%～-50%），觸發警戒時能自動算出需補繳現金金額，以及需精確變賣多少張游離態避雷針（00685L）以將維持率拉回安全水位。"
+        ],
+        targets: [
+          "使用股票質押、融資或融券放大資金槓桿，需要隨時掌控整戶維持率與斷頭價的台股投資人。",
+          "實踐 DEVTPS 槓桿策略、重視風險控管，需要在黑天鵝極端行情下擁有清晰「去槓桿與救援 SOP」的紀律交易者。"
+        ],
+        link: "https://hanjhou2000716.github.io/Margin_Copilot/"
       }
     ];
 
@@ -815,9 +840,10 @@
       grid?.classList.add('sm:grid-cols-2', 'lg:grid-cols-3');
 
       section.querySelectorAll('button[onclick^="openDrawer"]').forEach((detailButton, index) => {
-        const toolIndex = toolCards.length;
+        const toolIndex = Number(detailButton.getAttribute('onclick').match(/\d+/)?.[0]);
         const card = detailButton.parentElement;
         const tool = appData[toolIndex];
+        if (!tool) return;
         card.classList.add('tool-card');
         card.dataset.toolIndex = toolIndex;
         card.dataset.category = category.id;
@@ -946,10 +972,11 @@
     }
 
     document.querySelectorAll('button[onclick^="openDrawer"]').forEach((button, index) => {
-      button.dataset.drawerTrigger = index;
+      const toolIndex = Number(button.getAttribute('onclick').match(/\d+/)?.[0]);
+      button.dataset.drawerTrigger = toolIndex;
       button.setAttribute('aria-controls', 'info-drawer');
       button.setAttribute('aria-expanded', 'false');
-      const name = appData[index]?.subtitle || '工具';
+      const name = appData[toolIndex]?.subtitle || '工具';
       button.setAttribute('aria-label', `查看 ${name} 的詳細資訊`);
     });
 
