@@ -64,18 +64,28 @@
     #category-filters { scrollbar-width: none; }
     #category-filters::-webkit-scrollbar { display: none; }
     /* 首頁只負責快速瀏覽；收藏、釘選與詳細資訊集中在完整工具面板。 */
-    #home-card-grid { grid-template-rows: repeat(2, 5.9rem); }
-    #home-card-grid .tool-card { min-height: 5.9rem; }
+    #home-card-grid { grid-template-rows: repeat(2, 4.15rem); }
+    #home-card-grid .tool-card { min-height: 4.15rem; }
     #home-card-grid .tool-action { display: none; }
-    #home-card-grid .card-hover-effect { min-height: 5.9rem; padding-right: 0.9rem !important; }
+    #home-card-grid .card-hover-effect { min-height: 4.15rem; padding: 0.5rem 0.7rem !important; }
+    #home-card-grid .card-hover-effect > span:first-child { font-size: clamp(0.68rem, 2.8vw, 0.8rem) !important; line-height: 1.18 !important; }
+    #home-card-grid .card-hover-effect > span:nth-child(2) { margin-top: 0.2rem !important; font-size: clamp(0.58rem, 2.3vw, 0.68rem) !important; }
+    #drawer-overlay { z-index: 70; }
+    #info-drawer { z-index: 80; }
+    @media (hover: none) {
+      .card-hover-effect:active { transform: scale(0.985); box-shadow: 0 4px 14px -7px rgba(74, 96, 109, 0.3); }
+      .filter-chip:active, #view-all-tools:active { transform: scale(0.96); }
+    }
     @media (max-width: 480px) {
       .tool-card .card-hover-effect { padding: 0.8rem 3rem 0.7rem 0.8rem !important; }
       .tool-card .card-hover-effect > span:first-child { font-size: 0.88rem !important; line-height: 1.25 !important; }
       .tool-card .card-hover-effect > span:nth-child(2) { margin-top: 0.35rem !important; font-size: 0.7rem !important; }
-      #home-card-grid { gap: 0.75rem; grid-template-rows: repeat(2, 5.7rem); }
+      #home-card-grid { gap: 0.75rem; grid-template-rows: repeat(2, 4rem); }
       #home-card-grid .tool-card,
-      #home-card-grid .card-hover-effect { min-height: 5.7rem; }
-      #home-card-grid .card-hover-effect { padding: 0.8rem !important; }
+      #home-card-grid .card-hover-effect { min-height: 4rem; }
+      #home-card-grid .card-hover-effect { padding: 0.45rem 0.65rem !important; }
+      #home-card-grid .card-hover-effect > span:first-child { font-size: clamp(0.66rem, 2.8vw, 0.76rem) !important; line-height: 1.18 !important; }
+      #home-card-grid .card-hover-effect > span:nth-child(2) { margin-top: 0.15rem !important; font-size: clamp(0.55rem, 2.25vw, 0.64rem) !important; }
     }
     @keyframes card-enter {
       from { opacity: 0; transform: translateY(10px); }
@@ -122,7 +132,7 @@
           id="logo-img"
           src="PRStK Lab-Remove.png" 
           alt="PRStK Lab Logo" 
-          class="w-[58%] max-w-[180px] h-auto max-h-[8vh] object-contain transition-opacity duration-300"
+          class="w-[72%] max-w-[270px] h-auto max-h-[12vh] object-contain transition-opacity duration-300"
           onerror="handleLogoError()"
         />
         <!-- 備用純文字 Logo -->
@@ -133,7 +143,7 @@
       </div>
       
       <!-- ⭐ 乾淨純粹的 Slogan -->
-      <p class="text-[11px] tracking-[0.16em] text-muji-muted font-normal flex items-center justify-center mt-1" data-aos="fade-in" data-aos-delay="100" data-aos-duration="1000">
+      <p class="text-[16px] tracking-[0.16em] text-muji-muted font-normal flex items-center justify-center mt-1" data-aos="fade-in" data-aos-delay="100" data-aos-duration="1000">
         <span>想和你一起慢慢變富。</span>
       </p>
     </header>
@@ -518,12 +528,12 @@
   <!-- 遮罩背景 -->
   <div id="drawer-overlay" aria-hidden="true"
        onclick="closeDrawer()" 
-       class="fixed inset-0 bg-muji-text/30 backdrop-blur-[2px] z-40 hidden opacity-0 transition-opacity duration-400">
+       class="fixed inset-0 bg-muji-text/30 backdrop-blur-[2px] z-[70] hidden opacity-0 transition-opacity duration-400">
   </div>
 
   <!-- 內容卡片 -->
   <div id="info-drawer" role="dialog" aria-modal="true" aria-labelledby="drawer-title" tabindex="-1"
-       class="fixed bottom-0 left-0 right-0 max-w-md mx-auto bg-white rounded-t-[28px] shadow-[0_-12px_40px_rgba(74,96,109,0.15)] z-50 transform translate-y-full drawer-transition border-t border-muji-border max-h-[85vh] flex flex-col">
+       class="fixed bottom-0 left-0 right-0 max-w-md mx-auto bg-white rounded-t-[28px] shadow-[0_-12px_40px_rgba(74,96,109,0.15)] z-[80] transform translate-y-full drawer-transition border-t border-muji-border max-h-[85vh] flex flex-col">
     
     <!-- 頂部滑動裝飾條 -->
     <button type="button" data-drawer-close aria-label="關閉詳細資訊" class="flex-shrink-0 pt-3.5 pb-1 cursor-pointer flex justify-center w-full">
