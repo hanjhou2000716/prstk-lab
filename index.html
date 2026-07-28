@@ -70,6 +70,8 @@
     #home-card-grid .card-hover-effect { min-height: 4.15rem; padding: 0.5rem 0.7rem !important; }
     #home-card-grid .card-hover-effect > span:first-child { font-size: clamp(0.68rem, 2.8vw, 0.8rem) !important; line-height: 1.18 !important; }
     #home-card-grid .card-hover-effect > span:nth-child(2) { margin-top: 0.2rem !important; font-size: clamp(0.58rem, 2.3vw, 0.68rem) !important; }
+    #home-tools { margin-top: 1.75rem !important; }
+    #home-card-grid.is-updating { animation: content-settle 240ms ease-out both; }
     #drawer-overlay { z-index: 70; }
     #info-drawer { z-index: 80; }
     @media (hover: none) {
@@ -89,6 +91,10 @@
     }
     @keyframes card-enter {
       from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes content-settle {
+      from { opacity: 0.72; transform: translateY(4px); }
       to { opacity: 1; transform: translateY(0); }
     }
     @media (prefers-reduced-motion: reduce) {
@@ -125,7 +131,7 @@
   <div class="relative w-full max-w-[720px] mx-auto h-[100dvh] overflow-hidden flex flex-col justify-between px-5 pt-4 sm:px-8 sm:pt-6 pb-4 z-10">
     
     <!-- ================= 1. 頭部區域 ================= -->
-    <header class="flex flex-col items-center text-center mb-3">
+    <header class="flex flex-col items-center text-center mb-7">
        <!-- 標誌圖片 -->
       <div class="w-full flex items-center justify-center mb-1" data-aos="fade-down" data-aos-duration="800">
         <img 
@@ -143,7 +149,7 @@
       </div>
       
       <!-- ⭐ 乾淨純粹的 Slogan -->
-      <p class="text-[16px] tracking-[0.16em] text-muji-muted font-normal flex items-center justify-center mt-1" data-aos="fade-in" data-aos-delay="100" data-aos-duration="1000">
+      <p class="text-[11px] tracking-[0.16em] text-muji-muted font-normal flex items-center justify-center mt-1" data-aos="fade-in" data-aos-delay="100" data-aos-duration="1000">
         <span>想和你一起慢慢變富。</span>
       </p>
     </header>
@@ -176,8 +182,8 @@
 
        <section id="home-tools" class="flex-none flex flex-col" aria-label="首頁工具">
         <div class="mb-2 flex items-center justify-between">
-          <h2 id="home-tools-title" class="text-xs font-semibold tracking-[0.12em] text-muji-section">為你精選</h2>
-          <span class="text-[10px] text-muji-muted/70">最多 4 個</span>
+          <h2 id="home-tools-title" class="text-xs font-semibold leading-none tracking-[0.12em] text-muji-section">為你精選</h2>
+          <span class="text-[10px] leading-none text-muji-muted/70">最多 4 個</span>
         </div>
          <div id="home-card-grid" class="grid grid-cols-2 gap-3"></div>
         <p id="home-empty" class="hidden flex-1 items-center justify-center rounded-2xl border border-dashed border-muji-border bg-white/55 px-8 text-center text-sm leading-6 text-muji-muted"></p>
@@ -975,6 +981,7 @@
     let favoritesOnly = false;
     let panelOpen = false;
     let currentMatches = [];
+    let homeRefreshTimer;
     const toolSearch = document.getElementById('tool-search');
     const favoritesFilter = document.getElementById('favorites-filter');
     const categoryFilters = document.getElementById('category-filters');
@@ -1120,10 +1127,21 @@
       moveCardsTo(entries, toolPanelGrid);
     };
 
+    const animateHomeUpdate = () => {
+      homeGrid.classList.remove('is-updating');
+      void homeGrid.offsetWidth;
+      homeGrid.classList.add('is-updating');
+      clearTimeout(homeRefreshTimer);
+      homeRefreshTimer = setTimeout(() => homeGrid.classList.remove('is-updating'), 260);
+    };
+
     function applyFilters() {
       currentMatches = getMatches();
       if (panelOpen) renderPanel(currentMatches);
-      else renderHome(currentMatches);
+      else {
+        renderHome(currentMatches);
+        animateHomeUpdate();
+      }
     }
 
     categoryFilters.addEventListener('click', event => {
