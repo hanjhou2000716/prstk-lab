@@ -63,11 +63,19 @@
     .tool-panel-open { overflow: hidden; }
     #category-filters { scrollbar-width: none; }
     #category-filters::-webkit-scrollbar { display: none; }
+    /* 首頁只負責快速瀏覽；收藏、釘選與詳細資訊集中在完整工具面板。 */
+    #home-card-grid { grid-template-rows: repeat(2, 5.9rem); }
+    #home-card-grid .tool-card { min-height: 5.9rem; }
+    #home-card-grid .tool-action { display: none; }
+    #home-card-grid .card-hover-effect { min-height: 5.9rem; padding-right: 0.9rem !important; }
     @media (max-width: 480px) {
       .tool-card .card-hover-effect { padding: 0.8rem 3rem 0.7rem 0.8rem !important; }
       .tool-card .card-hover-effect > span:first-child { font-size: 0.88rem !important; line-height: 1.25 !important; }
       .tool-card .card-hover-effect > span:nth-child(2) { margin-top: 0.35rem !important; font-size: 0.7rem !important; }
-      #home-card-grid { gap: 0.75rem; }
+      #home-card-grid { gap: 0.75rem; grid-template-rows: repeat(2, 5.7rem); }
+      #home-card-grid .tool-card,
+      #home-card-grid .card-hover-effect { min-height: 5.7rem; }
+      #home-card-grid .card-hover-effect { padding: 0.8rem !important; }
     }
     @keyframes card-enter {
       from { opacity: 0; transform: translateY(10px); }
@@ -156,12 +164,12 @@
         </div>
       </section>
 
-      <section id="home-tools" class="flex-1 min-h-0 flex flex-col" aria-label="首頁工具">
+       <section id="home-tools" class="flex-none flex flex-col" aria-label="首頁工具">
         <div class="mb-2 flex items-center justify-between">
           <h2 id="home-tools-title" class="text-xs font-semibold tracking-[0.12em] text-muji-section">為你精選</h2>
           <span class="text-[10px] text-muji-muted/70">最多 4 個</span>
         </div>
-        <div id="home-card-grid" class="grid flex-1 grid-cols-2 grid-rows-2 gap-3"></div>
+         <div id="home-card-grid" class="grid grid-cols-2 gap-3"></div>
         <p id="home-empty" class="hidden flex-1 items-center justify-center rounded-2xl border border-dashed border-muji-border bg-white/55 px-8 text-center text-sm leading-6 text-muji-muted"></p>
       </section>
 
