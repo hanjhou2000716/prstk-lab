@@ -52,6 +52,8 @@
     .tool-card { animation: card-enter 420ms cubic-bezier(0.16, 1, 0.3, 1) both; }
     .tool-card.is-favorite .favorite-icon { fill: #D97745; stroke: #D97745; }
     .filter-chip[aria-pressed="true"] { background: #1F3546; border-color: #1F3546; color: #fff; }
+    .pin-button[aria-pressed="true"] { background: #D97745; color: #fff; border-color: #D97745; }
+    .tool-panel-open { overflow: hidden; }
     @keyframes card-enter {
       from { opacity: 0; transform: translateY(10px); }
       to { opacity: 1; transform: translateY(0); }
@@ -87,7 +89,7 @@
   <div class="absolute inset-0 bg-[radial-gradient(#E8E1D5_1px,transparent_1px)] [background-size:24px_24px] opacity-60 pointer-events-none fixed"></div>
 
   <!-- 主容器 (加寬一點點以容納分類標題，但仍保持適合手機閱讀的尺寸) -->
-  <div class="relative w-full max-w-[1120px] mx-auto min-h-[100dvh] flex flex-col justify-between px-5 sm:px-8 lg:px-10 pt-10 pb-6 z-10">
+  <div class="relative w-full max-w-[720px] mx-auto h-[100dvh] overflow-hidden flex flex-col justify-between px-5 pt-6 sm:px-8 sm:pt-8 pb-5 z-10">
     
     <!-- ================= 1. 頭部區域 ================= -->
     <header class="flex flex-col items-center text-center mb-6">
@@ -114,7 +116,7 @@
     </header>
 
     <!-- ================= 2. 分類導覽區 ================= -->
-    <main class="flex-1 flex flex-col justify-start w-full space-y-8">
+    <main class="flex-1 flex flex-col justify-start min-h-0 w-full space-y-3">
       
       <!-- 引導文案 (稍微淡化，不搶分類標題的視覺) -->
       <div class="text-[10px] tracking-[0.15em] text-muji-muted/60 ml-1 font-light flex items-center gap-1.5 -mb-2" data-aos="fade-right">
@@ -122,18 +124,30 @@
       </div>
 
       <section class="rounded-3xl border border-muji-border/80 bg-white/80 p-4 sm:p-5 shadow-sm backdrop-blur-sm" aria-label="工具搜尋與篩選" data-aos="fade-up">
-        <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+        <div class="flex flex-row gap-2 items-center">
           <label class="relative block flex-1">
             <span class="sr-only">搜尋工具</span>
             <i data-lucide="search" class="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-muji-muted"></i>
             <input id="tool-search" type="search" autocomplete="off" placeholder="搜尋工具、功能或適合對象" class="w-full rounded-xl border border-muji-border bg-muji-bg/70 py-3 pl-10 pr-4 text-sm text-muji-text placeholder:text-muji-muted/60 transition focus:border-muji-brand focus:bg-white focus:outline-none" />
           </label>
-          <button id="favorites-filter" type="button" aria-pressed="false" class="filter-chip inline-flex items-center justify-center gap-2 rounded-xl border border-muji-border bg-white px-4 py-3 text-xs font-medium text-muji-brand transition hover:border-orange hover:text-orange">
-            <i data-lucide="heart" class="h-4 w-4"></i> 我的收藏
+          <button id="favorites-filter" type="button" aria-label="只顯示我的最愛" title="我的最愛" aria-pressed="false" class="filter-chip inline-flex shrink-0 items-center justify-center rounded-xl border border-muji-border bg-white px-3 py-3 text-xs font-medium text-muji-brand transition hover:border-orange hover:text-orange">
+            <i data-lucide="heart" class="h-4 w-4"></i>
           </button>
         </div>
         <div id="category-filters" class="mt-4 flex gap-2 overflow-x-auto pb-1" aria-label="工具分類"></div>
-        <p id="tool-result-summary" class="mt-3 text-xs text-muji-muted" aria-live="polite"></p>
+        <div class="mt-3 flex items-center justify-between gap-3">
+          <p id="tool-result-summary" class="text-xs text-muji-muted" aria-live="polite"></p>
+          <button id="view-all-tools" type="button" class="hidden text-xs font-medium text-muji-brand hover:text-orange">查看全部</button>
+        </div>
+      </section>
+
+      <section id="home-tools" class="flex-1 min-h-0 flex flex-col" aria-label="首頁工具">
+        <div class="mb-2 flex items-center justify-between">
+          <h2 id="home-tools-title" class="text-xs font-semibold tracking-[0.12em] text-muji-section">為你精選</h2>
+          <span class="text-[10px] text-muji-muted/70">最多 4 個</span>
+        </div>
+        <div id="home-card-grid" class="grid flex-1 grid-cols-2 grid-rows-2 gap-3"></div>
+        <p id="home-empty" class="hidden flex-1 items-center justify-center rounded-2xl border border-dashed border-muji-border bg-white/55 px-8 text-center text-sm leading-6 text-muji-muted"></p>
       </section>
 
       <!-- [分類 1] 洞察 ‧ 市場全景鳥瞰 -->
@@ -448,7 +462,7 @@
     </main>
 
     <!-- ================= 3. 頁尾資訊 ================= -->
-    <footer class="text-center flex flex-col items-center gap-2.5 mt-10 pt-4 pb-2 border-t border-muji-border/50" data-aos="fade-up">
+    <footer class="text-center flex flex-col items-center gap-2 mt-3 pt-3 pb-0 border-t border-muji-border/50" data-aos="fade-up">
       <!-- ⭐ Telegram Bot 連結按鈕 -->
       <a href="https://t.me/PRStK_Lab_bot" target="_blank" rel="noopener noreferrer" class="flex items-center gap-2.5 px-7 py-2.5 text-[13px] text-muji-brand hover:text-white border border-muji-brand/30 rounded-full hover:bg-muji-brand hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 shadow-sm bg-white/50 backdrop-blur-sm">
         <i data-lucide="send" class="w-3.5 h-3.5"></i>
@@ -461,6 +475,21 @@
     </footer>
 
   </div>
+
+  <section id="tool-panel" role="dialog" aria-modal="true" aria-labelledby="tool-panel-title" class="fixed inset-0 z-[60] hidden bg-muji-bg/95 px-5 py-6 backdrop-blur-sm">
+    <div class="mx-auto flex h-full max-w-[720px] flex-col">
+      <div class="mb-5 flex items-center justify-between">
+        <div>
+          <p class="text-[10px] tracking-[0.15em] text-muji-muted">PRStK LAB</p>
+          <h2 id="tool-panel-title" class="mt-1 text-lg font-semibold text-muji-text">全部工具</h2>
+        </div>
+        <button id="close-tool-panel" type="button" aria-label="關閉全部工具" class="inline-flex h-10 w-10 items-center justify-center rounded-full border border-muji-border bg-white text-muji-brand transition hover:border-orange hover:text-orange">
+          <i data-lucide="x" class="h-4 w-4"></i>
+        </button>
+      </div>
+      <div id="tool-panel-grid" class="grid flex-1 auto-rows-min grid-cols-1 gap-3 overflow-y-auto pb-6 sm:grid-cols-2"></div>
+    </div>
+  </section>
 
   <!-- ================= 詳細資訊彈出抽屜 (Drawer) ================= -->
   <!-- 遮罩背景 -->
@@ -895,25 +924,38 @@
       { id: 'discipline', label: '守望', icon: 'shield-check' }
     ];
 
-    const storageKey = 'prstk-lab-favorites';
-    const readFavorites = () => {
-      try { return new Set(JSON.parse(localStorage.getItem(storageKey) || '[]')); }
+    const favoritesStorageKey = 'prstk-lab-favorites';
+    const pinsStorageKey = 'prstk-lab-pins';
+    const recommendedToolIds = [0, 6, 15, 21];
+    const readStoredSet = key => {
+      try { return new Set(JSON.parse(localStorage.getItem(key) || '[]').map(Number)); }
       catch { return new Set(); }
     };
-    const saveFavorites = favorites => {
-      try { localStorage.setItem(storageKey, JSON.stringify([...favorites])); }
+    const saveStoredSet = (key, values) => {
+      try { localStorage.setItem(key, JSON.stringify([...values])); }
       catch { /* Browsing remains fully usable when storage is unavailable. */ }
     };
 
-    const favorites = readFavorites();
+    const favorites = readStoredSet(favoritesStorageKey);
+    const pins = readStoredSet(pinsStorageKey);
     let activeCategory = 'all';
     let favoritesOnly = false;
+    let panelOpen = false;
+    let currentMatches = [];
     const toolSearch = document.getElementById('tool-search');
     const favoritesFilter = document.getElementById('favorites-filter');
     const categoryFilters = document.getElementById('category-filters');
     const resultSummary = document.getElementById('tool-result-summary');
+    const homeGrid = document.getElementById('home-card-grid');
+    const homeTitle = document.getElementById('home-tools-title');
+    const homeEmpty = document.getElementById('home-empty');
+    const viewAllTools = document.getElementById('view-all-tools');
+    const toolPanel = document.getElementById('tool-panel');
+    const toolPanelGrid = document.getElementById('tool-panel-grid');
+    const toolPanelTitle = document.getElementById('tool-panel-title');
+    const closeToolPanel = document.getElementById('close-tool-panel');
     const contentSections = [...document.querySelectorAll('main > section')]
-      .filter(section => !section.querySelector('#tool-search'));
+      .filter(section => !section.querySelector('#tool-search') && section.id !== 'home-tools');
     const toolCards = [];
 
     const makeFilterChip = (id, label, icon) => {
@@ -962,32 +1004,92 @@
         favoriteButton.addEventListener('click', () => {
           if (favorites.has(toolIndex)) favorites.delete(toolIndex);
           else favorites.add(toolIndex);
-          saveFavorites(favorites);
+          saveStoredSet(favoritesStorageKey, favorites);
           favoriteButton.setAttribute('aria-pressed', String(favorites.has(toolIndex)));
           card.classList.toggle('is-favorite', favorites.has(toolIndex));
           applyFilters();
         });
         card.appendChild(favoriteButton);
+
+        const pinButton = document.createElement('button');
+        const pinIcon = document.createElement('i');
+        pinButton.type = 'button';
+        pinButton.className = 'pin-button absolute right-10 top-9 z-10 flex h-9 w-9 items-center justify-center rounded-bl-xl border-l border-t border-muji-border/30 bg-white/70 text-muji-muted transition hover:bg-muji-brandLight hover:text-orange';
+        pinButton.setAttribute('aria-label', `釘選 ${tool.subtitle} 到首頁`);
+        pinButton.setAttribute('aria-pressed', String(pins.has(toolIndex)));
+        pinIcon.setAttribute('data-lucide', 'pin');
+        pinIcon.className = 'h-3.5 w-3.5';
+        pinButton.appendChild(pinIcon);
+        pinButton.addEventListener('click', () => {
+          if (pins.has(toolIndex)) {
+            pins.delete(toolIndex);
+          } else if (pins.size < 4) {
+            pins.add(toolIndex);
+          } else {
+            resultSummary.textContent = '首頁最多釘選 4 個工具，請先取消一個圖釘。';
+            return;
+          }
+          saveStoredSet(pinsStorageKey, pins);
+          pinButton.setAttribute('aria-pressed', String(pins.has(toolIndex)));
+          applyFilters();
+        });
+        card.appendChild(pinButton);
         toolCards.push({ card, section, tool, toolIndex });
       });
     });
 
-    function applyFilters() {
+    contentSections.forEach(section => { section.hidden = true; });
+
+    const getMatches = () => {
       const query = toolSearch.value.trim().toLocaleLowerCase('zh-TW');
-      let visibleCount = 0;
-      toolCards.forEach(({ card, tool, toolIndex }) => {
+      return toolCards.filter(({ card, tool, toolIndex }) => {
         const searchableText = [tool.title, tool.subtitle, ...tool.features, ...tool.targets].join(' ').toLocaleLowerCase('zh-TW');
-        const matchesQuery = !query || searchableText.includes(query);
-        const matchesCategory = activeCategory === 'all' || card.dataset.category === activeCategory;
-        const matchesFavorite = !favoritesOnly || favorites.has(toolIndex);
-        const visible = matchesQuery && matchesCategory && matchesFavorite;
-        card.hidden = !visible;
-        if (visible) visibleCount += 1;
+        return (!query || searchableText.includes(query))
+          && (activeCategory === 'all' || card.dataset.category === activeCategory)
+          && (!favoritesOnly || favorites.has(toolIndex));
       });
-      contentSections.forEach(section => {
-        section.hidden = ![...section.querySelectorAll('.tool-card')].some(card => !card.hidden);
+    };
+
+    const moveCardsTo = (entries, target) => {
+      target.replaceChildren();
+      toolCards.forEach(({ card }) => { card.hidden = true; });
+      entries.forEach(({ card }) => {
+        card.hidden = false;
+        target.appendChild(card);
       });
-      resultSummary.textContent = visibleCount ? `顯示 ${visibleCount} 個工具` : '沒有符合的工具，請嘗試其他關鍵字或篩選條件。';
+    };
+
+    const renderHome = entries => {
+      const isDefaultView = !toolSearch.value.trim() && activeCategory === 'all' && !favoritesOnly;
+      const pinnedEntries = toolCards.filter(({ toolIndex }) => pins.has(toolIndex));
+      const recommendedEntries = recommendedToolIds.map(id => toolCards.find(({ toolIndex }) => toolIndex === id)).filter(Boolean);
+      const displayEntries = isDefaultView && pinnedEntries.length
+        ? [...pinnedEntries, ...recommendedEntries.filter(({ toolIndex }) => !pins.has(toolIndex))]
+        : (isDefaultView ? recommendedEntries : entries);
+      const title = isDefaultView ? (pinnedEntries.length ? '我的首頁' : '為你精選') : '搜尋結果';
+
+      homeTitle.textContent = title;
+      homeEmpty.classList.toggle('hidden', displayEntries.length > 0);
+      homeEmpty.classList.toggle('flex', displayEntries.length === 0);
+      if (!displayEntries.length) {
+        homeEmpty.textContent = favoritesOnly ? '尚未收藏工具，請點擊卡片上的愛心。' : '沒有符合的工具，請嘗試其他關鍵字或分類。';
+      }
+      moveCardsTo(displayEntries.slice(0, 4), homeGrid);
+      resultSummary.textContent = isDefaultView
+        ? (pinnedEntries.length ? `已釘選 ${pinnedEntries.length} / 4 個工具` : '預設推薦 4 個工具，可用圖釘自訂首頁')
+        : (entries.length ? `找到 ${entries.length} 個工具，顯示前 4 個` : '沒有符合的工具');
+      viewAllTools.classList.toggle('hidden', entries.length <= 4);
+    };
+
+    const renderPanel = entries => {
+      toolPanelTitle.textContent = `全部工具 · ${entries.length}`;
+      moveCardsTo(entries, toolPanelGrid);
+    };
+
+    function applyFilters() {
+      currentMatches = getMatches();
+      if (panelOpen) renderPanel(currentMatches);
+      else renderHome(currentMatches);
     }
 
     categoryFilters.addEventListener('click', event => {
@@ -1004,6 +1106,24 @@
       favoritesOnly = !favoritesOnly;
       favoritesFilter.setAttribute('aria-pressed', String(favoritesOnly));
       applyFilters();
+    });
+    viewAllTools.addEventListener('click', () => {
+      panelOpen = true;
+      toolPanel.classList.remove('hidden');
+      document.body.classList.add('tool-panel-open');
+      renderPanel(currentMatches);
+      closeToolPanel.focus();
+    });
+    const closePanel = () => {
+      panelOpen = false;
+      toolPanel.classList.add('hidden');
+      document.body.classList.remove('tool-panel-open');
+      applyFilters();
+      viewAllTools.focus();
+    };
+    closeToolPanel.addEventListener('click', closePanel);
+    document.addEventListener('keydown', event => {
+      if (event.key === 'Escape' && panelOpen) closePanel();
     });
     applyFilters();
     lucide.createIcons();
