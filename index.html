@@ -78,6 +78,18 @@
       .card-hover-effect:active { transform: scale(0.985); box-shadow: 0 4px 14px -7px rgba(74, 96, 109, 0.3); }
       .filter-chip:active, #view-all-tools:active { transform: scale(0.96); }
     }
+    @media (max-width: 640px) {
+      #portal-shell { padding-top: 4rem; }
+      #portal-shell > header { margin-bottom: 3.75rem; }
+      #home-tools { margin-top: 3.75rem !important; }
+      #home-tools > div:first-child { margin-bottom: 1.5rem; }
+    }
+    @media (max-width: 640px) and (max-height: 740px) {
+      #portal-shell { padding-top: clamp(2rem, 7vh, 3rem); }
+      #portal-shell > header { margin-bottom: clamp(2.25rem, 7vh, 3.75rem); }
+      #home-tools { margin-top: clamp(2.25rem, 7vh, 3.75rem) !important; }
+      #home-tools > div:first-child { margin-bottom: clamp(1rem, 3vh, 1.5rem); }
+    }
     @media (max-width: 480px) {
       .tool-card .card-hover-effect { padding: 0.8rem 3rem 0.7rem 0.8rem !important; }
       .tool-card .card-hover-effect > span:first-child { font-size: 0.88rem !important; line-height: 1.25 !important; }
@@ -128,7 +140,7 @@
   <div class="absolute inset-0 bg-[radial-gradient(#E8E1D5_1px,transparent_1px)] [background-size:24px_24px] opacity-60 pointer-events-none fixed"></div>
 
   <!-- 主容器 (加寬一點點以容納分類標題，但仍保持適合手機閱讀的尺寸) -->
-  <div class="relative w-full max-w-[720px] mx-auto h-[100dvh] overflow-hidden flex flex-col justify-between px-5 pt-4 sm:px-8 sm:pt-6 pb-4 z-10">
+  <div id="portal-shell" class="relative w-full max-w-[720px] mx-auto h-[100dvh] overflow-hidden flex flex-col justify-between px-5 pt-4 sm:px-8 sm:pt-6 pb-4 z-10">
     
     <!-- ================= 1. 頭部區域 ================= -->
     <header class="flex flex-col items-center text-center mb-7">
@@ -149,7 +161,7 @@
       </div>
       
       <!-- ⭐ 乾淨純粹的 Slogan -->
-      <p class="text-[11px] tracking-[0.16em] text-muji-muted font-normal flex items-center justify-center mt-1" data-aos="fade-in" data-aos-delay="100" data-aos-duration="1000">
+      <p class="text-[13px] tracking-[0.16em] text-muji-muted font-normal flex items-center justify-center mt-1" data-aos="fade-in" data-aos-delay="100" data-aos-duration="1000">
         <span>想和你一起慢慢變富。</span>
       </p>
     </header>
