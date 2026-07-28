@@ -31,6 +31,13 @@
     body::-webkit-scrollbar {
       display: none;
     }
+    .site-background {
+      background-color: #FAF8F5;
+      background-image: linear-gradient(rgba(250, 248, 245, 0.12), rgba(250, 248, 245, 0.12)), url('assets/prstk-geometric-background.jpg');
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: cover;
+    }
     :focus-visible {
       outline: 3px solid #D97745;
       outline-offset: 3px;
@@ -113,6 +120,7 @@
       #category-filters::-webkit-scrollbar-track { background: #EEF2F4; border-radius: 999px; }
       #category-filters::-webkit-scrollbar-thumb { background: #91A69A; border: 2px solid #EEF2F4; border-radius: 999px; }
       footer { margin-top: 2.5rem !important; }
+      .site-background { background-position: center top; background-size: min(100vw, 720px) auto; }
     }
     @media (max-width: 480px) {
       .tool-card .card-hover-effect { padding: 0.8rem 3rem 0.7rem 0.8rem !important; }
@@ -161,7 +169,7 @@
 
 <body class="bg-muji-bg text-muji-text font-sans min-h-[100dvh] flex flex-col justify-between overflow-x-hidden">
   <!-- 背景微光裝飾（極簡無印風） -->
-  <div class="absolute inset-0 bg-[radial-gradient(#E8E1D5_1px,transparent_1px)] [background-size:24px_24px] opacity-60 pointer-events-none fixed"></div>
+  <div class="site-background fixed inset-0 pointer-events-none"></div>
 
   <!-- 主容器 (加寬一點點以容納分類標題，但仍保持適合手機閱讀的尺寸) -->
   <div id="portal-shell" class="relative w-full max-w-[720px] mx-auto h-[100dvh] overflow-hidden flex flex-col justify-between px-5 pt-4 sm:px-8 sm:pt-6 pb-4 z-10">
