@@ -599,7 +599,7 @@
 
   </div>
 
-  <section id="tool-panel" role="dialog" aria-modal="true" aria-labelledby="tool-panel-title" class="tool-panel-surface fixed inset-0 z-[60] hidden px-5 py-6 backdrop-blur-sm">
+  <section id="tool-panel" role="dialog" aria-modal="true" aria-labelledby="tool-panel-title" aria-hidden="true" class="tool-panel-surface fixed inset-0 z-[60] hidden px-5 py-6 backdrop-blur-sm">
     <div class="mx-auto flex h-full max-w-[720px] flex-col">
       <div class="mb-5 flex items-center justify-between">
         <div>
@@ -617,12 +617,11 @@
   <!-- ================= 詳細資訊彈出抽屜 (Drawer) ================= -->
   <!-- 遮罩背景 -->
   <div id="drawer-overlay" aria-hidden="true"
-       onclick="closeDrawer()" 
        class="fixed inset-0 bg-muji-text/30 backdrop-blur-[2px] z-[70] hidden opacity-0 transition-opacity duration-400">
   </div>
 
   <!-- 內容卡片 -->
-  <div id="info-drawer" role="dialog" aria-modal="true" aria-labelledby="drawer-title" tabindex="-1"
+  <div id="info-drawer" role="dialog" aria-modal="true" aria-labelledby="drawer-title" aria-hidden="true" tabindex="-1"
        class="fixed bottom-0 left-0 right-0 max-w-md mx-auto bg-white rounded-t-[28px] shadow-[0_-12px_40px_rgba(74,96,109,0.15)] z-[80] transform translate-y-full drawer-transition border-t border-muji-border max-h-[85vh] flex flex-col">
     
     <!-- 頂部滑動裝飾條 -->
@@ -697,7 +696,8 @@
       link.referrerPolicy = 'no-referrer';
     });
 
-    let previousFocus = null;
+    let drawerPreviousFocus = null;
+    let panelPreviousFocus = null;
     let closeTimer = null;
 
     // 工具唯一資料來源：固定 ID、分類、內容與連結都在此維護。
@@ -1135,9 +1135,32 @@
     const toolPanelGrid = document.getElementById('tool-panel-grid');
     const toolPanelTitle = document.getElementById('tool-panel-title');
     const closeToolPanel = document.getElementById('close-tool-panel');
+    const portalShell = document.getElementById('portal-shell');
+    const drawerOverlay = document.getElementById('drawer-overlay');
+    const infoDrawer = document.getElementById('info-drawer');
     const contentSections = [...document.querySelectorAll('main > section')]
       .filter(section => !section.querySelector('#tool-search') && section.id !== 'home-tools');
     const toolCards = [];
+    const focusableSelector = 'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
+
+    const trapFocus = (event, container) => {
+      if (event.key !== 'Tab') return;
+      const focusable = [...container.querySelectorAll(focusableSelector)]
+        .filter(element => !element.hidden && element.getClientRects().length);
+      if (!focusable.length) {
+        event.preventDefault();
+        return;
+      }
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      }
+    };
 
     const makeFilterChip = (id, label, icon) => {
       const button = document.createElement('button');
@@ -1340,23 +1363,25 @@
       applyFilters();
     });
     viewAllTools.addEventListener('click', () => {
+      panelPreviousFocus = document.activeElement;
       panelOpen = true;
       toolPanel.classList.remove('hidden');
+      toolPanel.setAttribute('aria-hidden', 'false');
       document.body.classList.add('tool-panel-open');
+      portalShell.inert = true;
       renderPanel(currentMatches);
       closeToolPanel.focus();
     });
     const closePanel = () => {
       panelOpen = false;
       toolPanel.classList.add('hidden');
+      toolPanel.setAttribute('aria-hidden', 'true');
       document.body.classList.remove('tool-panel-open');
+      portalShell.inert = false;
       applyFilters();
-      viewAllTools.focus();
+      panelPreviousFocus?.focus?.();
     };
     closeToolPanel.addEventListener('click', closePanel);
-    document.addEventListener('keydown', event => {
-      if (event.key === 'Escape' && panelOpen) closePanel();
-    });
     applyFilters();
     lucide.createIcons();
 
@@ -1378,7 +1403,8 @@
     function openDrawer(toolId) {
       const data = toolById.get(toolId);
       if (!data) return;
-      previousFocus = document.activeElement;
+      clearTimeout(closeTimer);
+      drawerPreviousFocus = document.activeElement;
       
       document.getElementById('drawer-title').innerText = data.title;
       document.getElementById('drawer-subtitle').innerText = data.subtitle;
@@ -1390,46 +1416,54 @@
       const targetsUl = document.getElementById('drawer-targets');
       renderList(targetsUl, data.targets, 'bg-muji-accent/60');
 
-      const overlay = document.getElementById('drawer-overlay');
-      const drawer = document.getElementById('info-drawer');
-      
       document.querySelectorAll('[data-drawer-trigger]').forEach(button => {
         button.setAttribute('aria-expanded', 'false');
       });
       const trigger = document.querySelector(`[data-drawer-trigger="${toolId}"]`);
       trigger?.setAttribute('aria-expanded', 'true');
-      overlay.classList.remove('hidden');
-      overlay.setAttribute('aria-hidden', 'false');
+      drawerOverlay.classList.remove('hidden');
+      drawerOverlay.setAttribute('aria-hidden', 'false');
+      infoDrawer.setAttribute('aria-hidden', 'false');
+      if (panelOpen) toolPanel.inert = true;
+      else portalShell.inert = true;
       setTimeout(() => {
-        overlay.classList.add('opacity-100');
-        drawer.classList.remove('translate-y-full');
-        drawer.querySelector('[data-drawer-close]')?.focus();
+        drawerOverlay.classList.add('opacity-100');
+        infoDrawer.classList.remove('translate-y-full');
+        infoDrawer.querySelector('[data-drawer-close]')?.focus();
       }, 10);
     }
 
     function closeDrawer() {
-      const overlay = document.getElementById('drawer-overlay');
-      const drawer = document.getElementById('info-drawer');
-      
-      overlay.classList.remove('opacity-100');
-      drawer.classList.add('translate-y-full');
-      overlay.setAttribute('aria-hidden', 'true');
+      drawerOverlay.classList.remove('opacity-100');
+      infoDrawer.classList.add('translate-y-full');
+      drawerOverlay.setAttribute('aria-hidden', 'true');
+      infoDrawer.setAttribute('aria-hidden', 'true');
+      if (panelOpen) toolPanel.inert = false;
+      else portalShell.inert = false;
       document.querySelectorAll('[data-drawer-trigger]').forEach(button => button.setAttribute('aria-expanded', 'false'));
       
       clearTimeout(closeTimer);
       closeTimer = setTimeout(() => {
-        overlay.classList.add('hidden');
-        previousFocus?.focus?.();
+        drawerOverlay.classList.add('hidden');
+        drawerPreviousFocus?.focus?.();
       }, 400); // 對應 css 動畫的 0.4s
     }
 
+    drawerOverlay.addEventListener('click', closeDrawer);
     document.querySelectorAll('[data-drawer-close]').forEach(button => {
       button.addEventListener('click', closeDrawer);
     });
 
     document.addEventListener('keydown', event => {
-      if (event.key === 'Escape' && !document.getElementById('info-drawer').classList.contains('translate-y-full')) {
-        closeDrawer();
+      const drawerOpen = !infoDrawer.classList.contains('translate-y-full');
+      if (drawerOpen) {
+        if (event.key === 'Escape') closeDrawer();
+        else trapFocus(event, infoDrawer);
+        return;
+      }
+      if (panelOpen) {
+        if (event.key === 'Escape') closePanel();
+        else trapFocus(event, toolPanel);
       }
     });
   </script>
