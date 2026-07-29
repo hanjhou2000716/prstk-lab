@@ -697,10 +697,11 @@
     let previousFocus = null;
     let closeTimer = null;
 
-    // 依照網格順序對應陣列資料 (共19個工具)
-    const appData = [
+    // 工具唯一資料來源：固定 ID、分類、內容與連結都在此維護。
+    const toolCatalog = [
       // 0
       {
+        id: 'stockintelli', category: 'insight',
         title: "🦅 股市智投",
         subtitle: "StockIntelli",
         features: [
@@ -715,6 +716,7 @@
       },
       // 1
       {
+        id: 'novaweave', category: 'insight',
         title: "🧠 智慧產業地圖",
         subtitle: "NovaWeave",
         features: [
@@ -729,6 +731,7 @@
       },
       // 2 
       {
+        id: 'tideflow', category: 'insight',
         title: "🧭 潮汐資金流",
         subtitle: "TideFlow",
         features: [
@@ -743,6 +746,7 @@
       },
       // 3 
       {
+        id: 'tradelens', category: 'insight',
         title: "🕸️ 交易解構情報台",
         subtitle: "TradeLens",
         features: [
@@ -757,6 +761,7 @@
       },
       // 4
       {
+        id: 'alpha-memo-ai', category: 'insight',
         title: "🎙️ AI整理法說語音",
         subtitle: "AlphaMemo AI",
         features: [
@@ -771,6 +776,7 @@
       },
       // 5
       {
+        id: 'chipintel-tw', category: 'insight',
         title: "🎯 台股籌碼戰情室",
         subtitle: "ChipIntel TW",
         features: [
@@ -785,6 +791,7 @@
       },
       // 6
       {
+        id: 'quantgems', category: 'strategy',
         title: "🤖 量化策略研究",
         subtitle: "QuantGems",
         features: [
@@ -799,6 +806,7 @@
       },
       // 7
       {
+        id: 'echoequity', category: 'strategy',
         title: "🌊 波段區間定位",
         subtitle: "EchoEquity",
         features: [
@@ -813,6 +821,7 @@
       },
       // 8
       {
+        id: 'quants-tw', category: 'strategy',
         title: "🔬 量子矩陣平台",
         subtitle: "Quants.tw",
         features: [
@@ -827,6 +836,7 @@
       },
       // 9
       {
+        id: 'beta-align', category: 'discipline',
         title: "⚖️ 極智再平衡系統",
         subtitle: "BetaAlign",
         features: [
@@ -841,6 +851,7 @@
       },
       // 10
       {
+        id: 'finlab', category: 'strategy',
         title: "🧪 量子研究室",
         subtitle: "FinLab",
         features: [
@@ -855,6 +866,7 @@
       },
       // 11
       {
+        id: 'google-finance', category: 'market',
         title: "📈 Google 金融",
         subtitle: "Google Finance",
         features: [
@@ -869,6 +881,7 @@
       },
       // 12
       {
+        id: 'yahoo-finance', category: 'market',
         title: "🐯 Yahoo 金融",
         subtitle: "Yahoo Finance",
         features: [
@@ -883,6 +896,7 @@
       },
       // 13
       {
+        id: 'prism-overlap', category: 'etf',
         title: "🔀 ETF 重疊分析",
         subtitle: "PrismOverlap",
         features: [
@@ -897,6 +911,7 @@
       },
       // 14
       {
+        id: 'fluotrack', category: 'etf',
         title: "🚨 ETF 折溢價監控",
         subtitle: "FluoTrack",
         features: [
@@ -911,6 +926,7 @@
       },
       // 15
       {
+        id: 'solitude', category: 'discipline',
         title: "☯️ 紀律交易系統",
         subtitle: "Solitude",
         features: [
@@ -925,6 +941,7 @@
       },
       // 16
       {
+        id: 'aevum-sandbox', category: 'discipline',
         title: "⏳ 退休沙盒模擬",
         subtitle: "AevumSandbox",
         features: [
@@ -939,6 +956,7 @@
       },
       // 17
       {
+        id: 'leverage-matrix', category: 'discipline',
         title: "🧮 台指槓桿矩陣",
         subtitle: "Leverage Matrix",
         features: [
@@ -953,6 +971,7 @@
       },
       // 18
       {
+        id: 'attnpulse', category: 'discipline',
         title: "⚠️ 注意王",
         subtitle: "AttnPulse",
         features: [
@@ -967,6 +986,7 @@
       },
       // 19
       {
+        id: 'margin-copilot', category: 'discipline',
         title: "🧭 槓桿領航員",
         subtitle: "Margin Copilot",
         features: [
@@ -981,6 +1001,7 @@
       },
       // 20
       {
+        id: 'stockvision-ai', category: 'strategy',
         title: "👁️ 智慧股票研究平台",
         subtitle: "StockVision AI",
         features: [
@@ -995,6 +1016,7 @@
       },
       // 21
       {
+        id: 'twstock-pulse', category: 'insight',
         title: "📡 台股每日分析",
         subtitle: "TWStock Pulse",
         features: [
@@ -1009,6 +1031,7 @@
       },
       // 22
       {
+        id: 'retireyield', category: 'discipline',
         title: "🌴 退休咖",
         subtitle: "RetireYield",
         features: [
@@ -1023,6 +1046,7 @@
       },
       // 23
       {
+        id: 'position', category: 'discipline',
         title: "🎛️ 倉位精算師",
         subtitle: "POSITION",
         features: [
@@ -1037,6 +1061,7 @@
       },
       // 24
       {
+        id: 'bubua-plus', category: 'discipline',
         title: "🐾 步步獲利",
         subtitle: "BuBuA+",
         features: [
@@ -1059,20 +1084,37 @@
       { id: 'discipline', label: '守望', icon: 'shield-check' }
     ];
 
-    const favoritesStorageKey = 'prstk-lab-favorites';
-    const pinsStorageKey = 'prstk-lab-pins';
-    const recommendedToolIds = [0, 6, 15, 21];
+    const toolById = new Map(toolCatalog.map(tool => [tool.id, tool]));
+    const favoritesStorageKey = 'prstk-lab-favorites-v2';
+    const pinsStorageKey = 'prstk-lab-pins-v2';
+    const legacyFavoritesStorageKey = 'prstk-lab-favorites';
+    const legacyPinsStorageKey = 'prstk-lab-pins';
+    const recommendedToolIds = ['stockintelli', 'quantgems', 'solitude', 'twstock-pulse'];
     const readStoredSet = key => {
-      try { return new Set(JSON.parse(localStorage.getItem(key) || '[]').map(Number)); }
-      catch { return new Set(); }
+      try {
+        const values = JSON.parse(localStorage.getItem(key) || '[]');
+        return new Set(Array.isArray(values) ? values.filter(value => typeof value === 'string' && toolById.has(value)) : []);
+      } catch { return new Set(); }
     };
     const saveStoredSet = (key, values) => {
       try { localStorage.setItem(key, JSON.stringify([...values])); }
       catch { /* Browsing remains fully usable when storage is unavailable. */ }
     };
+    const migrateLegacySet = (storageKey, legacyKey) => {
+      const current = readStoredSet(storageKey);
+      if (current.size || localStorage.getItem(storageKey) !== null) return current;
+      try {
+        const legacyValues = JSON.parse(localStorage.getItem(legacyKey) || '[]');
+        const migrated = new Set((Array.isArray(legacyValues) ? legacyValues : [])
+          .map(index => toolCatalog[Number(index)]?.id)
+          .filter(Boolean));
+        saveStoredSet(storageKey, migrated);
+        return migrated;
+      } catch { return new Set(); }
+    };
 
-    const favorites = readStoredSet(favoritesStorageKey);
-    const pins = readStoredSet(pinsStorageKey);
+    const favorites = migrateLegacySet(favoritesStorageKey, legacyFavoritesStorageKey);
+    const pins = migrateLegacySet(pinsStorageKey, legacyPinsStorageKey);
     let activeCategory = 'all';
     let favoritesOnly = false;
     let panelOpen = false;
@@ -1110,40 +1152,76 @@
     categoryFilters.append(makeFilterChip('all', '全部工具', 'grid-2x2'));
     categories.forEach(category => categoryFilters.append(makeFilterChip(category.id, category.label, category.icon)));
 
+    const createToolCard = tool => {
+      const card = document.createElement('div');
+      const link = document.createElement('a');
+      const title = document.createElement('span');
+      const subtitle = document.createElement('span');
+      const detailButton = document.createElement('button');
+      const detailIcon = document.createElement('i');
+
+      card.className = 'relative group h-full';
+      link.href = tool.link;
+      link.target = '_blank';
+      link.rel = 'noopener noreferrer';
+      link.className = 'flex flex-col justify-center w-full h-full min-h-[76px] py-4 pl-3.5 pr-9 bg-white border border-muji-border/80 rounded-2xl shadow-sm card-hover-effect';
+      title.className = 'text-[13px] font-medium tracking-wide text-muji-text group-hover:text-muji-brand transition-colors leading-tight truncate';
+      title.textContent = tool.title;
+      subtitle.className = 'text-[10px] text-muji-muted/80 tracking-wider mt-1.5 font-light block truncate';
+      subtitle.textContent = tool.subtitle;
+      link.append(title, subtitle);
+
+      detailButton.type = 'button';
+      detailButton.dataset.toolId = tool.id;
+      detailButton.className = 'tool-action info-action';
+      detailButton.setAttribute('aria-label', `查看 ${tool.subtitle} 的詳細資訊`);
+      detailIcon.setAttribute('data-lucide', 'info');
+      detailIcon.className = 'w-4 h-4 text-muji-muted/50 hover:text-muji-brand transition-colors';
+      detailButton.appendChild(detailIcon);
+      card.append(link, detailButton);
+      return card;
+    };
+
     contentSections.forEach((section, categoryIndex) => {
       const category = categories[categoryIndex];
       const grid = section.querySelector(':scope > div.grid');
       section.dataset.category = category.id;
       grid?.classList.replace('grid-cols-2', 'grid-cols-1');
       grid?.classList.add('sm:grid-cols-2', 'lg:grid-cols-3');
+      grid?.replaceChildren(...toolCatalog
+        .filter(tool => tool.category === category.id)
+        .map(createToolCard));
 
-      section.querySelectorAll('button[onclick^="openDrawer"]').forEach((detailButton, index) => {
-        const toolIndex = Number(detailButton.getAttribute('onclick').match(/\d+/)?.[0]);
+      section.querySelectorAll('button[data-tool-id]').forEach((detailButton, index) => {
+        const toolId = detailButton.dataset.toolId;
         const card = detailButton.parentElement;
-        const tool = appData[toolIndex];
+        const tool = toolById.get(toolId);
         if (!tool) return;
         card.classList.add('tool-card');
-        card.dataset.toolIndex = toolIndex;
+        card.dataset.toolId = toolId;
         card.dataset.category = category.id;
         card.style.animationDelay = `${Math.min(index * 45, 180)}ms`;
-        if (favorites.has(toolIndex)) card.classList.add('is-favorite');
-        detailButton.className = 'tool-action info-action';
+        if (favorites.has(toolId)) card.classList.add('is-favorite');
+        detailButton.dataset.drawerTrigger = toolId;
+        detailButton.setAttribute('aria-controls', 'info-drawer');
+        detailButton.setAttribute('aria-expanded', 'false');
+        detailButton.addEventListener('click', () => openDrawer(toolId));
 
         const favoriteButton = document.createElement('button');
         const favoriteIcon = document.createElement('i');
         favoriteButton.type = 'button';
         favoriteButton.className = 'tool-action favorite-action';
         favoriteButton.setAttribute('aria-label', `收藏 ${tool.subtitle}`);
-        favoriteButton.setAttribute('aria-pressed', String(favorites.has(toolIndex)));
+        favoriteButton.setAttribute('aria-pressed', String(favorites.has(toolId)));
         favoriteIcon.setAttribute('data-lucide', 'heart');
         favoriteIcon.className = 'favorite-icon h-3.5 w-3.5';
         favoriteButton.appendChild(favoriteIcon);
         favoriteButton.addEventListener('click', () => {
-          if (favorites.has(toolIndex)) favorites.delete(toolIndex);
-          else favorites.add(toolIndex);
+          if (favorites.has(toolId)) favorites.delete(toolId);
+          else favorites.add(toolId);
           saveStoredSet(favoritesStorageKey, favorites);
-          favoriteButton.setAttribute('aria-pressed', String(favorites.has(toolIndex)));
-          card.classList.toggle('is-favorite', favorites.has(toolIndex));
+          favoriteButton.setAttribute('aria-pressed', String(favorites.has(toolId)));
+          card.classList.toggle('is-favorite', favorites.has(toolId));
           applyFilters();
         });
         card.appendChild(favoriteButton);
@@ -1153,25 +1231,25 @@
         pinButton.type = 'button';
         pinButton.className = 'tool-action pin-action pin-button';
         pinButton.setAttribute('aria-label', `釘選 ${tool.subtitle} 到首頁`);
-        pinButton.setAttribute('aria-pressed', String(pins.has(toolIndex)));
+        pinButton.setAttribute('aria-pressed', String(pins.has(toolId)));
         pinIcon.setAttribute('data-lucide', 'pin');
         pinIcon.className = 'h-3.5 w-3.5';
         pinButton.appendChild(pinIcon);
         pinButton.addEventListener('click', () => {
-          if (pins.has(toolIndex)) {
-            pins.delete(toolIndex);
+          if (pins.has(toolId)) {
+            pins.delete(toolId);
           } else if (pins.size < 4) {
-            pins.add(toolIndex);
+            pins.add(toolId);
           } else {
             resultSummary.textContent = '首頁最多釘選 4 個工具，請先取消一個圖釘。';
             return;
           }
           saveStoredSet(pinsStorageKey, pins);
-          pinButton.setAttribute('aria-pressed', String(pins.has(toolIndex)));
+          pinButton.setAttribute('aria-pressed', String(pins.has(toolId)));
           applyFilters();
         });
         card.appendChild(pinButton);
-        toolCards.push({ card, section, tool, toolIndex });
+        toolCards.push({ card, section, tool, toolId });
       });
     });
 
@@ -1179,11 +1257,11 @@
 
     const getMatches = () => {
       const query = toolSearch.value.trim().toLocaleLowerCase('zh-TW');
-      return toolCards.filter(({ card, tool, toolIndex }) => {
+      return toolCards.filter(({ card, tool, toolId }) => {
         const searchableText = [tool.title, tool.subtitle, ...tool.features, ...tool.targets].join(' ').toLocaleLowerCase('zh-TW');
         return (!query || searchableText.includes(query))
           && (activeCategory === 'all' || card.dataset.category === activeCategory)
-          && (!favoritesOnly || favorites.has(toolIndex));
+          && (!favoritesOnly || favorites.has(toolId));
       });
     };
 
@@ -1199,10 +1277,10 @@
     const renderHome = entries => {
       const isDefaultView = !toolSearch.value.trim() && activeCategory === 'all' && !favoritesOnly;
       const showHomeActions = activeCategory !== 'all';
-      const pinnedEntries = toolCards.filter(({ toolIndex }) => pins.has(toolIndex));
-      const recommendedEntries = recommendedToolIds.map(id => toolCards.find(({ toolIndex }) => toolIndex === id)).filter(Boolean);
+      const pinnedEntries = toolCards.filter(({ toolId }) => pins.has(toolId));
+      const recommendedEntries = recommendedToolIds.map(id => toolCards.find(({ toolId }) => toolId === id)).filter(Boolean);
       const displayEntries = isDefaultView && pinnedEntries.length
-        ? [...pinnedEntries, ...recommendedEntries.filter(({ toolIndex }) => !pins.has(toolIndex))]
+        ? [...pinnedEntries, ...recommendedEntries.filter(({ toolId }) => !pins.has(toolId))]
         : (isDefaultView ? recommendedEntries : entries);
       const title = isDefaultView ? (pinnedEntries.length ? '我的首頁' : '為你精選') : '搜尋結果';
 
@@ -1293,8 +1371,8 @@
       });
     }
 
-    function openDrawer(index) {
-      const data = appData[index];
+    function openDrawer(toolId) {
+      const data = toolById.get(toolId);
       if (!data) return;
       previousFocus = document.activeElement;
       
@@ -1314,7 +1392,7 @@
       document.querySelectorAll('[data-drawer-trigger]').forEach(button => {
         button.setAttribute('aria-expanded', 'false');
       });
-      const trigger = document.querySelector(`[data-drawer-trigger="${index}"]`);
+      const trigger = document.querySelector(`[data-drawer-trigger="${toolId}"]`);
       trigger?.setAttribute('aria-expanded', 'true');
       overlay.classList.remove('hidden');
       overlay.setAttribute('aria-hidden', 'false');
@@ -1340,15 +1418,6 @@
         previousFocus?.focus?.();
       }, 400); // 對應 css 動畫的 0.4s
     }
-
-    document.querySelectorAll('button[onclick^="openDrawer"]').forEach((button, index) => {
-      const toolIndex = Number(button.getAttribute('onclick').match(/\d+/)?.[0]);
-      button.dataset.drawerTrigger = toolIndex;
-      button.setAttribute('aria-controls', 'info-drawer');
-      button.setAttribute('aria-expanded', 'false');
-      const name = appData[toolIndex]?.subtitle || '工具';
-      button.setAttribute('aria-label', `查看 ${name} 的詳細資訊`);
-    });
 
     document.querySelectorAll('[data-drawer-close]').forEach(button => {
       button.addEventListener('click', closeDrawer);
