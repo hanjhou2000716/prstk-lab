@@ -3,6 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="referrer" content="no-referrer">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'self'; object-src 'none'; script-src 'self' 'unsafe-inline' https://unpkg.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://unpkg.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self'; form-action 'self'; frame-src 'none'; manifest-src 'self'; worker-src 'self'; upgrade-insecure-requests">
   <title>PRStK Lab</title>
 
   <!-- App 圖示設定 (iOS 與 Android) -->
@@ -16,10 +18,10 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
   
   <!-- AOS 動畫庫 CSS -->
-  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" integrity="sha384-/rJKQnzOkEo+daG0jMjU1IwwY9unxt1NBw3Ef2fmOJ3PW/TfAg2KXVoWwMZQZtw9" crossorigin="anonymous">
   
   <!-- Lucide Icons -->
-  <script src="https://unpkg.com/lucide@0.468.0"></script>
+  <script src="https://unpkg.com/lucide@0.468.0" integrity="sha384-uTYyvsSSUZeaPhb5RbKlQa0zY/WpX/QHfvg2mczXyBQOpkWPEDy9lczyp+w7SKXu" crossorigin="anonymous"></script>
   
   
   <style>
@@ -585,7 +587,7 @@
     <!-- ================= 3. 頁尾資訊 ================= -->
     <footer class="text-center flex flex-col items-center gap-2 mt-3 pt-3 pb-0 border-t border-muji-border/50" data-aos="fade-up">
       <!-- ⭐ Telegram Bot 連結按鈕 -->
-      <a href="https://t.me/PRStK_Lab_bot" target="_blank" rel="noopener noreferrer" class="flex items-center gap-2.5 px-7 py-2.5 text-[13px] text-muji-brand hover:text-white border border-muji-brand/30 rounded-full hover:bg-muji-brand hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 shadow-sm bg-white/50 backdrop-blur-sm">
+      <a href="https://t.me/PRStK_Lab_bot" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer" class="flex items-center gap-2.5 px-7 py-2.5 text-[13px] text-muji-brand hover:text-white border border-muji-brand/30 rounded-full hover:bg-muji-brand hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 shadow-sm bg-white/50 backdrop-blur-sm">
         <i data-lucide="send" class="w-3.5 h-3.5"></i>
         <span class="font-medium tracking-widest">Together Better</span>
       </a>
@@ -667,7 +669,7 @@
 
       <!-- 快速前往按鈕 -->
       <div class="mt-8 pt-1">
-        <a id="drawer-link" href="#" target="_blank" rel="noopener noreferrer"
+        <a id="drawer-link" href="#" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer"
            class="group flex items-center justify-center gap-2.5 w-full py-4 bg-muji-brand hover:bg-[#384a54] text-white text-[13.5px] font-medium tracking-widest rounded-xl transition-all duration-300 shadow-[0_4px_15px_rgba(74,96,109,0.2)] hover:shadow-[0_6px_20px_rgba(74,96,109,0.3)] hover:-translate-y-0.5 active:scale-[0.98]">
           <span>開啟系統</span>
           <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-1.5 transition-transform"></i>
@@ -677,7 +679,7 @@
   </div>
 
   <!-- AOS 動畫庫 JS 初始化 -->
-  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js" integrity="sha384-wziAfh6b/qT+3LrqebF9WeK4+J5sehS6FA10J1t3a866kJ/fvU5UwofWnQyzLtwu" crossorigin="anonymous"></script>
   <script>
     // 優化動畫：取消個別過長的 delay，改由整組 fade-up 解決卡頓感
     AOS.init({
@@ -692,6 +694,7 @@
     // Secure every external destination, including future cards added in HTML.
     document.querySelectorAll('a[target="_blank"]').forEach(link => {
       link.rel = 'noopener noreferrer';
+      link.referrerPolicy = 'no-referrer';
     });
 
     let previousFocus = null;
@@ -1164,6 +1167,7 @@
       link.href = tool.link;
       link.target = '_blank';
       link.rel = 'noopener noreferrer';
+      link.referrerPolicy = 'no-referrer';
       link.className = 'flex flex-col justify-center w-full h-full min-h-[76px] py-4 pl-3.5 pr-9 bg-white border border-muji-border/80 rounded-2xl shadow-sm card-hover-effect';
       title.className = 'text-[13px] font-medium tracking-wide text-muji-text group-hover:text-muji-brand transition-colors leading-tight truncate';
       title.textContent = tool.title;
