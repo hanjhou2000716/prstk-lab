@@ -68,6 +68,16 @@
     .filter-chip[aria-pressed="true"] { background: #1F3546; border-color: #1F3546; color: #fff; }
     .pin-button[aria-pressed="true"] { background: #D97745; color: #fff; border-color: #D97745; }
     .tool-panel-open { overflow: hidden; }
+    .tool-panel-surface {
+      background-color: #FAF8F5;
+      background-image: linear-gradient(rgba(250, 250, 249, 0.82), rgba(250, 250, 249, 0.82)), url('assets/prstk-geometric-background.jpg');
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: cover;
+      animation: panel-reveal 280ms cubic-bezier(0.16, 1, 0.3, 1) both;
+    }
+    .tool-panel-surface #tool-panel-grid { scroll-padding: 0.25rem 0 1.5rem; }
+    .tool-panel-surface .tool-card .card-hover-effect { background: rgba(255, 255, 255, 0.88); }
     #category-filters { scrollbar-width: none; }
     #category-filters::-webkit-scrollbar { display: none; }
     /* 首頁只負責快速瀏覽；收藏、釘選與詳細資訊集中在完整工具面板。 */
@@ -77,6 +87,11 @@
     #home-card-grid .card-hover-effect { min-height: 4.15rem; padding: 0.5rem 0.7rem !important; }
     #home-card-grid .card-hover-effect > span:first-child { font-size: clamp(0.68rem, 2.8vw, 0.8rem) !important; line-height: 1.18 !important; }
     #home-card-grid .card-hover-effect > span:nth-child(2) { margin-top: 0.2rem !important; font-size: clamp(0.58rem, 2.3vw, 0.68rem) !important; }
+    #home-card-grid.show-actions { grid-template-rows: repeat(2, 5.2rem); }
+    #home-card-grid.show-actions .tool-card,
+    #home-card-grid.show-actions .card-hover-effect { min-height: 5.2rem; }
+    #home-card-grid.show-actions .tool-action { display: flex; width: 2.45rem; }
+    #home-card-grid.show-actions .card-hover-effect { padding: 0.55rem 2.8rem 0.55rem 0.65rem !important; }
     #home-tools { margin-top: 1.75rem !important; }
     #home-card-grid.is-updating { animation: content-settle 240ms ease-out both; }
     #drawer-overlay { z-index: 70; }
@@ -113,6 +128,10 @@
       #home-card-grid .card-hover-effect { padding: 0.9rem 1rem !important; }
       #home-card-grid .card-hover-effect > span:first-child { font-size: 0.9rem !important; }
       #home-card-grid .card-hover-effect > span:nth-child(2) { font-size: 0.72rem !important; }
+      #home-card-grid.show-actions { grid-template-rows: repeat(2, 6.25rem); }
+      #home-card-grid.show-actions .tool-card,
+      #home-card-grid.show-actions .card-hover-effect { min-height: 6.25rem; }
+      .tool-panel-surface { background-position: center top; background-size: min(100vw, 720px) auto; }
       #category-filters { overflow-x: scroll; padding-bottom: 0.65rem; scrollbar-width: thin; scrollbar-color: #91A69A #EEF2F4; }
       #category-filters > .filter-chip { min-width: 6.5rem; justify-content: center; }
       #category-filters > .filter-chip:first-child { min-width: 7.5rem; }
@@ -132,6 +151,10 @@
       #home-card-grid .card-hover-effect { padding: 0.45rem 0.65rem !important; }
       #home-card-grid .card-hover-effect > span:first-child { font-size: clamp(0.66rem, 2.8vw, 0.76rem) !important; line-height: 1.18 !important; }
       #home-card-grid .card-hover-effect > span:nth-child(2) { margin-top: 0.15rem !important; font-size: clamp(0.55rem, 2.25vw, 0.64rem) !important; }
+      #home-card-grid.show-actions { grid-template-rows: repeat(2, 4.8rem); }
+      #home-card-grid.show-actions .tool-card,
+      #home-card-grid.show-actions .card-hover-effect { min-height: 4.8rem; }
+      #home-card-grid.show-actions .card-hover-effect { padding: 0.45rem 2.7rem 0.45rem 0.6rem !important; }
     }
     @keyframes card-enter {
       from { opacity: 0; transform: translateY(10px); }
@@ -139,6 +162,10 @@
     }
     @keyframes content-settle {
       from { opacity: 0.72; transform: translateY(4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes panel-reveal {
+      from { opacity: 0; transform: translateY(8px); }
       to { opacity: 1; transform: translateY(0); }
     }
     @media (prefers-reduced-motion: reduce) {
@@ -570,7 +597,7 @@
 
   </div>
 
-  <section id="tool-panel" role="dialog" aria-modal="true" aria-labelledby="tool-panel-title" class="fixed inset-0 z-[60] hidden bg-muji-bg/95 px-5 py-6 backdrop-blur-sm">
+  <section id="tool-panel" role="dialog" aria-modal="true" aria-labelledby="tool-panel-title" class="tool-panel-surface fixed inset-0 z-[60] hidden px-5 py-6 backdrop-blur-sm">
     <div class="mx-auto flex h-full max-w-[720px] flex-col">
       <div class="mb-5 flex items-center justify-between">
         <div>
@@ -1171,6 +1198,7 @@
 
     const renderHome = entries => {
       const isDefaultView = !toolSearch.value.trim() && activeCategory === 'all' && !favoritesOnly;
+      const showHomeActions = activeCategory !== 'all';
       const pinnedEntries = toolCards.filter(({ toolIndex }) => pins.has(toolIndex));
       const recommendedEntries = recommendedToolIds.map(id => toolCards.find(({ toolIndex }) => toolIndex === id)).filter(Boolean);
       const displayEntries = isDefaultView && pinnedEntries.length
@@ -1185,6 +1213,7 @@
         homeEmpty.textContent = favoritesOnly ? '尚未收藏工具，請點擊卡片上的愛心。' : '沒有符合的工具，請嘗試其他關鍵字或分類。';
       }
       moveCardsTo(displayEntries.slice(0, 4), homeGrid);
+      homeGrid.classList.toggle('show-actions', showHomeActions);
       resultSummary.textContent = isDefaultView
         ? (pinnedEntries.length ? `已釘選 ${pinnedEntries.length} / 4 個工具` : '預設推薦 4 個工具，可用圖釘自訂首頁')
         : (entries.length ? `找到 ${entries.length} 個工具，顯示前 4 個` : '沒有符合的工具');
