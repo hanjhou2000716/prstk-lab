@@ -105,10 +105,12 @@
     }
     @media (max-width: 640px) {
       #portal-shell { padding-top: 4rem; }
-      #portal-shell > header { margin-bottom: 3.75rem; }
-      #home-tools { margin-top: 3.75rem !important; }
+      /* 搜尋區上移一行；情境入口保留原本的視覺位置。 */
+      #portal-shell > header { margin-bottom: 2.25rem; }
+      #scenario-entries { margin-top: 1.25rem; }
+      /* 首頁內容上收一格，讓四張卡與頁尾留在單頁視窗內。 */
+      #home-tools { margin-top: 1.75rem !important; }
       #home-tools > div:first-child { margin-bottom: 1.5rem; }
-      #scenario-entries { margin-top: -0.25rem; }
       #scenario-entries > div:first-child { margin-bottom: 0.35rem; }
       #scenario-entries .grid { display: flex; gap: 0.5rem; overflow-x: auto; padding-bottom: 0.15rem; scrollbar-width: none; }
       #scenario-entries .grid::-webkit-scrollbar { display: none; }
