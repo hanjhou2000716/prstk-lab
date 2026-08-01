@@ -1234,7 +1234,7 @@
       return button;
     };
 
-    categoryFilters.append(makeFilterChip('all', '全部工具', 'grid-2x2'));
+    categoryFilters.append(makeFilterChip('all', '全部', 'grid-2x2'));
     categories.forEach(category => categoryFilters.append(makeFilterChip(category.id, category.label, category.icon)));
 
     const createToolCard = tool => {
