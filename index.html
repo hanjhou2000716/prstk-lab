@@ -68,6 +68,7 @@
     .info-action { bottom: 0; }
     .tool-card.is-favorite .favorite-icon { fill: #D97745; stroke: #D97745; }
     .filter-chip[aria-pressed="true"] { background: #1F3546; border-color: #1F3546; color: #fff; }
+    .scenario-entry[aria-pressed="true"] { background: #EEF2F4; border-color: #4A606D; box-shadow: 0 4px 14px rgba(74, 96, 109, 0.12); }
     .pin-button[aria-pressed="true"] { background: #D97745; color: #fff; border-color: #D97745; }
     .tool-panel-open { overflow: hidden; }
     .tool-panel-surface {
@@ -253,6 +254,31 @@
         </div>
       </section>
 
+      <section aria-label="投資情境快捷入口" data-aos="fade-up" data-aos-delay="80">
+        <div class="mb-2 flex items-center justify-between px-1">
+          <h2 class="text-xs font-semibold tracking-[0.12em] text-muji-section">快速進入</h2>
+          <span class="text-[10px] text-muji-muted/70">依照現在的需求</span>
+        </div>
+        <div class="grid grid-cols-2 gap-2">
+          <button type="button" data-scenario-category="explore" class="scenario-entry group flex items-center gap-2 rounded-2xl border border-muji-border/80 bg-white/75 px-3 py-3 text-left shadow-sm transition hover:-translate-y-0.5 hover:border-muji-brand hover:bg-white">
+            <i data-lucide="sparkles" class="h-4 w-4 shrink-0 text-muji-brand transition-transform group-hover:scale-110"></i>
+            <span class="text-xs font-medium tracking-wide text-muji-text">我想找投資機會</span>
+          </button>
+          <button type="button" data-scenario-category="research" class="scenario-entry group flex items-center gap-2 rounded-2xl border border-muji-border/80 bg-white/75 px-3 py-3 text-left shadow-sm transition hover:-translate-y-0.5 hover:border-muji-brand hover:bg-white">
+            <i data-lucide="search-check" class="h-4 w-4 shrink-0 text-muji-brand transition-transform group-hover:scale-110"></i>
+            <span class="text-xs font-medium tracking-wide text-muji-text">我正在研究個股</span>
+          </button>
+          <button type="button" data-scenario-category="risk" class="scenario-entry group flex items-center gap-2 rounded-2xl border border-muji-border/80 bg-white/75 px-3 py-3 text-left shadow-sm transition hover:-translate-y-0.5 hover:border-muji-brand hover:bg-white">
+            <i data-lucide="shield-alert" class="h-4 w-4 shrink-0 text-muji-brand transition-transform group-hover:scale-110"></i>
+            <span class="text-xs font-medium tracking-wide text-muji-text">我要檢查風險</span>
+          </button>
+          <button type="button" data-scenario-category="allocation" class="scenario-entry group flex items-center gap-2 rounded-2xl border border-muji-border/80 bg-white/75 px-3 py-3 text-left shadow-sm transition hover:-translate-y-0.5 hover:border-muji-brand hover:bg-white">
+            <i data-lucide="landmark" class="h-4 w-4 shrink-0 text-muji-brand transition-transform group-hover:scale-110"></i>
+            <span class="text-xs font-medium tracking-wide text-muji-text">我要規劃長期資產</span>
+          </button>
+        </div>
+      </section>
+
        <section id="home-tools" class="flex-none flex flex-col" aria-label="首頁工具">
         <div class="mb-2 flex items-center justify-between">
           <h2 id="home-tools-title" class="text-xs font-semibold leading-none tracking-[0.12em] text-muji-section">為你精選</h2>
@@ -262,11 +288,11 @@
         <p id="home-empty" class="hidden flex-1 items-center justify-center rounded-2xl border border-dashed border-muji-border bg-white/55 px-8 text-center text-sm leading-6 text-muji-muted"></p>
       </section>
 
-      <!-- [分類 1] 洞察 ‧ 市場全景鳥瞰 -->
+      <!-- [分類 1] 探索 -->
       <section data-aos="fade-up">
         <h2 class="text-[12px] font-semibold text-muji-section tracking-[0.1em] flex items-center gap-2 mb-3 pl-1">
           <i data-lucide="eye" class="w-3.5 h-3.5"></i>
-          洞察 ‧ 市場全景鳥瞰
+          探索
         </h2>
         <div class="grid grid-cols-2 gap-3.5">
           <!-- 0: 股市智投 -->
@@ -348,11 +374,11 @@
         </div>
       </section>
 
-      <!-- [分類 2] 矩陣 ‧ 量化策略尋寶 -->
+      <!-- [分類 2] 研究 -->
       <section data-aos="fade-up">
         <h2 class="text-[12px] font-semibold text-muji-section tracking-[0.1em] flex items-center gap-2 mb-3 pl-1">
           <i data-lucide="cpu" class="w-3.5 h-3.5"></i>
-          矩陣 ‧ 量化策略尋寶
+          研究
         </h2>
         <div class="grid grid-cols-2 gap-3.5">
           <!-- 6: 量化策略研究 -->
@@ -412,11 +438,11 @@
         </div>
       </section>
 
-      <!-- [分類 3] 脈動 ‧ 全球財經同步 -->
+      <!-- [分類 3] 策略 -->
       <section data-aos="fade-up">
         <h2 class="text-[12px] font-semibold text-muji-section tracking-[0.1em] flex items-center gap-2 mb-3 pl-1">
           <i data-lucide="globe" class="w-3.5 h-3.5"></i>
-          脈動 ‧ 全球財經同步
+          策略
         </h2>
         <div class="grid grid-cols-2 gap-3.5">
           <!-- 11: Google 金融 -->
@@ -443,11 +469,11 @@
         </div>
       </section>
 
-      <!-- [分類 4] 稜鏡 ‧ ETF 深度透視 -->
+      <!-- [分類 4] 風控 -->
       <section data-aos="fade-up">
         <h2 class="text-[12px] font-semibold text-muji-section tracking-[0.1em] flex items-center gap-2 mb-3 pl-1">
           <i data-lucide="layers" class="w-3.5 h-3.5"></i>
-          稜鏡 ‧ ETF 深度透視
+          風控
         </h2>
         <div class="grid grid-cols-2 gap-3.5">
           <!-- 13: ETF 重疊分析 -->
@@ -474,11 +500,11 @@
         </div>
       </section>
 
-      <!-- [分類 5] 守望 ‧ 紀律與長線藍圖 -->
+      <!-- [分類 5] 配置 -->
       <section data-aos="fade-up">
         <h2 class="text-[12px] font-semibold text-muji-section tracking-[0.1em] flex items-center gap-2 mb-3 pl-1">
           <i data-lucide="shield-check" class="w-3.5 h-3.5"></i>
-          守望 ‧ 紀律與長線藍圖
+          配置
         </h2>
         <div class="grid grid-cols-2 gap-3.5">
           <!-- 15: 紀律交易系統 -->
@@ -704,7 +730,7 @@
     const toolCatalog = [
       // 0
       {
-        id: 'stockintelli', category: 'insight',
+        id: 'stockintelli', category: 'research',
         title: "🦅 股市智投",
         subtitle: "StockIntelli",
         features: [
@@ -719,7 +745,7 @@
       },
       // 1
       {
-        id: 'novaweave', category: 'insight',
+        id: 'novaweave', category: 'explore',
         title: "🧠 智慧產業地圖",
         subtitle: "NovaWeave",
         features: [
@@ -734,7 +760,7 @@
       },
       // 2 
       {
-        id: 'tideflow', category: 'insight',
+        id: 'tideflow', category: 'strategy',
         title: "🧭 潮汐資金流",
         subtitle: "TideFlow",
         features: [
@@ -749,7 +775,7 @@
       },
       // 3 
       {
-        id: 'tradelens', category: 'insight',
+        id: 'tradelens', category: 'research',
         title: "🕸️ 交易解構情報台",
         subtitle: "TradeLens",
         features: [
@@ -764,7 +790,7 @@
       },
       // 4
       {
-        id: 'alpha-memo-ai', category: 'insight',
+        id: 'alpha-memo-ai', category: 'research',
         title: "🎙️ AI整理法說語音",
         subtitle: "AlphaMemo AI",
         features: [
@@ -779,7 +805,7 @@
       },
       // 5
       {
-        id: 'chipintel-tw', category: 'insight',
+        id: 'chipintel-tw', category: 'explore',
         title: "🎯 台股籌碼戰情室",
         subtitle: "ChipIntel TW",
         features: [
@@ -839,7 +865,7 @@
       },
       // 9
       {
-        id: 'beta-align', category: 'discipline',
+        id: 'beta-align', category: 'risk',
         title: "⚖️ 極智再平衡系統",
         subtitle: "BetaAlign",
         features: [
@@ -854,7 +880,7 @@
       },
       // 10
       {
-        id: 'finlab', category: 'strategy',
+        id: 'finlab', category: 'research',
         title: "🧪 量子研究室",
         subtitle: "FinLab",
         features: [
@@ -869,7 +895,7 @@
       },
       // 11
       {
-        id: 'google-finance', category: 'market',
+        id: 'google-finance', category: 'explore',
         title: "📈 Google 金融",
         subtitle: "Google Finance",
         features: [
@@ -884,7 +910,7 @@
       },
       // 12
       {
-        id: 'yahoo-finance', category: 'market',
+        id: 'yahoo-finance', category: 'explore',
         title: "🐯 Yahoo 金融",
         subtitle: "Yahoo Finance",
         features: [
@@ -899,7 +925,7 @@
       },
       // 13
       {
-        id: 'prism-overlap', category: 'etf',
+        id: 'prism-overlap', category: 'strategy',
         title: "🔀 ETF 重疊分析",
         subtitle: "PrismOverlap",
         features: [
@@ -914,7 +940,7 @@
       },
       // 14
       {
-        id: 'fluotrack', category: 'etf',
+        id: 'fluotrack', category: 'strategy',
         title: "🚨 ETF 折溢價監控",
         subtitle: "FluoTrack",
         features: [
@@ -929,7 +955,7 @@
       },
       // 15
       {
-        id: 'solitude', category: 'discipline',
+        id: 'solitude', category: 'allocation',
         title: "☯️ 紀律交易系統",
         subtitle: "Solitude",
         features: [
@@ -944,7 +970,7 @@
       },
       // 16
       {
-        id: 'aevum-sandbox', category: 'discipline',
+        id: 'aevum-sandbox', category: 'allocation',
         title: "⏳ 退休沙盒模擬",
         subtitle: "AevumSandbox",
         features: [
@@ -959,7 +985,7 @@
       },
       // 17
       {
-        id: 'leverage-matrix', category: 'discipline',
+        id: 'leverage-matrix', category: 'risk',
         title: "🧮 台指槓桿矩陣",
         subtitle: "Leverage Matrix",
         features: [
@@ -974,7 +1000,7 @@
       },
       // 18
       {
-        id: 'attnpulse', category: 'discipline',
+        id: 'attnpulse', category: 'risk',
         title: "⚠️ 注意王",
         subtitle: "AttnPulse",
         features: [
@@ -989,7 +1015,7 @@
       },
       // 19
       {
-        id: 'margin-copilot', category: 'discipline',
+        id: 'margin-copilot', category: 'risk',
         title: "🧭 槓桿領航員",
         subtitle: "Margin Copilot",
         features: [
@@ -1004,7 +1030,7 @@
       },
       // 20
       {
-        id: 'stockvision-ai', category: 'strategy',
+        id: 'stockvision-ai', category: 'explore',
         title: "👁️ 智慧股票研究平台",
         subtitle: "StockVision AI",
         features: [
@@ -1019,7 +1045,7 @@
       },
       // 21
       {
-        id: 'twstock-pulse', category: 'insight',
+        id: 'twstock-pulse', category: 'explore',
         title: "📡 台股每日分析",
         subtitle: "TWStock Pulse",
         features: [
@@ -1034,7 +1060,7 @@
       },
       // 22
       {
-        id: 'retireyield', category: 'discipline',
+        id: 'retireyield', category: 'allocation',
         title: "🌴 退休咖",
         subtitle: "RetireYield",
         features: [
@@ -1049,7 +1075,7 @@
       },
       // 23
       {
-        id: 'position', category: 'discipline',
+        id: 'position', category: 'risk',
         title: "🎛️ 倉位精算師",
         subtitle: "POSITION",
         features: [
@@ -1064,7 +1090,7 @@
       },
       // 24
       {
-        id: 'bubua-plus', category: 'discipline',
+        id: 'bubua-plus', category: 'allocation',
         title: "🐾 步步獲利",
         subtitle: "BuBuA+",
         features: [
@@ -1079,7 +1105,7 @@
       },
       // 25
       {
-        id: 'popotrack', category: 'insight',
+        id: 'popotrack', category: 'explore',
         title: "📡 波波籌碼雷達",
         subtitle: "PopoTrack",
         features: [
@@ -1094,7 +1120,7 @@
       },
       // 26
       {
-        id: 'marketecho', category: 'strategy',
+        id: 'marketecho', category: 'research',
         title: "🎙️ 市場真音",
         subtitle: "MarketEcho",
         features: [
@@ -1110,11 +1136,11 @@
     ];
 
     const categories = [
-      { id: 'insight', label: '洞察', icon: 'eye' },
-      { id: 'strategy', label: '矩陣', icon: 'chart-no-axes-combined' },
-      { id: 'market', label: '脈動', icon: 'globe' },
-      { id: 'etf', label: '稜鏡', icon: 'layers' },
-      { id: 'discipline', label: '守望', icon: 'shield-check' }
+      { id: 'explore', label: '探索', icon: 'compass' },
+      { id: 'research', label: '研究', icon: 'book-open' },
+      { id: 'strategy', label: '策略', icon: 'chart-no-axes-combined' },
+      { id: 'risk', label: '風控', icon: 'shield-check' },
+      { id: 'allocation', label: '配置', icon: 'pie-chart' }
     ];
 
     const toolById = new Map(toolCatalog.map(tool => [tool.id, tool]));
@@ -1377,14 +1403,30 @@
       }
     }
 
+    const setCategory = categoryId => {
+      activeCategory = categoryId;
+      categoryFilters.querySelectorAll('button[data-category]').forEach(chip => {
+        chip.setAttribute('aria-pressed', String(chip.dataset.category === categoryId));
+      });
+      applyFilters();
+    };
+
     categoryFilters.addEventListener('click', event => {
       const button = event.target.closest('button[data-category]');
       if (!button) return;
-      activeCategory = button.dataset.category;
-      categoryFilters.querySelectorAll('button').forEach(chip => {
-        chip.setAttribute('aria-pressed', String(chip === button));
+      setCategory(button.dataset.category);
+    });
+    document.querySelectorAll('[data-scenario-category]').forEach(button => {
+      button.setAttribute('aria-pressed', 'false');
+      button.addEventListener('click', () => {
+        toolSearch.value = '';
+        favoritesOnly = false;
+        favoritesFilter.setAttribute('aria-pressed', 'false');
+        document.querySelectorAll('[data-scenario-category]').forEach(entry => {
+          entry.setAttribute('aria-pressed', String(entry === button));
+        });
+        setCategory(button.dataset.scenarioCategory);
       });
-      applyFilters();
     });
     toolSearch.addEventListener('input', applyFilters);
     favoritesFilter.addEventListener('click', () => {
