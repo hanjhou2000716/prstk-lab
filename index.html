@@ -35,7 +35,7 @@
     }
     .site-background {
       background-color: #FAF8F5;
-      background-image: linear-gradient(rgba(250, 248, 245, 0.12), rgba(250, 248, 245, 0.12)), url('assets/prstk-geometric-background.jpg');
+      background-image: linear-gradient(rgba(250, 248, 245, 0.08), rgba(250, 248, 245, 0.08)), url('assets/prstk-geometric-background.jpg');
       background-position: center;
       background-repeat: no-repeat;
       background-size: cover;
@@ -101,21 +101,27 @@
     #info-drawer { z-index: 80; }
     @media (hover: none) {
       .card-hover-effect:active { transform: scale(0.985); box-shadow: 0 4px 14px -7px rgba(74, 96, 109, 0.3); }
-      .filter-chip:active, #view-all-tools:active { transform: scale(0.96); }
+      .filter-chip:active, #view-all-tools:active, .scenario-entry:active { transform: scale(0.96); }
     }
     @media (max-width: 640px) {
       #portal-shell { padding-top: 4rem; }
       /* 搜尋區上移一行；情境入口保留原本的視覺位置。 */
       #portal-shell > header { margin-bottom: 2.25rem; }
-      #scenario-entries { margin-top: 1.25rem; }
+      #logo-img { width: 64% !important; max-height: 10vh; }
+      #tool-search-panel { padding: 0.75rem !important; }
+      #tool-search-panel #category-filters { margin-top: 0.75rem; }
+      #tool-search-panel > div:last-child { margin-top: 0.5rem; }
+      #scenario-entries { margin-top: 0.5rem; }
       /* 首頁內容上收一格，讓四張卡與頁尾留在單頁視窗內。 */
-      #home-tools { margin-top: 1.75rem !important; }
-      #home-tools > div:first-child { margin-bottom: 1.5rem; }
-      #scenario-entries > div:first-child { margin-bottom: 0.35rem; }
-      #scenario-entries .grid { display: flex; gap: 0.5rem; overflow-x: auto; padding-bottom: 0.15rem; scrollbar-width: none; }
-      #scenario-entries .grid::-webkit-scrollbar { display: none; }
-      #scenario-entries .scenario-entry { flex: 0 0 auto; min-height: 2.25rem; padding: 0.5rem 0.7rem; white-space: nowrap; }
-      #scenario-entries .scenario-entry span { font-size: 0.68rem; }
+      #home-tools { margin-top: 1rem !important; }
+      #home-tools > div:first-child { margin-bottom: 0.75rem; }
+      #home-card-grid { gap: 0.65rem; grid-template-rows: repeat(2, 3.85rem); }
+      #home-card-grid .tool-card,
+      #home-card-grid .card-hover-effect { min-height: 3.85rem; }
+      #scenario-entries .grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0.45rem; overflow: visible; }
+      #scenario-entries .scenario-entry { min-width: 0; min-height: 2.5rem; padding: 0.45rem 0.2rem; flex-direction: column; justify-content: center; gap: 0.15rem; text-align: center; white-space: nowrap; }
+      #scenario-entries .scenario-entry i { width: 0.9rem; height: 0.9rem; }
+      #scenario-entries .scenario-entry span { font-size: 0.64rem; letter-spacing: 0; }
     }
     @media (max-width: 640px) and (max-height: 740px) {
       #portal-shell { padding-top: clamp(2rem, 7vh, 3rem); }
@@ -156,9 +162,9 @@
       .tool-card .card-hover-effect { padding: 0.8rem 3rem 0.7rem 0.8rem !important; }
       .tool-card .card-hover-effect > span:first-child { font-size: 0.88rem !important; line-height: 1.25 !important; }
       .tool-card .card-hover-effect > span:nth-child(2) { margin-top: 0.35rem !important; font-size: 0.7rem !important; }
-      #home-card-grid { gap: 0.75rem; grid-template-rows: repeat(2, 4rem); }
+      #home-card-grid { gap: 0.6rem; grid-template-rows: repeat(2, 3.7rem); }
       #home-card-grid .tool-card,
-      #home-card-grid .card-hover-effect { min-height: 4rem; }
+      #home-card-grid .card-hover-effect { min-height: 3.7rem; }
       #home-card-grid .card-hover-effect { padding: 0.45rem 0.65rem !important; }
       #home-card-grid .card-hover-effect > span:first-child { font-size: clamp(0.66rem, 2.8vw, 0.76rem) !important; line-height: 1.18 !important; }
       #home-card-grid .card-hover-effect > span:nth-child(2) { margin-top: 0.15rem !important; font-size: clamp(0.55rem, 2.25vw, 0.64rem) !important; }
@@ -177,6 +183,16 @@
     }
     @keyframes panel-reveal {
       from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @media (prefers-reduced-motion: no-preference) {
+      .scenario-entry { animation: scenario-pop 360ms cubic-bezier(0.16, 1, 0.3, 1) both; }
+      .scenario-entry:nth-child(2) { animation-delay: 40ms; }
+      .scenario-entry:nth-child(3) { animation-delay: 80ms; }
+      .scenario-entry:nth-child(4) { animation-delay: 120ms; }
+    }
+    @keyframes scenario-pop {
+      from { opacity: 0; transform: translateY(5px); }
       to { opacity: 1; transform: translateY(0); }
     }
     @media (prefers-reduced-motion: reduce) {
@@ -239,7 +255,7 @@
     <!-- ================= 2. 分類導覽區 ================= -->
     <main class="flex-1 flex flex-col justify-start min-h-0 w-full space-y-3">
       
-      <section class="rounded-3xl border border-muji-border/80 bg-white/80 p-4 sm:p-5 shadow-sm backdrop-blur-sm" aria-label="工具搜尋與篩選" data-aos="fade-up">
+      <section id="tool-search-panel" class="rounded-3xl border border-muji-border/80 bg-white/80 p-4 sm:p-5 shadow-sm backdrop-blur-sm" aria-label="工具搜尋與篩選" data-aos="fade-up">
         <div class="flex flex-row gap-2 items-center">
           <label class="relative block flex-1">
             <span class="sr-only">搜尋工具</span>
@@ -258,26 +274,22 @@
       </section>
 
       <section id="scenario-entries" aria-label="投資情境快捷入口" data-aos="fade-up" data-aos-delay="80">
-        <div class="mb-2 flex items-center justify-between px-1">
-          <h2 class="text-xs font-semibold tracking-[0.12em] text-muji-section">快速進入</h2>
-          <span class="text-[10px] text-muji-muted/70">依照現在的需求</span>
-        </div>
-        <div class="grid grid-cols-2 gap-2">
-          <button type="button" data-scenario-category="explore" class="scenario-entry group flex items-center gap-2 rounded-2xl border border-muji-border/80 bg-white/75 px-3 py-3 text-left shadow-sm transition hover:-translate-y-0.5 hover:border-muji-brand hover:bg-white">
+        <div class="grid grid-cols-4 gap-2">
+          <button type="button" data-scenario-category="explore" class="scenario-entry group flex items-center gap-2 rounded-2xl border border-muji-border/80 bg-white/75 px-3 py-3 text-left transition hover:-translate-y-0.5 hover:border-muji-brand hover:bg-white">
             <i data-lucide="sparkles" class="h-4 w-4 shrink-0 text-muji-brand transition-transform group-hover:scale-110"></i>
-            <span class="text-xs font-medium tracking-wide text-muji-text">我想找投資機會</span>
+            <span class="text-xs font-medium tracking-wide text-muji-text">找機會</span>
           </button>
-          <button type="button" data-scenario-category="research" class="scenario-entry group flex items-center gap-2 rounded-2xl border border-muji-border/80 bg-white/75 px-3 py-3 text-left shadow-sm transition hover:-translate-y-0.5 hover:border-muji-brand hover:bg-white">
+          <button type="button" data-scenario-category="research" class="scenario-entry group flex items-center gap-2 rounded-2xl border border-muji-border/80 bg-white/75 px-3 py-3 text-left transition hover:-translate-y-0.5 hover:border-muji-brand hover:bg-white">
             <i data-lucide="search-check" class="h-4 w-4 shrink-0 text-muji-brand transition-transform group-hover:scale-110"></i>
-            <span class="text-xs font-medium tracking-wide text-muji-text">我正在研究個股</span>
+            <span class="text-xs font-medium tracking-wide text-muji-text">做研究</span>
           </button>
-          <button type="button" data-scenario-category="risk" class="scenario-entry group flex items-center gap-2 rounded-2xl border border-muji-border/80 bg-white/75 px-3 py-3 text-left shadow-sm transition hover:-translate-y-0.5 hover:border-muji-brand hover:bg-white">
+          <button type="button" data-scenario-category="risk" class="scenario-entry group flex items-center gap-2 rounded-2xl border border-muji-border/80 bg-white/75 px-3 py-3 text-left transition hover:-translate-y-0.5 hover:border-muji-brand hover:bg-white">
             <i data-lucide="shield-alert" class="h-4 w-4 shrink-0 text-muji-brand transition-transform group-hover:scale-110"></i>
-            <span class="text-xs font-medium tracking-wide text-muji-text">我要檢查風險</span>
+            <span class="text-xs font-medium tracking-wide text-muji-text">看風險</span>
           </button>
-          <button type="button" data-scenario-category="allocation" class="scenario-entry group flex items-center gap-2 rounded-2xl border border-muji-border/80 bg-white/75 px-3 py-3 text-left shadow-sm transition hover:-translate-y-0.5 hover:border-muji-brand hover:bg-white">
+          <button type="button" data-scenario-category="allocation" class="scenario-entry group flex items-center gap-2 rounded-2xl border border-muji-border/80 bg-white/75 px-3 py-3 text-left transition hover:-translate-y-0.5 hover:border-muji-brand hover:bg-white">
             <i data-lucide="landmark" class="h-4 w-4 shrink-0 text-muji-brand transition-transform group-hover:scale-110"></i>
-            <span class="text-xs font-medium tracking-wide text-muji-text">我要規劃長期資產</span>
+            <span class="text-xs font-medium tracking-wide text-muji-text">做配置</span>
           </button>
         </div>
       </section>
