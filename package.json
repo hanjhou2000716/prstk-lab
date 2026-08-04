@@ -17,7 +17,8 @@
     "cards:validate": "node scripts/validate-data-driven-cards.cjs",
     "components:validate": "node scripts/validate-components.cjs",
     "security:validate": "node scripts/validate-external-assets.cjs",
-    "seo:validate": "node scripts/validate-seo.cjs"
+    "seo:validate": "node scripts/validate-seo.cjs",
+    "links:check": "node scripts/check-links.cjs --output=link-report.json"
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.10",
