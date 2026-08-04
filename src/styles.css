@@ -96,19 +96,32 @@
       .filter-chip:active, #view-all-tools:active, .scenario-entry:active { transform: scale(0.96); }
     }
     @media (max-width: 640px) {
-      #portal-shell { padding-top: 4rem; }
+      body { overflow-y: auto; }
+      #portal-shell {
+        height: auto;
+        min-height: 100dvh;
+        overflow: visible;
+        justify-content: flex-start;
+        padding-top: 1.5rem;
+        padding-bottom: 1.5rem;
+      }
       /* 搜尋區上移一行；情境入口保留原本的視覺位置。 */
-      #portal-shell > header { margin-bottom: 1.5rem; }
+      #portal-shell > header { margin-bottom: 1rem; }
+      #portal-shell > main { flex: 0 0 auto; }
       #primary-nav { margin-top: -0.35rem; }
       #primary-nav > div { justify-content: flex-start; }
       .primary-nav-item { min-width: 3.8rem; }
+      #primary-nav > div,
+      #category-filters { scrollbar-width: none; -ms-overflow-style: none; }
+      #primary-nav > div::-webkit-scrollbar,
+      #category-filters::-webkit-scrollbar { display: none; }
       #logo-img { width: 77% !important; max-height: 12vh; }
       #tool-search-panel { padding: 0.75rem !important; }
       #tool-search-panel #category-filters { margin-top: 0.75rem; }
       #tool-search-panel > div:last-child { margin-top: 0.5rem; }
       #scenario-entries { margin-top: 0.5rem; }
       /* 首頁內容上收一格，讓四張卡與頁尾留在單頁視窗內。 */
-      #home-tools { margin-top: 1rem !important; }
+      #home-tools { margin-top: 1.25rem !important; }
       #home-tools > div:first-child { margin-bottom: 0.75rem; }
       #home-card-grid { gap: 0.65rem; grid-template-rows: repeat(2, 3.85rem); }
       #home-card-grid .tool-card,
@@ -117,11 +130,13 @@
       #scenario-entries .scenario-entry { min-width: 0; min-height: 2.5rem; padding: 0.45rem 0.2rem; flex-direction: column; justify-content: center; gap: 0.15rem; text-align: center; white-space: nowrap; }
       #scenario-entries .scenario-entry i { width: 0.9rem; height: 0.9rem; }
       #scenario-entries .scenario-entry span { font-size: 0.64rem; letter-spacing: 0; }
+      footer { margin-top: 2.5rem !important; flex-shrink: 0; }
+      #risk-disclosure { max-width: 100%; padding: 0 1rem; }
     }
     @media (max-width: 640px) and (max-height: 740px) {
-      #portal-shell { padding-top: clamp(2rem, 7vh, 3rem); }
-      #portal-shell > header { margin-bottom: 1.5rem; }
-      #home-tools { margin-top: 1rem !important; }
+      #portal-shell { padding-top: clamp(1rem, 4vh, 2rem); }
+      #portal-shell > header { margin-bottom: 1rem; }
+      #home-tools { margin-top: 1.25rem !important; }
       #home-tools > div:first-child { margin-bottom: 0.75rem; }
     }
     @media (min-width: 641px) {
