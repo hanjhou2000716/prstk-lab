@@ -5,7 +5,9 @@
   "scripts": {
     "build:css": "tailwindcss -i ./src/styles.css -o ./assets/styles.css --minify",
     "build": "npm run build:css",
-    "validate": "node scripts/validate-inline-js.cjs"
+    "validate": "node scripts/validate-inline-js.cjs",
+    "baseline:capture": "node scripts/capture-release-0-baseline.cjs",
+    "baseline:validate": "node scripts/validate-release-0-baseline.cjs"
   },
   "devDependencies": {
     "tailwindcss": "3.4.17"
