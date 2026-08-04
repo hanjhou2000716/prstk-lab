@@ -10,6 +10,15 @@ import ToolPreviewDrawer from '../components/ToolPreviewDrawer.astro';
 import Footer from '../components/Footer.astro';
 
 const toolData = JSON.stringify(tools).replace(/</g, '\\u003c');
+const siteUrl = 'https://hanjhou2000716.github.io/prstk-lab/';
+const structuredData = JSON.stringify({
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  name: 'PRStK Lab',
+  description: '整理投資工具、研究資料與決策流程的研究入口。',
+  url: siteUrl,
+  inLanguage: 'zh-TW'
+}).replace(/</g, '\\u003c');
 ---
 <!DOCTYPE html>
 <html lang="zh-TW">
@@ -17,11 +26,25 @@ const toolData = JSON.stringify(tools).replace(/</g, '\\u003c');
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="referrer" content="no-referrer">
+  <meta name="description" content="整理投資工具、研究資料與決策流程的 PRStK Lab 研究入口。">
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'self'; object-src 'none'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self'; form-action 'self'; frame-src 'none'; manifest-src 'self'; worker-src 'self'; upgrade-insecure-requests">
   <title>PRStK Lab</title>
+  <link rel="canonical" href={siteUrl}>
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="PRStK Lab">
+  <meta property="og:title" content="PRStK Lab｜投資研究工具入口">
+  <meta property="og:description" content="整理投資工具、研究資料與決策流程的研究入口。">
+  <meta property="og:url" content={siteUrl}>
+  <meta property="og:image" content={`${siteUrl}PRStK%20app.png`}>
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="PRStK Lab｜投資研究工具入口">
+  <meta name="twitter:description" content="整理投資工具、研究資料與決策流程的研究入口。">
+  <meta name="twitter:image" content={`${siteUrl}PRStK%20app.png`}>
+  <script is:inline type="application/ld+json" set:html={structuredData}></script>
 
   <!-- App 圖示設定 (iOS 與 Android) -->
   <link rel="apple-touch-icon" href="PRStK app.png">
+  <link rel="icon" href="PRStK app.png">
   <link rel="manifest" href="manifest.json">
 
   <link rel="stylesheet" href="assets/styles.css">
