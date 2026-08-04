@@ -81,6 +81,7 @@ const bootstrap = () => {
     const pins = migrateLegacySet(pinsStorageKey, legacyPinsStorageKey);
     let activeCategory = 'all';
     let favoritesOnly = false;
+    const facetFilters = { pricing: '', status: '', requiresLogin: '', mobileSupport: '' };
     let panelOpen = false;
     let currentMatches = [];
     let homeRefreshTimer;
@@ -92,6 +93,10 @@ const bootstrap = () => {
     const homeTitle = document.getElementById('home-tools-title');
     const homeEmpty = document.getElementById('home-empty');
     const viewAllTools = document.getElementById('view-all-tools');
+    const advancedFilterToggle = document.getElementById('advanced-filter-toggle');
+    const advancedFilters = document.getElementById('advanced-filters');
+    const filterReset = document.getElementById('filter-reset');
+    const facetSelects = [...document.querySelectorAll('[data-facet]')];
     const toolPanel = document.getElementById('tool-panel');
     const toolPanelGrid = document.getElementById('tool-panel-grid');
     const toolPanelTitle = document.getElementById('tool-panel-title');
@@ -102,6 +107,35 @@ const bootstrap = () => {
     const categorySections = document.getElementById('category-sections');
     const toolCards = [];
     const focusableSelector = 'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
+
+    const statusLabels = {
+      verified: '已驗證',
+      'pending-verification': '待驗證',
+      beta: 'Beta',
+      'temporarily-unavailable': '暫時無法使用',
+      'discontinued': '已停止服務'
+    };
+    const normalise = value => String(value || '').normalize('NFKC').toLocaleLowerCase('zh-TW').replace(/\s+/g, '');
+    const readUrlState = () => {
+      const params = new URLSearchParams(window.location.search);
+      toolSearch.value = params.get('q') || '';
+      activeCategory = params.get('category') || 'all';
+      favoritesOnly = params.get('favorites') === '1';
+      Object.keys(facetFilters).forEach(key => { facetFilters[key] = params.get(key) || ''; });
+      facetSelects.forEach(select => { select.value = facetFilters[select.dataset.facet] || ''; });
+      favoritesFilter.setAttribute('aria-pressed', String(favoritesOnly));
+    };
+    const syncUrlState = () => {
+      const params = new URLSearchParams();
+      if (toolSearch.value.trim()) params.set('q', toolSearch.value.trim());
+      if (activeCategory !== 'all') params.set('category', activeCategory);
+      if (favoritesOnly) params.set('favorites', '1');
+      Object.entries(facetFilters).forEach(([key, value]) => { if (value) params.set(key, value); });
+      const query = params.toString();
+      window.history.replaceState(null, '', `${window.location.pathname}${query ? `?${query}` : ''}${window.location.hash}`);
+      const hasFacet = Object.values(facetFilters).some(Boolean);
+      filterReset.classList.toggle('hidden', !toolSearch.value.trim() && activeCategory === 'all' && !favoritesOnly && !hasFacet);
+    };
 
     const trapFocus = (event, container) => {
       if (event.key !== 'Tab') return;
@@ -137,6 +171,8 @@ const bootstrap = () => {
 
     categoryFilters.append(makeFilterChip('all', '全部', 'grid-2x2'));
     categories.forEach(category => categoryFilters.append(makeFilterChip(category.id, category.label, category.icon)));
+    readUrlState();
+    categoryFilters.querySelectorAll('button[data-category]').forEach(chip => chip.setAttribute('aria-pressed', String(chip.dataset.category === activeCategory)));
 
     const createToolCard = tool => {
       const template = document.getElementById('tool-card-template');
@@ -145,9 +181,12 @@ const bootstrap = () => {
       const link = card.querySelector('[data-tool-link]');
       const title = card.querySelector('[data-tool-name]');
       const subtitle = card.querySelector('[data-tool-brand]');
+      const status = card.querySelector('[data-tool-status]');
       link.href = tool.url;
       title.textContent = tool.name;
       subtitle.textContent = tool.brandName;
+      status.textContent = statusLabels[tool.status] || '尚未驗證';
+      status.dataset.status = tool.status || 'unknown';
       return card;
     };
 
@@ -231,8 +270,8 @@ const bootstrap = () => {
     renderCatalogSections();
 
     const getMatches = () => {
-      const query = toolSearch.value.trim().toLocaleLowerCase('zh-TW');
-      return toolCards.filter(({ card, tool, toolId }) => {
+      const query = normalise(toolSearch.value);
+      const matches = toolCards.filter(({ card, tool, toolId }) => {
         const searchableText = [
           tool.name,
           tool.brandName,
@@ -243,10 +282,20 @@ const bootstrap = () => {
           ...tool.targetUsers,
           ...tool.tags,
           ...tool.aliases
-        ].join(' ').toLocaleLowerCase('zh-TW');
+        ].map(normalise).join(' ');
+        const facetsMatch = Object.entries(facetFilters).every(([key, value]) => !value || String(tool[key] || 'unknown') === value);
         return (!query || searchableText.includes(query))
           && (activeCategory === 'all' || card.dataset.category === activeCategory)
-          && (!favoritesOnly || favorites.has(toolId));
+          && (!favoritesOnly || favorites.has(toolId))
+          && facetsMatch;
+      });
+      if (!query) return matches;
+      return matches.sort((left, right) => {
+        const score = entry => {
+          const text = normalise([entry.tool.name, entry.tool.brandName, entry.tool.summary, entry.tool.tags, entry.tool.aliases].flat().join(' '));
+          return (text.startsWith(query) ? 4 : 0) + (normalise(entry.tool.name).includes(query) ? 3 : 0) + (text.includes(query) ? 1 : 0);
+        };
+        return score(right) - score(left);
       });
     };
 
@@ -311,6 +360,7 @@ const bootstrap = () => {
         chip.setAttribute('aria-pressed', String(chip.dataset.category === categoryId));
       });
       applyFilters();
+      syncUrlState();
     };
 
     categoryFilters.addEventListener('click', event => {
@@ -330,11 +380,34 @@ const bootstrap = () => {
         setCategory(button.dataset.scenarioCategory);
       });
     });
-    toolSearch.addEventListener('input', applyFilters);
+    toolSearch.addEventListener('input', () => { applyFilters(); syncUrlState(); });
     favoritesFilter.addEventListener('click', () => {
       favoritesOnly = !favoritesOnly;
       favoritesFilter.setAttribute('aria-pressed', String(favoritesOnly));
       applyFilters();
+      syncUrlState();
+    });
+    advancedFilterToggle?.addEventListener('click', () => {
+      const expanded = advancedFilters.hidden;
+      advancedFilters.hidden = !expanded;
+      advancedFilterToggle.setAttribute('aria-expanded', String(expanded));
+      advancedFilterToggle.classList.toggle('bg-muji-brand/5', expanded);
+    });
+    facetSelects.forEach(select => select.addEventListener('change', () => {
+      facetFilters[select.dataset.facet] = select.value;
+      applyFilters();
+      syncUrlState();
+    }));
+    filterReset?.addEventListener('click', () => {
+      toolSearch.value = '';
+      activeCategory = 'all';
+      favoritesOnly = false;
+      Object.keys(facetFilters).forEach(key => { facetFilters[key] = ''; });
+      facetSelects.forEach(select => { select.value = ''; });
+      favoritesFilter.setAttribute('aria-pressed', 'false');
+      categoryFilters.querySelectorAll('button[data-category]').forEach(chip => chip.setAttribute('aria-pressed', String(chip.dataset.category === 'all')));
+      applyFilters();
+      syncUrlState();
     });
     viewAllTools.addEventListener('click', () => {
       panelPreviousFocus = document.activeElement;
@@ -357,6 +430,7 @@ const bootstrap = () => {
     };
     closeToolPanel.addEventListener('click', closePanel);
     applyFilters();
+    syncUrlState();
     lucide.createIcons();
 
     function renderList(list, items, markerClass) {

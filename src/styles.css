@@ -64,6 +64,7 @@
     #home-card-grid { grid-template-rows: repeat(2, 4.15rem); }
     #home-card-grid .tool-card { min-height: 4.15rem; }
     #home-card-grid .tool-action { display: none; }
+    #home-card-grid [data-tool-status] { display: none; }
     #home-card-grid .card-hover-effect { min-height: 4.15rem; padding: 0.5rem 0.7rem !important; }
     #home-card-grid .card-hover-effect > span:first-child { font-size: clamp(0.68rem, 2.8vw, 0.8rem) !important; line-height: 1.18 !important; }
     #home-card-grid .card-hover-effect > span:nth-child(2) { margin-top: 0.2rem !important; font-size: clamp(0.58rem, 2.3vw, 0.68rem) !important; }
