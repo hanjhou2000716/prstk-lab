@@ -1,6 +1,8 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: ['./src/pages/**/*.{astro,html,js,ts}'],
+  // Scan every source component so utility classes rendered outside pages
+  // (drawers, cards, panels and client-side state classes) are emitted.
+  content: ['./src/**/*.{astro,html,js,ts}'],
   theme: {
     extend: {
       fontFamily: { sans: ['Inter', 'Noto Sans TC', 'sans-serif'] },
