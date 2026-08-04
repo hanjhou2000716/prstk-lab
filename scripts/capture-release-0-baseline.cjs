@@ -3,7 +3,8 @@ const path = require('node:path');
 const vm = require('node:vm');
 
 const repoRoot = path.resolve(__dirname, '..');
-const html = fs.readFileSync(path.join(repoRoot, 'index.html'), 'utf8');
+const sourceFile = path.join(repoRoot, 'src', 'pages', 'index.astro');
+const html = fs.readFileSync(sourceFile, 'utf8');
 
 function extractConst(name) {
   const marker = `const ${name} = `;
@@ -48,7 +49,7 @@ const baseline = {
   schemaVersion: 'release-0-a01-v1',
   capturedAt,
   sourceCommit,
-  sourceFile: 'index.html',
+  sourceFile: 'src/pages/index.astro',
   toolCount: tools.length,
   categoryCount: categories.length,
   categories: categories.map(category => ({ ...category, toolCount: categoryCounts[category.id] })),
