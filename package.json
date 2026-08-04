@@ -5,13 +5,15 @@
   "scripts": {
     "dev": "astro dev",
     "build:css": "tailwindcss -i ./src/styles.css -o ./public/assets/styles.css --minify",
-    "build": "npm run build:css && astro check && astro build",
+    "build": "npm run build:css && npm run schema:validate && astro check && astro build",
     "preview": "astro preview",
     "validate": "node scripts/validate-inline-js.cjs",
     "baseline:capture": "node scripts/capture-release-0-baseline.cjs",
     "baseline:validate": "node scripts/validate-release-0-baseline.cjs",
     "astro:check": "astro check",
-    "build:validate": "node scripts/validate-astro-build.cjs"
+    "build:validate": "node scripts/validate-astro-build.cjs",
+    "data:generate": "node scripts/generate-tool-data.cjs",
+    "schema:validate": "node scripts/validate-tool-schema.cjs"
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.10",
