@@ -46,6 +46,9 @@
     .tool-card.is-favorite .favorite-icon { fill: #D97745; stroke: #D97745; }
     .filter-chip[aria-pressed="true"] { background: #1F3546; border-color: #1F3546; color: #fff; }
     .scenario-entry[aria-pressed="true"] { background: #EEF2F4; border-color: #4A606D; box-shadow: 0 4px 14px rgba(74, 96, 109, 0.12); }
+    .primary-nav-item { display: inline-flex; min-height: 2.25rem; flex: 1 0 auto; align-items: center; justify-content: center; border-radius: 0.85rem; padding: 0.45rem 0.7rem; font-size: 0.7rem; font-weight: 500; letter-spacing: 0.04em; color: #4A606D; transition: background 180ms ease, color 180ms ease, transform 180ms ease; }
+    .primary-nav-item:hover, .primary-nav-item:focus-visible, .primary-nav-item[aria-current="page"] { background: #EEF2F4; color: #1F3546; }
+    .primary-nav-item:active { transform: scale(0.96); }
     .pin-button[aria-pressed="true"] { background: #D97745; color: #fff; border-color: #D97745; }
     .tool-panel-open { overflow: hidden; }
     .tool-panel-surface {
@@ -85,6 +88,9 @@
       #portal-shell { padding-top: 4rem; }
       /* 搜尋區上移一行；情境入口保留原本的視覺位置。 */
       #portal-shell > header { margin-bottom: 1.5rem; }
+      #primary-nav { margin-top: -0.35rem; }
+      #primary-nav > div { justify-content: flex-start; }
+      .primary-nav-item { min-width: 3.8rem; }
       #logo-img { width: 77% !important; max-height: 12vh; }
       #tool-search-panel { padding: 0.75rem !important; }
       #tool-search-panel #category-filters { margin-top: 0.75rem; }

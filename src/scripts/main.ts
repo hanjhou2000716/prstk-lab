@@ -97,6 +97,7 @@ const bootstrap = () => {
     const advancedFilters = document.getElementById('advanced-filters');
     const filterReset = document.getElementById('filter-reset');
     const facetSelects = [...document.querySelectorAll('[data-facet]')];
+    const primaryNav = document.getElementById('primary-nav');
     const toolPanel = document.getElementById('tool-panel');
     const toolPanelGrid = document.getElementById('tool-panel-grid');
     const toolPanelTitle = document.getElementById('tool-panel-title');
@@ -386,6 +387,37 @@ const bootstrap = () => {
       favoritesFilter.setAttribute('aria-pressed', String(favoritesOnly));
       applyFilters();
       syncUrlState();
+    });
+    primaryNav?.addEventListener('click', event => {
+      const item = event.target.closest('[data-primary-nav]');
+      if (!item || item.tagName === 'A') return;
+      const action = item.dataset.navAction;
+      const category = item.dataset.navCategory;
+      if (item.dataset.primaryNav === 'tools') {
+        viewAllTools.click();
+        return;
+      }
+      if (category) {
+        toolSearch.value = '';
+        favoritesOnly = false;
+        favoritesFilter.setAttribute('aria-pressed', 'false');
+        setCategory(category);
+        document.getElementById('tool-search-panel')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        return;
+      }
+      if (action === 'favorites') {
+        favoritesOnly = true;
+        favoritesFilter.setAttribute('aria-pressed', 'true');
+        setCategory('all');
+        document.getElementById('home-tools')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        return;
+      }
+      if (action === 'catalog') {
+        favoritesOnly = false;
+        favoritesFilter.setAttribute('aria-pressed', 'false');
+        setCategory('all');
+        viewAllTools.click();
+      }
     });
     advancedFilterToggle?.addEventListener('click', () => {
       const expanded = advancedFilters.hidden;
