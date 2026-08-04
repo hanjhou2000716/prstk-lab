@@ -4,6 +4,7 @@ import { createClient } from '@supabase/supabase-js';
 const supabaseUrl = import.meta.env.PUBLIC_SUPABASE_URL || '';
 const supabaseKey = import.meta.env.PUBLIC_SUPABASE_PUBLISHABLE_KEY || '';
 const tableName = 'research_projects';
+const notificationTableName = 'notification_preferences';
 
 export const isSupabaseConfigured = Boolean(supabaseUrl && supabaseKey);
 export const supabaseConfigHint = '請在建置環境設定 PUBLIC_SUPABASE_URL 與 PUBLIC_SUPABASE_PUBLISHABLE_KEY。';
@@ -157,5 +158,70 @@ export function bindAccountControls({ onStatus = () => {} } = {}) {
   signUpButton.addEventListener('click', () => run(() => signUp(email.value.trim(), password.value)));
   signOutButton.addEventListener('click', async () => { const { error } = await signOut(); if (error) setStatus(`登出失敗：${error.message}`); else renderSession(null); });
   getSession().then(({ session, error }) => error ? setStatus(error.message) : renderSession(session));
+  return subscribeToAuth(renderSession);
+}
+
+const notificationFields = ['latest_research', 'weekly_digest', 'tool_status', 'review_reminders', 'platform_updates'];
+const defaultNotificationPreferences = Object.fromEntries(notificationFields.map(field => [field, true]));
+
+export async function fetchNotificationPreferences(userId) {
+  const supabase = getClient();
+  if (!supabase) return { preferences: defaultNotificationPreferences, error: new Error(supabaseConfigHint) };
+  const { data, error } = await supabase.from(notificationTableName).select(notificationFields.join(',')).eq('user_id', userId).maybeSingle();
+  return { preferences: { ...defaultNotificationPreferences, ...(data || {}) }, error };
+}
+
+export async function upsertNotificationPreferences(userId, preferences) {
+  const supabase = getClient();
+  if (!supabase) return { error: new Error(supabaseConfigHint) };
+  const values = Object.fromEntries(notificationFields.map(field => [field, preferences[field] !== false]));
+  const { error } = await supabase.from(notificationTableName).upsert({ user_id: userId, ...values, updated_at: new Date().toISOString() }, { onConflict: 'user_id' });
+  return { error };
+}
+
+export async function createTelegramLink() {
+  const supabase = getClient();
+  if (!supabase) return { data: null, error: new Error(supabaseConfigHint) };
+  return supabase.functions.invoke('telegram-link', { body: {} });
+}
+
+export function bindNotificationControls() {
+  const options = document.getElementById('notification-options');
+  const status = document.getElementById('notification-status');
+  const saveButton = document.getElementById('save-notification-preferences');
+  const linkButton = document.getElementById('create-telegram-link');
+  const link = document.getElementById('telegram-link');
+  if (!options || !status || !saveButton || !linkButton || !link) return;
+  let currentSession = null;
+  const controls = Object.fromEntries(notificationFields.map(field => [field, document.querySelector(`[data-notification-pref="${field}"]`)]));
+  const setEnabled = enabled => { options.hidden = !enabled; Object.values(controls).forEach(control => { control.disabled = !enabled; }); saveButton.disabled = !enabled; linkButton.disabled = !enabled; };
+  const readPreferences = () => Object.fromEntries(notificationFields.map(field => [field, Boolean(controls[field]?.checked)]));
+  const writePreferences = preferences => notificationFields.forEach(field => { if (controls[field]) controls[field].checked = preferences[field] !== false; });
+  const renderSession = async session => {
+    currentSession = session;
+    if (!session?.user?.id) { setEnabled(false); status.textContent = isSupabaseConfigured ? '尚未登入；登入後可設定通知。' : supabaseConfigHint; return; }
+    setEnabled(true);
+    status.textContent = '正在載入通知設定…';
+    const { preferences, error } = await fetchNotificationPreferences(session.user.id);
+    writePreferences(preferences);
+    status.textContent = error ? `載入通知設定失敗：${error.message}` : '可選擇要接收的通知類型。';
+  };
+  saveButton.addEventListener('click', async () => {
+    if (!currentSession?.user?.id) return;
+    saveButton.disabled = true;
+    const { error } = await upsertNotificationPreferences(currentSession.user.id, readPreferences());
+    status.textContent = error ? `儲存失敗：${error.message}` : '通知設定已儲存。';
+    saveButton.disabled = false;
+  });
+  linkButton.addEventListener('click', async () => {
+    if (!currentSession?.user?.id) return;
+    linkButton.disabled = true;
+    const { data, error } = await createTelegramLink();
+    if (error || !data?.url) status.textContent = `無法產生綁定連結：${error?.message || 'Telegram 尚未完成部署設定。'}`;
+    else { link.href = data.url; link.textContent = `開啟 Telegram 完成綁定（有效至 ${new Date(data.expiresAt).toLocaleTimeString('zh-TW', { hour: '2-digit', minute: '2-digit' })}）`; link.classList.remove('hidden'); status.textContent = '請在有效時間內開啟連結並傳送 /start。'; }
+    linkButton.disabled = false;
+  });
+  setEnabled(false);
+  getSession().then(({ session, error }) => error ? status.textContent = error.message : renderSession(session));
   return subscribeToAuth(renderSession);
 }
