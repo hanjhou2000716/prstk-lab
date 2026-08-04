@@ -200,3 +200,8 @@
       background: #E3DDD5;
       border-radius: 4px;
     }
+    .workbench-action { min-height: 2.75rem; border: 1px solid #E3DDD5; border-radius: 999px; background: rgba(255,255,255,.85); padding: .65rem 1rem; font-size: .75rem; color: #4A606D; transition: border-color 180ms ease, color 180ms ease, background 180ms ease; }
+    .workbench-action:hover { border-color: #4A606D; background: #EEF2F4; }
+    .workbench-label { display: flex; flex-direction: column; gap: .35rem; font-size: .7rem; color: #625D56; }
+    .workbench-input { width: 100%; min-height: 2.75rem; border: 1px solid #E3DDD5; border-radius: .85rem; background: rgba(250,248,245,.7); padding: .65rem .8rem; color: #3C3935; font-size: .8rem; outline: none; transition: border-color 180ms ease, background 180ms ease; }
+    .workbench-input:focus { border-color: #4A606D; background: #fff; }
