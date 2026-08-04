@@ -1,0 +1,50 @@
+name: PRStK Lab CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: prstk-lab-ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  quality:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Validate baseline and data contracts
+        run: |
+          npm run baseline:validate
+          npm run schema:validate
+          npm run cards:validate
+          npm run components:validate
+          npm run security:validate
+          npm run seo:validate
+
+      - name: Validate inline blocks and Astro types
+        run: |
+          npm run validate
+          npm run astro:check
+
+      - name: Build static site
+        run: npm run build
+
+      - name: Validate generated site
+        run: npm run build:validate
