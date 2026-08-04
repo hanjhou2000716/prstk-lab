@@ -24,7 +24,9 @@
   <script is:inline src="https://unpkg.com/lucide@0.468.0" integrity="sha384-uTYyvsSSUZeaPhb5RbKlQa0zY/WpX/QHfvg2mczXyBQOpkWPEDy9lczyp+w7SKXu" crossorigin="anonymous"></script>
   
   
-  <style>
+  <!-- Global styles are required for ToolCard nodes created by the existing
+       client-side catalog renderer after Astro's initial HTML is hydrated. -->
+  <style is:global>
     /* 隱藏滾動條，確保無印極簡視覺 */
     body {
       -ms-overflow-style: none;
