@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "astro dev",
     "build:css": "tailwindcss -i ./src/styles.css -o ./public/assets/styles.css --minify",
-    "build": "npm run build:css && npm run schema:validate && npm run cards:validate && npm run components:validate && astro check && astro build",
+    "build": "npm run build:css && npm run schema:validate && npm run cards:validate && npm run components:validate && npm run security:validate && astro check && astro build",
     "preview": "astro preview",
     "validate": "node scripts/validate-inline-js.cjs",
     "baseline:capture": "node scripts/capture-release-0-baseline.cjs",
@@ -15,12 +15,18 @@
     "data:generate": "node scripts/generate-tool-data.cjs",
     "schema:validate": "node scripts/validate-tool-schema.cjs",
     "cards:validate": "node scripts/validate-data-driven-cards.cjs",
-    "components:validate": "node scripts/validate-components.cjs"
+    "components:validate": "node scripts/validate-components.cjs",
+    "security:validate": "node scripts/validate-external-assets.cjs"
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.10",
+    "@types/aos": "^3.0.8",
     "astro": "^7.1.6",
     "tailwindcss": "3.4.17",
     "typescript": "^6.0.3"
+  },
+  "dependencies": {
+    "aos": "^2.3.4",
+    "lucide": "^0.468.0"
   }
 }

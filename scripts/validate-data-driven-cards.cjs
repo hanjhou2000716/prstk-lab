@@ -5,6 +5,9 @@ const root = path.resolve(__dirname, '..');
 const pagePath = path.join(root, 'src', 'pages', 'index.astro');
 const dataPath = path.join(root, 'src', 'data', 'tools.json');
 const page = fs.readFileSync(pagePath, 'utf8');
+const runtime = fs.existsSync(path.join(root, 'src', 'scripts', 'main.ts'))
+  ? fs.readFileSync(path.join(root, 'src', 'scripts', 'main.ts'), 'utf8')
+  : page;
 const tools = JSON.parse(fs.readFileSync(dataPath, 'utf8'));
 
 const errors = [];
@@ -29,7 +32,8 @@ for (const { pattern, message } of forbiddenPatterns) {
 }
 
 for (const required of ['id="tool-data"', 'renderCatalogSections', 'toolById']) {
-  if (!page.includes(required)) errors.push(`Missing data-driven renderer marker: ${required}`);
+  const source = required === 'id="tool-data"' ? page : runtime;
+  if (!source.includes(required)) errors.push(`Missing data-driven renderer marker: ${required}`);
 }
 
 if (!tools.length) errors.push('Tool data is empty.');
