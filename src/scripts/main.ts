@@ -273,6 +273,7 @@ const bootstrap = () => {
         saveStoredSet(favoritesStorageKey, favorites);
         favoriteButton.setAttribute('aria-pressed', String(favorites.has(toolId)));
         card.classList.toggle('is-favorite', favorites.has(toolId));
+        globalThis.prstkAnalytics?.track('favorite_toggled', { toolId });
         applyFilters();
       });
       pinButton.setAttribute('aria-label', `釘選工具：${tool.brandName}`);
@@ -288,6 +289,7 @@ const bootstrap = () => {
         }
         saveStoredSet(pinsStorageKey, pins);
         pinButton.setAttribute('aria-pressed', String(pins.has(toolId)));
+        globalThis.prstkAnalytics?.track('pin_toggled', { toolId });
         applyFilters();
       });
       compareButton.setAttribute('aria-label', `加入比較：${tool.brandName}`);
@@ -300,6 +302,7 @@ const bootstrap = () => {
         }
         card.classList.toggle('is-compared', compareSet.has(toolId));
         compareButton.setAttribute('aria-pressed', String(compareSet.has(toolId)));
+        globalThis.prstkAnalytics?.track('compare_toggled', { toolId });
         renderCompareBar();
       });
       toolCards.push({ card, section: null, tool, toolId });
@@ -629,6 +632,7 @@ const bootstrap = () => {
     function openDrawer(toolId) {
       const data = toolById.get(toolId);
       if (!data) return;
+      globalThis.prstkAnalytics?.track('tool_opened', { toolId });
       clearTimeout(closeTimer);
       drawerPreviousFocus = document.activeElement;
       
@@ -706,3 +710,7 @@ if (document.readyState === 'loading') {
 } else {
   bootstrap();
 }
+
+const loadPrivacyAnalytics = () => import('./privacy-analytics').catch(() => undefined);
+if ('requestIdleCallback' in window) window.requestIdleCallback(loadPrivacyAnalytics, { timeout: 2500 });
+else window.setTimeout(loadPrivacyAnalytics, 1200);

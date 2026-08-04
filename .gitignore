@@ -1,3 +1,6 @@
 node_modules/
 .astro/
 docs/site/
+.env
+.env.*
+!.env.example
