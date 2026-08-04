@@ -1,0 +1,27 @@
+---
+import changelog from '../../data/changelog.json';
+const siteUrl = 'https://hanjhou2000716.github.io/prstk-lab/';
+---
+<!doctype html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="referrer" content="no-referrer">
+  <meta name="description" content="PRStK Lab 平台更新紀錄與新功能。">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'self'; object-src 'none'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self'; form-action 'self'; frame-src 'none'; manifest-src 'self'; worker-src 'self'; upgrade-insecure-requests">
+  <link rel="canonical" href={`${siteUrl}updates/`}><title>更新紀錄｜PRStK Lab</title><link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body class="min-h-screen bg-muji-bg text-muji-text">
+  <main class="mx-auto max-w-3xl px-5 py-8 sm:px-8">
+    <a href="../" class="text-sm text-muji-brand hover:text-orange">← 回到首頁</a>
+    <header class="mt-8"><p class="text-xs tracking-[0.2em] text-muji-muted">PRSTK LAB · CHANGELOG</p><h1 class="mt-2 text-3xl font-semibold">更新紀錄</h1><p class="mt-3 text-sm leading-7 text-muji-muted">只保留真正影響研究流程的變更，方便你回訪時快速掌握新功能。</p></header>
+    <section class="mt-6 space-y-3" aria-label="平台更新列表">
+      {changelog.map((entry) => <article class="update-entry rounded-3xl border border-muji-border bg-white/85 p-5 shadow-sm" data-update-id={entry.id} data-update-date={entry.date}>
+        <div class="flex flex-wrap items-center justify-between gap-2"><p class="text-xs tracking-[0.12em] text-muji-muted">{entry.date}</p><span class="update-new hidden rounded-full bg-orange/15 px-2 py-1 text-[10px] text-orange">新更新</span></div>
+        <h2 class="mt-3 text-lg font-semibold">{entry.title}</h2><p class="mt-2 text-sm leading-7 text-muji-muted">{entry.summary}</p>
+        {entry.links.length > 0 && <div class="mt-4 flex flex-wrap gap-2">{entry.links.map((link) => <a href={link} class="rounded-full border border-muji-border px-3 py-1.5 text-xs text-muji-brand hover:border-muji-brand">前往相關頁面</a>)}</div>}
+      </article>)}
+    </section>
+    <div class="mt-6 flex items-center justify-between gap-3"><p id="updates-status" class="text-xs text-muji-muted" role="status" aria-live="polite"></p><button id="mark-updates-read" type="button" class="workbench-action">標記全部已讀</button></div>
+  </main>
+  <script is:inline src="../scripts/updates.js"></script>
+</body></html>
