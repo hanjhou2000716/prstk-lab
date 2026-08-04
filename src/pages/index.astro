@@ -9,6 +9,7 @@ import ToolPanel from '../components/ToolPanel.astro';
 import ToolPreviewDrawer from '../components/ToolPreviewDrawer.astro';
 import Footer from '../components/Footer.astro';
 import PrimaryNav from '../components/PrimaryNav.astro';
+import ComparePanel from '../components/ComparePanel.astro';
 
 const toolData = JSON.stringify(tools).replace(/</g, '\\u003c');
 const siteUrl = 'https://hanjhou2000716.github.io/prstk-lab/';
@@ -83,6 +84,7 @@ const structuredData = JSON.stringify({
   <ToolPanel />
 
   <ToolPreviewDrawer />
+  <ComparePanel />
 
   <script src="../scripts/main.ts"></script>
 </body>

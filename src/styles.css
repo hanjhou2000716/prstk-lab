@@ -38,11 +38,12 @@
     .tool-card { animation: card-enter 420ms cubic-bezier(0.16, 1, 0.3, 1) both; overflow: hidden; border-radius: 1rem; }
     .tool-card .card-hover-effect { padding-right: 3rem !important; }
     .tool-card .card-hover-effect > span:first-child { white-space: normal !important; overflow: hidden; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }
-    .tool-action { position: absolute; right: 0; z-index: 10; display: flex; width: 2.75rem; min-height: 2.75rem; height: 33.333%; align-items: center; justify-content: center; border-left: 1px solid rgba(227, 221, 213, 0.55); background: rgba(255, 255, 255, 0.82); color: rgba(98, 93, 86, 0.78); transition: color 180ms ease, background 180ms ease; }
+    .tool-action { position: absolute; right: 0; z-index: 10; display: flex; width: 2.75rem; min-height: 2.75rem; height: 25%; align-items: center; justify-content: center; border-left: 1px solid rgba(227, 221, 213, 0.55); background: rgba(255, 255, 255, 0.82); color: rgba(98, 93, 86, 0.78); transition: color 180ms ease, background 180ms ease; }
     .tool-action:hover { background: #EEF2F4; color: #1F3546; }
     .favorite-action { top: 0; border-bottom: 1px solid rgba(227, 221, 213, 0.42); }
     .pin-action { top: 33.333%; border-bottom: 1px solid rgba(227, 221, 213, 0.42); }
     .info-action { bottom: 0; }
+    .compare-action { top: 75%; }
     .tool-card.is-favorite .favorite-icon { fill: #D97745; stroke: #D97745; }
     .filter-chip[aria-pressed="true"] { background: #1F3546; border-color: #1F3546; color: #fff; }
     .scenario-entry[aria-pressed="true"] { background: #EEF2F4; border-color: #4A606D; box-shadow: 0 4px 14px rgba(74, 96, 109, 0.12); }
@@ -50,6 +51,10 @@
     .primary-nav-item:hover, .primary-nav-item:focus-visible, .primary-nav-item[aria-current="page"] { background: #EEF2F4; color: #1F3546; }
     .primary-nav-item:active { transform: scale(0.96); }
     .pin-button[aria-pressed="true"] { background: #D97745; color: #fff; border-color: #D97745; }
+    .tool-card.is-compared .compare-action { background: #4A606D; color: #fff; }
+    #compare-panel[aria-hidden="false"] { display: block; }
+    #compare-grid { grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr)); }
+    .compare-card { border: 1px solid #E3DDD5; border-radius: 1rem; background: rgba(255,255,255,.92); padding: 1rem; }
     .tool-panel-open { overflow: hidden; }
     .tool-panel-surface {
       background-color: #FAF8F5;
@@ -61,6 +66,8 @@
     }
     .tool-panel-surface #tool-panel-grid { scroll-padding: 0.25rem 0 1.5rem; }
     .tool-panel-surface .tool-card .card-hover-effect { background: rgba(255, 255, 255, 0.88); }
+    .tool-panel-surface .tool-card,
+    .tool-panel-surface .tool-card .card-hover-effect { min-height: 11rem; }
     #category-filters { scrollbar-width: none; }
     #category-filters::-webkit-scrollbar { display: none; }
     /* 首頁只負責快速瀏覽；收藏、釘選與詳細資訊集中在完整工具面板。 */
