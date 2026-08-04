@@ -39,3 +39,11 @@ $('project-form').addEventListener('submit', event => { event.preventDefault(); 
 $('reset-form').addEventListener('click', resetForm); $('export-json').addEventListener('click', exportJson); $('export-markdown').addEventListener('click', exportMarkdown); $('export-csv').addEventListener('click', exportCsv); $('import-data').addEventListener('click', () => $('import-file').click());
 $('import-file').addEventListener('change', event => { const file = event.target.files?.[0]; if (!file) return; const reader = new FileReader(); reader.onload = () => { try { const incoming = JSON.parse(reader.result); if (!Array.isArray(incoming)) throw new Error(); projects = incoming.filter(project => project && typeof project === 'object' && project.title).map(project => ({ ...project, id: project.id || crypto.randomUUID() })); persist(); render(); announce(`已匯入 ${projects.length} 個研究案。`); } catch { announce('匯入失敗：請選擇有效的 JSON 備份。'); } }; reader.readAsText(file); });
 render();
+
+import('./workbench-sync').then(({ bindWorkbenchControls }) => bindWorkbenchControls({
+  getProjects: () => projects,
+  replaceProjects: incoming => { projects = incoming; persist(); render(); },
+})).catch(() => {
+  const status = document.getElementById('sync-status');
+  if (status) status.textContent = '同步模組暫時無法載入，仍可使用本機模式。';
+});

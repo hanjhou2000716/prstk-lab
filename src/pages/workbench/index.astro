@@ -1,12 +1,16 @@
 ---
 const siteUrl = 'https://hanjhou2000716.github.io/prstk-lab/';
+const supabaseUrl = import.meta.env.PUBLIC_SUPABASE_URL || '';
+let supabaseOrigin = '';
+try { supabaseOrigin = supabaseUrl ? new URL(supabaseUrl).origin : ''; } catch { supabaseOrigin = ''; }
+const connectSrc = supabaseOrigin ? `'self' ${supabaseOrigin}` : "'self'";
 ---
 <!doctype html>
 <html lang="zh-TW">
 <head>
   <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="referrer" content="no-referrer">
   <meta name="description" content="PRStK Lab 本機研究工作台：建立研究案、記錄決策並匯出備份。">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'self'; object-src 'none'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self'; form-action 'self'; frame-src 'none'; manifest-src 'self'; worker-src 'self'; upgrade-insecure-requests">
+  <meta http-equiv="Content-Security-Policy" content={`default-src 'self'; base-uri 'self'; object-src 'none'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src ${connectSrc}; form-action 'self'; frame-src 'none'; manifest-src 'self'; worker-src 'self'; upgrade-insecure-requests`}>
   <link rel="canonical" href={`${siteUrl}workbench/`}><title>工作台｜PRStK Lab</title><link rel="stylesheet" href="../assets/styles.css">
 </head>
 <body class="min-h-screen bg-muji-bg text-muji-text">
@@ -33,7 +37,11 @@ const siteUrl = 'https://hanjhou2000716.github.io/prstk-lab/';
       </section>
       <section aria-labelledby="project-list-title"><div class="flex items-center justify-between"><h2 id="project-list-title" class="text-lg font-semibold">研究案清單</h2><span id="project-count" class="text-xs text-muji-muted">0 個研究案</span></div><div id="project-list" class="mt-4 space-y-3"></div><div id="project-empty" class="rounded-2xl border border-dashed border-muji-border bg-white/55 p-8 text-center text-sm leading-7 text-muji-muted">尚未建立研究案。從左側模板開始，先寫下你的研究問題。</div></section>
     </div>
-    <p class="mt-8 border-t border-muji-border pt-4 text-xs leading-6 text-muji-muted">隱私提醒：研究案、決策紀錄與匯入資料只保存在本機瀏覽器，不會自動上傳。清除瀏覽器資料前請先匯出 JSON 備份。</p>
+    <section class="mt-6 rounded-3xl border border-muji-border bg-white/75 p-5 shadow-sm" aria-labelledby="sync-title">
+      <div class="flex flex-wrap items-start justify-between gap-3"><div><h2 id="sync-title" class="text-lg font-semibold">雲端同步</h2><p id="sync-status" class="mt-2 text-sm leading-6 text-muji-muted" role="status" aria-live="polite">目前為本機模式；登入後可同步到 Supabase。</p></div><a href="../account/" class="workbench-action">登入／設定</a></div>
+      <div class="mt-4 flex flex-wrap gap-2"><button id="sync-pull" type="button" class="workbench-action" disabled>從雲端載入</button><button id="sync-push" type="button" class="workbench-action" disabled>同步到雲端</button><button id="sync-sign-out" type="button" class="workbench-action" hidden>登出</button></div>
+    </section>
+    <p class="mt-8 border-t border-muji-border pt-4 text-xs leading-6 text-muji-muted">隱私提醒：未登入時研究案只保存在本機；登入後只有在你按下同步按鈕時才會傳送到 Supabase。清除瀏覽器資料前請先匯出 JSON 備份。</p>
   </main>
   <script src="../../scripts/workbench.ts"></script>
 </body></html>

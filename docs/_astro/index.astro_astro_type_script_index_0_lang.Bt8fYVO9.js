@@ -1,0 +1,1 @@
+import{t as e}from"./workbench-sync.BY-BTIm2.js";var t=()=>{document.getElementById(`account-form`)?.addEventListener(`submit`,e=>e.preventDefault()),e()};document.readyState===`loading`?document.addEventListener(`DOMContentLoaded`,t,{once:!0}):t();
