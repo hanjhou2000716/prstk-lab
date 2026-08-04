@@ -6,5 +6,17 @@
   <p id="risk-disclosure" class="max-w-[32rem] text-[10px] leading-5 text-muji-muted/70" role="note">
     本平台內容僅供研究與教育參考，非投資建議；外部資料可能延遲或變更，投資決策請自行查證並承擔風險。
   </p>
+  <details id="privacy-settings" class="w-full max-w-[32rem] text-left text-[10px] text-muji-muted/75">
+    <summary class="cursor-pointer text-center underline-offset-2 hover:text-muji-brand hover:underline">隱私與使用統計設定</summary>
+    <div class="mt-2 rounded-2xl border border-muji-border/60 bg-white/55 p-3 leading-5">
+      <p>只有在你主動允許時，才會在本機記錄不含研究內容的使用事件（例如搜尋、開啟工具）。不會上傳筆記、標的或投資部位。</p>
+      <div class="mt-2 flex flex-wrap gap-2">
+        <button id="analytics-accept" type="button" class="rounded-full border border-muji-brand/40 px-3 py-1.5 text-[10px] text-muji-brand hover:bg-muji-brand hover:text-white">允許匿名統計</button>
+        <button id="analytics-decline" type="button" class="rounded-full border border-muji-border px-3 py-1.5 text-[10px] text-muji-muted hover:border-orange hover:text-orange">拒絕</button>
+        <button id="analytics-clear" type="button" class="rounded-full border border-muji-border px-3 py-1.5 text-[10px] text-muji-muted hover:border-orange hover:text-orange">清除本機紀錄</button>
+      </div>
+      <p id="analytics-status" class="mt-2" role="status" aria-live="polite">尚未選擇。</p>
+    </div>
+  </details>
   <p class="text-[10px] text-muji-muted/60 tracking-widest font-light mt-1">© 2026 PRStK Lab. All rights reserved.</p>
 </footer>
