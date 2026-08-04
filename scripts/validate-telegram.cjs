@@ -6,6 +6,7 @@ const schema = read('supabase/schema.sql');
 const account = read('src/pages/account/index.astro');
 const sync = read('src/scripts/workbench-sync.ts');
 const setup = read('supabase/telegram-setup.md');
+const config = read('supabase/config.toml');
 const functions = ['telegram-link', 'telegram-webhook', 'telegram-notify'].map(name => read(`supabase/functions/${name}/index.ts`)).join('\n');
 
 for (const marker of ['notification_preferences', 'telegram_subscriptions', 'telegram_link_tokens', 'revoke all on public.telegram_subscriptions', 'enable row level security']) {
@@ -20,4 +21,5 @@ for (const marker of ['TELEGRAM_BOT_TOKEN', 'TELEGRAM_WEBHOOK_SECRET', 'TELEGRAM
 if (/['"](?:[0-9]{6,}:[A-Za-z0-9_-]{20,}|sb_secret_[A-Za-z0-9_-]+)['"]/.test(functions)) throw new Error('Telegram or Supabase secrets must not be committed.');
 if (!/15 \* 60 \* 1000/.test(functions)) throw new Error('Telegram link token expiry must remain bounded.');
 if (!/allowedTypes/.test(functions) || !/disable_web_page_preview/.test(functions)) throw new Error('Telegram notification payload guard is missing.');
+if (!/telegram-link[\s\S]*verify_jwt = true/.test(config) || !/telegram-webhook[\s\S]*verify_jwt = false/.test(config) || !/telegram-notify[\s\S]*verify_jwt = false/.test(config)) throw new Error('Telegram function JWT modes are not explicit.');
 console.log('Telegram integration valid: RLS preferences, one-time linking, guarded webhook, and server-only delivery are present.');
