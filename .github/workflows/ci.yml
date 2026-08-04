@@ -53,3 +53,9 @@ jobs:
 
       - name: Validate generated site
         run: npm run build:validate
+
+      - name: Check performance budget
+        run: npm run performance:validate
+
+      - name: Audit dependencies
+        run: npm audit --audit-level=high
