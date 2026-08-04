@@ -1,0 +1,294 @@
+{
+  "schemaVersion": "release-0-a01-v1",
+  "capturedAt": "2026-08-04",
+  "sourceCommit": "105b1cd",
+  "sourceFile": "index.html",
+  "toolCount": 28,
+  "categoryCount": 5,
+  "categories": [
+    {
+      "id": "explore",
+      "label": "探索",
+      "icon": "compass",
+      "toolCount": 7
+    },
+    {
+      "id": "research",
+      "label": "研究",
+      "icon": "book-open",
+      "toolCount": 5
+    },
+    {
+      "id": "strategy",
+      "label": "策略",
+      "icon": "chart-no-axes-combined",
+      "toolCount": 7
+    },
+    {
+      "id": "risk",
+      "label": "風控",
+      "icon": "shield-check",
+      "toolCount": 5
+    },
+    {
+      "id": "allocation",
+      "label": "配置",
+      "icon": "pie-chart",
+      "toolCount": 4
+    }
+  ],
+  "tools": [
+    {
+      "id": "stockintelli",
+      "category": "research",
+      "title": "🦅 股市智投",
+      "brandName": "StockIntelli",
+      "url": "https://www.stockintelli.com/",
+      "featureCount": 2,
+      "targetCount": 2
+    },
+    {
+      "id": "novaweave",
+      "category": "explore",
+      "title": "🧠 智慧產業地圖",
+      "brandName": "NovaWeave",
+      "url": "https://aistockmap.com",
+      "featureCount": 2,
+      "targetCount": 2
+    },
+    {
+      "id": "tideflow",
+      "category": "strategy",
+      "title": "🧭 潮汐資金流",
+      "brandName": "TideFlow",
+      "url": "https://tide-tw.app/#",
+      "featureCount": 2,
+      "targetCount": 2
+    },
+    {
+      "id": "tradelens",
+      "category": "research",
+      "title": "🕸️ 交易解構情報台",
+      "brandName": "TradeLens",
+      "url": "https://threads.hypertridemeng.com/",
+      "featureCount": 2,
+      "targetCount": 2
+    },
+    {
+      "id": "alpha-memo-ai",
+      "category": "research",
+      "title": "🎙️ AI整理法說語音",
+      "brandName": "AlphaMemo AI",
+      "url": "https://www.alphamemo.ai/free-transcripts",
+      "featureCount": 2,
+      "targetCount": 2
+    },
+    {
+      "id": "chipintel-tw",
+      "category": "explore",
+      "title": "🎯 台股籌碼戰情室",
+      "brandName": "ChipIntel TW",
+      "url": "https://twstock.tw/",
+      "featureCount": 2,
+      "targetCount": 2
+    },
+    {
+      "id": "quantgems",
+      "category": "strategy",
+      "title": "🤖 量化策略研究",
+      "brandName": "QuantGems",
+      "url": "https://www.quantgems.com/",
+      "featureCount": 2,
+      "targetCount": 2
+    },
+    {
+      "id": "echoequity",
+      "category": "strategy",
+      "title": "🌊 波段區間定位",
+      "brandName": "EchoEquity",
+      "url": "https://twetq.com/",
+      "featureCount": 2,
+      "targetCount": 2
+    },
+    {
+      "id": "quants-tw",
+      "category": "strategy",
+      "title": "🔬 量子矩陣平台",
+      "brandName": "Quants.tw",
+      "url": "https://quants.tw/",
+      "featureCount": 2,
+      "targetCount": 2
+    },
+    {
+      "id": "beta-align",
+      "category": "risk",
+      "title": "⚖️ 極智再平衡系統",
+      "brandName": "BetaAlign",
+      "url": "https://jj-invest-public.vercel.app/",
+      "featureCount": 2,
+      "targetCount": 2
+    },
+    {
+      "id": "finlab",
+      "category": "research",
+      "title": "🧪 量子研究室",
+      "brandName": "FinLab",
+      "url": "https://studio.finlab.finance/chat",
+      "featureCount": 2,
+      "targetCount": 2
+    },
+    {
+      "id": "google-finance",
+      "category": "explore",
+      "title": "📈 Google 金融",
+      "brandName": "Google Finance",
+      "url": "https://www.google.com/finance/beta",
+      "featureCount": 2,
+      "targetCount": 2
+    },
+    {
+      "id": "yahoo-finance",
+      "category": "explore",
+      "title": "🐯 Yahoo 金融",
+      "brandName": "Yahoo Finance",
+      "url": "https://finance.yahoo.com/",
+      "featureCount": 2,
+      "targetCount": 2
+    },
+    {
+      "id": "prism-overlap",
+      "category": "strategy",
+      "title": "🔀 ETF 重疊分析",
+      "brandName": "PrismOverlap",
+      "url": "https://etfcross.com/",
+      "featureCount": 2,
+      "targetCount": 2
+    },
+    {
+      "id": "fluotrack",
+      "category": "strategy",
+      "title": "🚨 ETF 折溢價監控",
+      "brandName": "FluoTrack",
+      "url": "https://twetf.com/",
+      "featureCount": 2,
+      "targetCount": 2
+    },
+    {
+      "id": "solitude",
+      "category": "allocation",
+      "title": "☯️ 紀律交易系統",
+      "brandName": "Solitude",
+      "url": "https://disciplined-trading.streamlit.app/",
+      "featureCount": 2,
+      "targetCount": 2
+    },
+    {
+      "id": "aevum-sandbox",
+      "category": "allocation",
+      "title": "⏳ 退休沙盒模擬",
+      "brandName": "AevumSandbox",
+      "url": "https://roku-rgb.github.io/when-can-i-retire/#calculator",
+      "featureCount": 2,
+      "targetCount": 2
+    },
+    {
+      "id": "leverage-matrix",
+      "category": "risk",
+      "title": "🧮 台指槓桿矩陣",
+      "brandName": "Leverage Matrix",
+      "url": "https://hilarious-narwhal-c43429.netlify.app",
+      "featureCount": 2,
+      "targetCount": 2
+    },
+    {
+      "id": "attnpulse",
+      "category": "risk",
+      "title": "⚠️ 注意王",
+      "brandName": "AttnPulse",
+      "url": "https://attnup.com/trending",
+      "featureCount": 2,
+      "targetCount": 2
+    },
+    {
+      "id": "margin-copilot",
+      "category": "risk",
+      "title": "🧭 槓桿領航員",
+      "brandName": "Margin Copilot",
+      "url": "https://hanjhou2000716.github.io/Margin_Copilot/",
+      "featureCount": 2,
+      "targetCount": 2
+    },
+    {
+      "id": "stockvision-ai",
+      "category": "explore",
+      "title": "👁️ 智慧股票研究平台",
+      "brandName": "StockVision AI",
+      "url": "https://stock-vision-engine.vercel.app/",
+      "featureCount": 2,
+      "targetCount": 2
+    },
+    {
+      "id": "twstock-pulse",
+      "category": "explore",
+      "title": "📡 台股每日分析",
+      "brandName": "TWStock Pulse",
+      "url": "https://7388chichi.pages.dev/",
+      "featureCount": 2,
+      "targetCount": 2
+    },
+    {
+      "id": "retireyield",
+      "category": "allocation",
+      "title": "🌴 退休咖",
+      "brandName": "RetireYield",
+      "url": "https://www.retirementplantw.com/tools/compound-interest",
+      "featureCount": 2,
+      "targetCount": 2
+    },
+    {
+      "id": "position",
+      "category": "risk",
+      "title": "🎛️ 倉位精算師",
+      "brandName": "POSITION",
+      "url": "https://web-concept-five.vercel.app/",
+      "featureCount": 2,
+      "targetCount": 2
+    },
+    {
+      "id": "bubua-plus",
+      "category": "allocation",
+      "title": "🐾 步步獲利",
+      "brandName": "BuBuA+",
+      "url": "https://bubuaplus.com/",
+      "featureCount": 2,
+      "targetCount": 2
+    },
+    {
+      "id": "popotrack",
+      "category": "explore",
+      "title": "📡 波波籌碼雷達",
+      "brandName": "PopoTrack",
+      "url": "https://lighto-tracker.onrender.com/popostock?tab=active-changes",
+      "featureCount": 2,
+      "targetCount": 2
+    },
+    {
+      "id": "marketecho",
+      "category": "research",
+      "title": "🎙️ 市場真音",
+      "brandName": "MarketEcho",
+      "url": "https://whatmkreallysaid.com/",
+      "featureCount": 2,
+      "targetCount": 2
+    },
+    {
+      "id": "signova-ai",
+      "category": "strategy",
+      "title": "💫 訊新智投",
+      "brandName": "SigNova AI",
+      "url": "https://signova.tw/welcome",
+      "featureCount": 2,
+      "targetCount": 2
+    }
+  ]
+}
