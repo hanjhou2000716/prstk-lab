@@ -1,7 +1,10 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-+
+
+/* The HTML hidden attribute must win over layout utilities such as .grid. */
+:where([hidden]) { display: none !important; }
+
     /* 隱藏滾動條，確保無印極簡視覺 */
     body {
       -ms-overflow-style: none;
@@ -39,11 +42,12 @@
     .tool-card .card-hover-effect { padding-right: 3rem !important; }
     .tool-card .card-hover-effect > span:first-child { white-space: normal !important; overflow: hidden; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }
     .tool-action { position: absolute; right: 0; z-index: 10; display: flex; width: 2.75rem; min-height: 2.75rem; height: 25%; align-items: center; justify-content: center; border-left: 1px solid rgba(227, 221, 213, 0.55); background: rgba(255, 255, 255, 0.82); color: rgba(98, 93, 86, 0.78); transition: color 180ms ease, background 180ms ease; }
+    .tool-action svg, .tool-action i { pointer-events: none; }
     .tool-action:hover { background: #EEF2F4; color: #1F3546; }
     .favorite-action { top: 0; border-bottom: 1px solid rgba(227, 221, 213, 0.42); }
-    .pin-action { top: 33.333%; border-bottom: 1px solid rgba(227, 221, 213, 0.42); }
-    .info-action { bottom: 0; }
-    .compare-action { top: 75%; }
+    .pin-action { top: 25%; border-bottom: 1px solid rgba(227, 221, 213, 0.42); }
+    .compare-action { top: 50%; border-bottom: 1px solid rgba(227, 221, 213, 0.42); }
+    .info-action { top: 75%; bottom: auto; }
     .tool-card.is-favorite .favorite-icon { fill: #D97745; stroke: #D97745; }
     .filter-chip[aria-pressed="true"] { background: #1F3546; border-color: #1F3546; color: #fff; }
     .scenario-entry[aria-pressed="true"] { background: #EEF2F4; border-color: #4A606D; box-shadow: 0 4px 14px rgba(74, 96, 109, 0.12); }
@@ -148,6 +152,21 @@
       #category-filters::-webkit-scrollbar-thumb { background: #91A69A; border: 2px solid #EEF2F4; border-radius: 999px; }
       footer { margin-top: 2.5rem !important; }
       .site-background { background-position: center top; background-size: min(100vw, 720px) auto; }
+
+      /* Keep the preview drawer a centered bottom sheet on desktop. These
+         explicit geometry rules protect the layout if utility output is
+         regenerated with a narrower content scan in the future. */
+      #info-drawer {
+        left: 50%;
+        right: auto;
+        bottom: 0;
+        width: min(calc(100vw - 2rem), 28rem);
+        max-width: none;
+        transform: translate3d(-50%, 100%, 0);
+      }
+      #info-drawer:not(.translate-y-full) {
+        transform: translate3d(-50%, 0, 0);
+      }
     }
     @media (max-width: 480px) {
       .tool-card .card-hover-effect { padding: 0.8rem 3rem 0.7rem 0.8rem !important; }

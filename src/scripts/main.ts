@@ -1,9 +1,12 @@
 // @ts-nocheck
 import AOS from 'aos';
-import { createIcons } from 'lucide';
+import { createIcons, icons } from 'lucide';
 import 'aos/dist/aos.css';
 
-const lucide = { createIcons };
+const lucide = {
+  createIcons,
+  icons,
+};
 
 const handleLogoError = () => {
   const img = document.getElementById('logo-img');
@@ -23,7 +26,7 @@ const bootstrap = () => {
       offset: 10
     });
 
-    lucide.createIcons();
+    lucide.createIcons({ icons: lucide.icons });
 
     // Secure every external destination, including future cards added in HTML.
     document.querySelectorAll('a[target="_blank"]').forEach(link => {
@@ -263,7 +266,12 @@ const bootstrap = () => {
       detailButton.setAttribute('aria-controls', 'info-drawer');
       detailButton.setAttribute('aria-expanded', 'false');
       detailButton.setAttribute('aria-label', `詳細資訊：${tool.brandName}`);
-      detailButton.addEventListener('click', () => openDrawer(toolId));
+      const showDetails = event => {
+        event.preventDefault();
+        event.stopPropagation();
+        openDrawer(toolId);
+      };
+      detailButton.addEventListener('click', showDetails);
 
       favoriteButton.setAttribute('aria-label', `加入最愛：${tool.brandName}`);
       favoriteButton.setAttribute('aria-pressed', String(favorites.has(toolId)));
@@ -334,7 +342,7 @@ const bootstrap = () => {
         section.append(heading, grid);
         categorySections.appendChild(section);
       });
-      lucide.createIcons();
+      lucide.createIcons({ icons: lucide.icons });
       AOS.refresh?.();
     };
 
@@ -451,7 +459,7 @@ const bootstrap = () => {
         renderCompareBar();
         renderComparePanel();
       }));
-      lucide.createIcons();
+      lucide.createIcons({ icons: lucide.icons });
     };
 
     const animateHomeUpdate = () => {
@@ -612,7 +620,7 @@ const bootstrap = () => {
     renderRecentTools();
     updateOfflineNotice();
     syncUrlState();
-    lucide.createIcons();
+    lucide.createIcons({ icons: lucide.icons });
 
     function renderList(list, items, markerClass) {
       list.replaceChildren();
@@ -630,7 +638,12 @@ const bootstrap = () => {
     }
 
     function openDrawer(toolId) {
-      const data = toolById.get(toolId);
+      // Cards can be moved between views and older cached markup may carry a
+      // slug rather than the canonical id. Resolve both forms so the detail
+      // drawer never silently bails out when a card is re-parented.
+      const resolvedToolId = String(toolId || '');
+      const data = toolById.get(resolvedToolId)
+        || toolCatalog.find(tool => tool.id === resolvedToolId || tool.slug === resolvedToolId);
       if (!data) return;
       globalThis.prstkAnalytics?.track('tool_opened', { toolId });
       clearTimeout(closeTimer);
@@ -650,7 +663,7 @@ const bootstrap = () => {
       document.querySelectorAll('[data-drawer-trigger]').forEach(button => {
         button.setAttribute('aria-expanded', 'false');
       });
-      const trigger = document.querySelector(`[data-drawer-trigger="${toolId}"]`);
+      const trigger = document.querySelector(`[data-drawer-trigger="${data.id}"]`);
       trigger?.setAttribute('aria-expanded', 'true');
       drawerOverlay.classList.remove('hidden');
       drawerOverlay.setAttribute('aria-hidden', 'false');
@@ -663,7 +676,6 @@ const bootstrap = () => {
         infoDrawer.querySelector('[data-drawer-close]')?.focus();
       }, 10);
     }
-
     function closeDrawer() {
       drawerOverlay.classList.remove('opacity-100');
       infoDrawer.classList.add('translate-y-full');
@@ -681,6 +693,17 @@ const bootstrap = () => {
     }
 
     drawerOverlay.addEventListener('click', closeDrawer);
+    // Tool cards are moved between the home grid and the catalog panel at runtime.
+    // Delegate the info action from the document so the details trigger remains
+    // reliable after cards are re-parented or re-rendered.
+    document.addEventListener('click', event => {
+      const target = event.target instanceof Element ? event.target : null;
+      const trigger = target?.closest('[data-tool-action="info"]');
+      if (!trigger) return;
+      event.preventDefault();
+      event.stopPropagation();
+      openDrawer(trigger.dataset.toolId);
+    });
     document.querySelectorAll('[data-drawer-close]').forEach(button => {
       button.addEventListener('click', closeDrawer);
     });

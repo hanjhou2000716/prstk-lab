@@ -1,0 +1,26 @@
+[
+  {
+    "id": "h01-privacy-analytics",
+    "date": "2026-08-04",
+    "type": "feature",
+    "title": "隱私友善的使用統計",
+    "summary": "新增可選擇的匿名使用統計，資料只保存在本機，不記錄研究內容。",
+    "links": ["#privacy-settings"]
+  },
+  {
+    "id": "e05-supabase-sync",
+    "date": "2026-08-04",
+    "type": "feature",
+    "title": "研究工作台支援雲端同步",
+    "summary": "工作台現在可以透過 Supabase 帳號，在不同裝置手動同步研究案。",
+    "links": ["../workbench/", "../account/"]
+  },
+  {
+    "id": "e01-workbench",
+    "date": "2026-08-04",
+    "type": "feature",
+    "title": "本機研究工作台",
+    "summary": "新增研究模板、決策紀錄，以及 JSON、Markdown、CSV 匯入匯出。",
+    "links": ["../workbench/"]
+  }
+]
