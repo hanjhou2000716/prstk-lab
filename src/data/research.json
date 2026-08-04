@@ -1,0 +1,20 @@
+[
+  {
+    "title": "PRStK 研究報告標準模板",
+    "slug": "research-report-template",
+    "summary": "一份可重複使用的研究流程，將研究問題、證據、方法與風險放在同一個可追溯框架中。",
+    "type": "methodology",
+    "markets": ["台股", "美股"],
+    "assets": ["股票", "ETF"],
+    "authors": ["PRStK Lab 編輯部"],
+    "publishedAt": "2026-08-04",
+    "updatedAt": "2026-08-04",
+    "sources": [{ "name": "PRStK Lab GitHub", "url": "https://github.com/hanjhou2000716/prstk-lab", "publishedAt": "2026-08-04", "retrievedAt": "2026-08-04", "firstParty": true }],
+    "methodology": ["先定義可驗證的研究問題與投資假設。", "將關鍵敘述連結至原始來源，分開記錄支持與反對證據。", "設定風險、失效條件與下一次檢查日期，再形成結論。"],
+    "assumptions": ["資料可能延遲，研究結論必須標記擷取日期。", "回測與歷史資料不代表未來績效。"],
+    "risks": ["本模板是研究流程工具，不構成投資建議。", "外部資料來源可能變更，使用前應重新確認。"],
+    "relatedTools": ["stockintelli", "quantgems", "stockvision-ai"],
+    "relatedResearch": [],
+    "status": "published"
+  }
+]

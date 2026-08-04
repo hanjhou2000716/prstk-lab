@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "required": ["title", "slug", "summary", "type", "markets", "assets", "authors", "publishedAt", "updatedAt", "sources", "methodology", "assumptions", "risks", "relatedTools", "relatedResearch", "status"],
+  "properties": {
+    "title": { "type": "string", "minLength": 1 },
+    "slug": { "type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$" },
+    "summary": { "type": "string", "minLength": 1 },
+    "type": { "type": "string", "enum": ["methodology", "market", "company", "etf", "risk"] },
+    "markets": { "type": "array", "items": { "type": "string" } },
+    "assets": { "type": "array", "items": { "type": "string" } },
+    "authors": { "type": "array", "items": { "type": "string" }, "minItems": 1 },
+    "publishedAt": { "type": "string", "format": "date" },
+    "updatedAt": { "type": "string", "format": "date" },
+    "sources": { "type": "array", "items": { "type": "object", "required": ["name", "url", "publishedAt", "retrievedAt", "firstParty"], "properties": { "name": { "type": "string" }, "url": { "type": "string", "pattern": "^https://" }, "publishedAt": { "type": "string" }, "retrievedAt": { "type": "string" }, "firstParty": { "type": "boolean" } } }, "minItems": 1 },
+    "methodology": { "type": "array", "items": { "type": "string" }, "minItems": 1 },
+    "assumptions": { "type": "array", "items": { "type": "string" } },
+    "risks": { "type": "array", "items": { "type": "string" }, "minItems": 1 },
+    "relatedTools": { "type": "array", "items": { "type": "string" } },
+    "relatedResearch": { "type": "array", "items": { "type": "string" } },
+    "status": { "type": "string", "enum": ["draft", "published", "needs-review"] }
+  },
+  "additionalProperties": false
+}

@@ -81,6 +81,7 @@ const bootstrap = () => {
     const pins = migrateLegacySet(pinsStorageKey, legacyPinsStorageKey);
     let activeCategory = 'all';
     let favoritesOnly = false;
+    const facetFilters = { pricing: '', status: '', requiresLogin: '', mobileSupport: '' };
     let panelOpen = false;
     let currentMatches = [];
     let homeRefreshTimer;
@@ -92,9 +93,21 @@ const bootstrap = () => {
     const homeTitle = document.getElementById('home-tools-title');
     const homeEmpty = document.getElementById('home-empty');
     const viewAllTools = document.getElementById('view-all-tools');
+    const advancedFilterToggle = document.getElementById('advanced-filter-toggle');
+    const advancedFilters = document.getElementById('advanced-filters');
+    const filterReset = document.getElementById('filter-reset');
+    const facetSelects = [...document.querySelectorAll('[data-facet]')];
+    const primaryNav = document.getElementById('primary-nav');
     const toolPanel = document.getElementById('tool-panel');
     const toolPanelGrid = document.getElementById('tool-panel-grid');
     const toolPanelTitle = document.getElementById('tool-panel-title');
+    const compareBar = document.getElementById('compare-bar');
+    const compareSummary = document.getElementById('compare-summary');
+    const openCompare = document.getElementById('open-compare');
+    const clearCompare = document.getElementById('clear-compare');
+    const comparePanel = document.getElementById('compare-panel');
+    const compareGrid = document.getElementById('compare-grid');
+    const closeCompare = document.getElementById('close-compare');
     const closeToolPanel = document.getElementById('close-tool-panel');
     const portalShell = document.getElementById('portal-shell');
     const drawerOverlay = document.getElementById('drawer-overlay');
@@ -102,6 +115,36 @@ const bootstrap = () => {
     const categorySections = document.getElementById('category-sections');
     const toolCards = [];
     const focusableSelector = 'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
+    const compareSet = new Set();
+
+    const statusLabels = {
+      verified: '已驗證',
+      'pending-verification': '待驗證',
+      beta: 'Beta',
+      'temporarily-unavailable': '暫時無法使用',
+      'discontinued': '已停止服務'
+    };
+    const normalise = value => String(value || '').normalize('NFKC').toLocaleLowerCase('zh-TW').replace(/\s+/g, '');
+    const readUrlState = () => {
+      const params = new URLSearchParams(window.location.search);
+      toolSearch.value = params.get('q') || '';
+      activeCategory = params.get('category') || 'all';
+      favoritesOnly = params.get('favorites') === '1';
+      Object.keys(facetFilters).forEach(key => { facetFilters[key] = params.get(key) || ''; });
+      facetSelects.forEach(select => { select.value = facetFilters[select.dataset.facet] || ''; });
+      favoritesFilter.setAttribute('aria-pressed', String(favoritesOnly));
+    };
+    const syncUrlState = () => {
+      const params = new URLSearchParams();
+      if (toolSearch.value.trim()) params.set('q', toolSearch.value.trim());
+      if (activeCategory !== 'all') params.set('category', activeCategory);
+      if (favoritesOnly) params.set('favorites', '1');
+      Object.entries(facetFilters).forEach(([key, value]) => { if (value) params.set(key, value); });
+      const query = params.toString();
+      window.history.replaceState(null, '', `${window.location.pathname}${query ? `?${query}` : ''}${window.location.hash}`);
+      const hasFacet = Object.values(facetFilters).some(Boolean);
+      filterReset.classList.toggle('hidden', !toolSearch.value.trim() && activeCategory === 'all' && !favoritesOnly && !hasFacet);
+    };
 
     const trapFocus = (event, container) => {
       if (event.key !== 'Tab') return;
@@ -137,6 +180,8 @@ const bootstrap = () => {
 
     categoryFilters.append(makeFilterChip('all', '全部', 'grid-2x2'));
     categories.forEach(category => categoryFilters.append(makeFilterChip(category.id, category.label, category.icon)));
+    readUrlState();
+    categoryFilters.querySelectorAll('button[data-category]').forEach(chip => chip.setAttribute('aria-pressed', String(chip.dataset.category === activeCategory)));
 
     const createToolCard = tool => {
       const template = document.getElementById('tool-card-template');
@@ -145,9 +190,12 @@ const bootstrap = () => {
       const link = card.querySelector('[data-tool-link]');
       const title = card.querySelector('[data-tool-name]');
       const subtitle = card.querySelector('[data-tool-brand]');
+      const status = card.querySelector('[data-tool-status]');
       link.href = tool.url;
       title.textContent = tool.name;
       subtitle.textContent = tool.brandName;
+      status.textContent = statusLabels[tool.status] || '尚未驗證';
+      status.dataset.status = tool.status || 'unknown';
       return card;
     };
 
@@ -162,7 +210,8 @@ const bootstrap = () => {
       const detailButton = card.querySelector('[data-tool-action="info"]');
       const favoriteButton = card.querySelector('[data-tool-action="favorite"]');
       const pinButton = card.querySelector('[data-tool-action="pin"]');
-      if (!detailButton || !favoriteButton || !pinButton) return;
+      const compareButton = card.querySelector('[data-tool-action="compare"]');
+      if (!detailButton || !favoriteButton || !pinButton || !compareButton) return;
       detailButton.dataset.toolId = toolId;
       detailButton.dataset.drawerTrigger = toolId;
       detailButton.setAttribute('aria-controls', 'info-drawer');
@@ -194,6 +243,18 @@ const bootstrap = () => {
         saveStoredSet(pinsStorageKey, pins);
         pinButton.setAttribute('aria-pressed', String(pins.has(toolId)));
         applyFilters();
+      });
+      compareButton.setAttribute('aria-label', `加入比較：${tool.brandName}`);
+      compareButton.addEventListener('click', () => {
+        if (compareSet.has(toolId)) compareSet.delete(toolId);
+        else if (compareSet.size < 3) compareSet.add(toolId);
+        else {
+          resultSummary.textContent = '比較最多選擇 3 個工具。';
+          return;
+        }
+        card.classList.toggle('is-compared', compareSet.has(toolId));
+        compareButton.setAttribute('aria-pressed', String(compareSet.has(toolId)));
+        renderCompareBar();
       });
       toolCards.push({ card, section: null, tool, toolId });
     };
@@ -231,8 +292,8 @@ const bootstrap = () => {
     renderCatalogSections();
 
     const getMatches = () => {
-      const query = toolSearch.value.trim().toLocaleLowerCase('zh-TW');
-      return toolCards.filter(({ card, tool, toolId }) => {
+      const query = normalise(toolSearch.value);
+      const matches = toolCards.filter(({ card, tool, toolId }) => {
         const searchableText = [
           tool.name,
           tool.brandName,
@@ -243,10 +304,20 @@ const bootstrap = () => {
           ...tool.targetUsers,
           ...tool.tags,
           ...tool.aliases
-        ].join(' ').toLocaleLowerCase('zh-TW');
+        ].map(normalise).join(' ');
+        const facetsMatch = Object.entries(facetFilters).every(([key, value]) => !value || String(tool[key] || 'unknown') === value);
         return (!query || searchableText.includes(query))
           && (activeCategory === 'all' || card.dataset.category === activeCategory)
-          && (!favoritesOnly || favorites.has(toolId));
+          && (!favoritesOnly || favorites.has(toolId))
+          && facetsMatch;
+      });
+      if (!query) return matches;
+      return matches.sort((left, right) => {
+        const score = entry => {
+          const text = normalise([entry.tool.name, entry.tool.brandName, entry.tool.summary, entry.tool.tags, entry.tool.aliases].flat().join(' '));
+          return (text.startsWith(query) ? 4 : 0) + (normalise(entry.tool.name).includes(query) ? 3 : 0) + (text.includes(query) ? 1 : 0);
+        };
+        return score(right) - score(left);
       });
     };
 
@@ -288,6 +359,34 @@ const bootstrap = () => {
       moveCardsTo(entries, toolPanelGrid);
     };
 
+    const renderCompareBar = () => {
+      const count = compareSet.size;
+      compareBar.classList.toggle('hidden', count === 0);
+      compareSummary.textContent = `已選 ${count} / 3 個工具`;
+      openCompare.disabled = count < 2;
+    };
+
+    const renderComparePanel = () => {
+      compareGrid.replaceChildren();
+      [...compareSet].map(id => toolById.get(id)).filter(Boolean).forEach(tool => {
+        const card = document.createElement('article');
+        card.className = 'compare-card';
+        const features = (tool.features || []).slice(0, 2).map(item => `<li>${item}</li>`).join('');
+        card.innerHTML = `<div class="mb-3 flex items-start justify-between gap-3"><div><h3 class="text-sm font-semibold text-muji-text">${tool.name}</h3><p class="mt-1 text-[11px] text-muji-muted">${tool.brandName}</p></div><button type="button" data-remove-compare="${tool.id}" class="rounded-full p-1.5 text-muji-muted hover:bg-muji-bg hover:text-orange" aria-label="移除 ${tool.brandName}"><i data-lucide="x" class="h-3.5 w-3.5"></i></button></div><dl class="space-y-2 text-xs"><div><dt class="text-muji-muted">狀態</dt><dd class="font-medium text-muji-brand">${statusLabels[tool.status] || '尚未驗證'}</dd></div><div><dt class="text-muji-muted">價格</dt><dd class="font-medium text-muji-text">${tool.pricing || '尚未驗證'}</dd></div><div><dt class="text-muji-muted">適合對象</dt><dd class="font-medium text-muji-text">${(tool.targetUsers || [])[0] || '尚未驗證'}</dd></div></dl><ul class="mt-3 list-disc space-y-1 pl-4 text-[11px] leading-5 text-muji-muted">${features || '<li>尚未驗證</li>'}</ul>`;
+        compareGrid.append(card);
+      });
+      compareGrid.querySelectorAll('[data-remove-compare]').forEach(button => button.addEventListener('click', () => {
+        compareSet.delete(button.dataset.removeCompare);
+        document.querySelectorAll(`[data-tool-id="${button.dataset.removeCompare}"]`).forEach(card => {
+          card.classList.remove('is-compared');
+          card.querySelector('[data-tool-action="compare"]')?.setAttribute('aria-pressed', 'false');
+        });
+        renderCompareBar();
+        renderComparePanel();
+      }));
+      lucide.createIcons();
+    };
+
     const animateHomeUpdate = () => {
       homeGrid.classList.remove('is-updating');
       void homeGrid.offsetWidth;
@@ -311,6 +410,7 @@ const bootstrap = () => {
         chip.setAttribute('aria-pressed', String(chip.dataset.category === categoryId));
       });
       applyFilters();
+      syncUrlState();
     };
 
     categoryFilters.addEventListener('click', event => {
@@ -330,11 +430,65 @@ const bootstrap = () => {
         setCategory(button.dataset.scenarioCategory);
       });
     });
-    toolSearch.addEventListener('input', applyFilters);
+    toolSearch.addEventListener('input', () => { applyFilters(); syncUrlState(); });
     favoritesFilter.addEventListener('click', () => {
       favoritesOnly = !favoritesOnly;
       favoritesFilter.setAttribute('aria-pressed', String(favoritesOnly));
       applyFilters();
+      syncUrlState();
+    });
+    primaryNav?.addEventListener('click', event => {
+      const item = event.target.closest('[data-primary-nav]');
+      if (!item || item.tagName === 'A') return;
+      const action = item.dataset.navAction;
+      const category = item.dataset.navCategory;
+      if (item.dataset.primaryNav === 'tools') {
+        viewAllTools.click();
+        return;
+      }
+      if (category) {
+        toolSearch.value = '';
+        favoritesOnly = false;
+        favoritesFilter.setAttribute('aria-pressed', 'false');
+        setCategory(category);
+        document.getElementById('tool-search-panel')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        return;
+      }
+      if (action === 'favorites') {
+        favoritesOnly = true;
+        favoritesFilter.setAttribute('aria-pressed', 'true');
+        setCategory('all');
+        document.getElementById('home-tools')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        return;
+      }
+      if (action === 'catalog') {
+        favoritesOnly = false;
+        favoritesFilter.setAttribute('aria-pressed', 'false');
+        setCategory('all');
+        viewAllTools.click();
+      }
+    });
+    advancedFilterToggle?.addEventListener('click', () => {
+      const expanded = advancedFilters.hidden;
+      advancedFilters.hidden = !expanded;
+      advancedFilterToggle.setAttribute('aria-expanded', String(expanded));
+      advancedFilterToggle.classList.toggle('bg-muji-brand/5', expanded);
+    });
+    facetSelects.forEach(select => select.addEventListener('change', () => {
+      facetFilters[select.dataset.facet] = select.value;
+      applyFilters();
+      syncUrlState();
+    }));
+    filterReset?.addEventListener('click', () => {
+      toolSearch.value = '';
+      activeCategory = 'all';
+      favoritesOnly = false;
+      Object.keys(facetFilters).forEach(key => { facetFilters[key] = ''; });
+      facetSelects.forEach(select => { select.value = ''; });
+      favoritesFilter.setAttribute('aria-pressed', 'false');
+      categoryFilters.querySelectorAll('button[data-category]').forEach(chip => chip.setAttribute('aria-pressed', String(chip.dataset.category === 'all')));
+      applyFilters();
+      syncUrlState();
     });
     viewAllTools.addEventListener('click', () => {
       panelPreviousFocus = document.activeElement;
@@ -356,7 +510,29 @@ const bootstrap = () => {
       panelPreviousFocus?.focus?.();
     };
     closeToolPanel.addEventListener('click', closePanel);
+    openCompare?.addEventListener('click', () => {
+      if (compareSet.size < 2) return;
+      renderComparePanel();
+      comparePanel.classList.remove('hidden');
+      comparePanel.setAttribute('aria-hidden', 'false');
+      document.body.classList.add('tool-panel-open');
+      closeCompare.focus();
+    });
+    clearCompare?.addEventListener('click', () => {
+      compareSet.clear();
+      document.querySelectorAll('.tool-card.is-compared').forEach(card => card.classList.remove('is-compared'));
+      document.querySelectorAll('[data-tool-action="compare"]').forEach(button => button.setAttribute('aria-pressed', 'false'));
+      renderCompareBar();
+    });
+    const closeComparePanel = () => {
+      comparePanel.classList.add('hidden');
+      comparePanel.setAttribute('aria-hidden', 'true');
+      document.body.classList.remove('tool-panel-open');
+    };
+    closeCompare?.addEventListener('click', closeComparePanel);
     applyFilters();
+    renderCompareBar();
+    syncUrlState();
     lucide.createIcons();
 
     function renderList(list, items, markerClass) {
@@ -383,6 +559,7 @@ const bootstrap = () => {
       document.getElementById('drawer-title').innerText = data.name;
       document.getElementById('drawer-subtitle').innerText = data.brandName;
       document.getElementById('drawer-link').href = data.url;
+      document.getElementById('drawer-report').href = `https://github.com/hanjhou2000716/prstk-lab/issues/new?template=report-tool.yml&title=${encodeURIComponent(`[工具回報] ${data.brandName}`)}&labels=tool-report`;
 
       const featuresUl = document.getElementById('drawer-features');
       renderList(featuresUl, data.features, 'bg-muji-brand/60');
@@ -438,6 +615,11 @@ const bootstrap = () => {
       if (panelOpen) {
         if (event.key === 'Escape') closePanel();
         else trapFocus(event, toolPanel);
+        return;
+      }
+      if (!comparePanel.classList.contains('hidden')) {
+        if (event.key === 'Escape') closeComparePanel();
+        else trapFocus(event, comparePanel);
       }
     });
 
