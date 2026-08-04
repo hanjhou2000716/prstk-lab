@@ -15,6 +15,15 @@
     "risks": ["本模板是研究流程工具，不構成投資建議。", "外部資料來源可能變更，使用前應重新確認。"],
     "relatedTools": ["stockintelli", "quantgems", "stockvision-ai"],
     "relatedResearch": [],
+    "investmentHypothesis": "可追溯的研究流程能降低因資料遺漏與敘事漂移造成的決策偏誤。",
+    "coreDrivers": ["研究問題是否可驗證", "證據是否能回到原始來源", "風險與失效條件是否被明確記錄"],
+    "valuation": "本方法論不提供個別標的估值。",
+    "financialTrend": "研究資料應以更新日期區分歷史與最新資訊。",
+    "flows": "需依研究標的補充法人、資金與持倉資料。",
+    "technical": "需依研究標的補充價格與技術指標資料。",
+    "catalysts": ["新增來源後重新檢視研究結論", "於下一次檢查日更新假設"],
+    "invalidationConditions": ["原始來源撤回或資料定義改變", "研究問題不再能以公開資料驗證"],
+    "nextReviewDate": "2026-09-04",
     "status": "published"
   }
 ]

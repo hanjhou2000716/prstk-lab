@@ -18,6 +18,15 @@
     "risks": { "type": "array", "items": { "type": "string" }, "minItems": 1 },
     "relatedTools": { "type": "array", "items": { "type": "string" } },
     "relatedResearch": { "type": "array", "items": { "type": "string" } },
+    "investmentHypothesis": { "type": "string" },
+    "coreDrivers": { "type": "array", "items": { "type": "string" } },
+    "valuation": { "type": "string" },
+    "financialTrend": { "type": "string" },
+    "flows": { "type": "string" },
+    "technical": { "type": "string" },
+    "catalysts": { "type": "array", "items": { "type": "string" } },
+    "invalidationConditions": { "type": "array", "items": { "type": "string" } },
+    "nextReviewDate": { "type": "string", "format": "date" },
     "status": { "type": "string", "enum": ["draft", "published", "needs-review"] }
   },
   "additionalProperties": false

@@ -1,0 +1,9 @@
+[
+  { "term": "CAGR", "name": "年複合成長率", "definition": "用一致年期表示資產或營收從起點到終點的年化成長速度。", "related": ["最大回撤", "Sharpe Ratio"] },
+  { "term": "最大回撤", "name": "Maximum Drawdown", "definition": "從歷史高點到後續低點的最大跌幅，用來觀察策略或資產的下行風險。", "related": ["壓力測試", "再平衡"] },
+  { "term": "Sharpe Ratio", "name": "夏普比率", "definition": "以波動度調整後的超額報酬衡量風險報酬效率。", "related": ["Beta", "最大回撤"] },
+  { "term": "質押維持率", "name": "Collateral Maintenance Ratio", "definition": "擔保品市值相對於融資或借款負債的比例，需依券商規則與商品條件解讀。", "related": ["壓力測試", "槓桿耗損"] },
+  { "term": "槓桿耗損", "name": "Leverage Decay", "definition": "槓桿型商品在波動與複利路徑下，報酬可能偏離單純倍數的現象。", "related": ["再平衡", "壓力測試"] },
+  { "term": "再平衡", "name": "Rebalancing", "definition": "依預先設定的權重或風險界線調整資產配置，使組合回到目標狀態。", "related": ["壓力測試", "槓桿耗損"] },
+  { "term": "壓力測試", "name": "Stress Test", "definition": "在假設的極端價格、波動或流動性情境下，檢查組合可能的損失與應對方案。", "related": ["最大回撤", "質押維持率"] }
+]

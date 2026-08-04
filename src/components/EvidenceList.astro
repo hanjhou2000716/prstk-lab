@@ -1,0 +1,10 @@
+---
+// @ts-nocheck
+const { sources = [] } = Astro.props;
+---
+<section class="mt-8 border-t border-muji-border pt-5" aria-labelledby="evidence-title">
+  <h2 id="evidence-title" class="text-base font-semibold">證據與來源</h2>
+  <ul class="mt-3 space-y-3 text-sm">
+    {sources.map(source => <li class="rounded-xl border border-muji-border/70 bg-white/60 p-3"><a href={source.url} target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer" class="text-muji-brand underline underline-offset-2 hover:text-orange">{source.name}</a><div class="mt-1 text-xs text-muji-muted">發布：{source.publishedAt} · 擷取：{source.retrievedAt} · {source.firstParty ? '第一手來源' : '二手來源'}</div></li>)}
+  </ul>
+</section>
