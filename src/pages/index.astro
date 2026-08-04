@@ -1,5 +1,13 @@
 ---
 import tools from '../data/tools.json';
+import Header from '../components/Header.astro';
+import SearchBar from '../components/SearchBar.astro';
+import ScenarioSelector from '../components/ScenarioSelector.astro';
+import ToolCard from '../components/ToolCard.astro';
+import HomeTools from '../components/HomeTools.astro';
+import ToolPanel from '../components/ToolPanel.astro';
+import ToolPreviewDrawer from '../components/ToolPreviewDrawer.astro';
+import Footer from '../components/Footer.astro';
 
 const toolData = JSON.stringify(tools).replace(/</g, '\\u003c');
 ---
@@ -231,182 +239,29 @@ const toolData = JSON.stringify(tools).replace(/</g, '\\u003c');
 
 <body class="bg-muji-bg text-muji-text font-sans min-h-[100dvh] flex flex-col justify-between overflow-x-hidden">
   <script is:inline id="tool-data" type="application/json" set:html={toolData}></script>
+  <ToolCard />
   <!-- 背景微光裝飾（極簡無印風） -->
   <div class="site-background fixed inset-0 pointer-events-none"></div>
 
   <!-- 主容器 (加寬一點點以容納分類標題，但仍保持適合手機閱讀的尺寸) -->
   <div id="portal-shell" class="relative w-full max-w-[720px] mx-auto h-[100dvh] overflow-hidden flex flex-col justify-between px-5 pt-4 sm:px-8 sm:pt-6 pb-4 z-10">
     
-    <!-- ================= 1. 頭部區域 ================= -->
-    <header class="flex flex-col items-center text-center mb-7">
-       <!-- 標誌圖片 -->
-      <div class="w-full flex items-center justify-center mb-1" data-aos="fade-down" data-aos-duration="800">
-        <img 
-          id="logo-img"
-          src="PRStK Lab-Remove.png" 
-          alt="PRStK Lab Logo" 
-          class="w-[72%] max-w-[270px] h-auto max-h-[12vh] object-contain transition-opacity duration-300"
-          onerror="handleLogoError()"
-        />
-        <!-- 備用純文字 Logo -->
-        <div id="logo-fallback" class="hidden flex-col items-center">
-          <span class="text-3xl font-light tracking-[0.25em] text-muji-brand">PRStK Lab</span>
-          <span class="text-[11px] uppercase tracking-[0.4em] text-muji-muted mt-1">Quant Trading</span>
-        </div>
-      </div>
-      
-      <!-- ⭐ 乾淨純粹的 Slogan -->
-      <p class="text-[13px] tracking-[0.16em] text-muji-muted font-normal flex items-center justify-center mt-1" data-aos="fade-in" data-aos-delay="100" data-aos-duration="1000">
-        <span>想和你一起慢慢變富。</span>
-      </p>
-    </header>
+    <Header />
 
-    <!-- ================= 2. 分類導覽區 ================= -->
     <main class="flex-1 flex flex-col justify-start min-h-0 w-full space-y-3">
-      
-      <section id="tool-search-panel" class="rounded-3xl border border-muji-border/80 bg-white/80 p-4 sm:p-5 shadow-sm backdrop-blur-sm" aria-label="工具搜尋與篩選" data-aos="fade-up">
-        <div class="flex flex-row gap-2 items-center">
-          <label class="relative block flex-1">
-            <span class="sr-only">搜尋工具</span>
-            <i data-lucide="search" class="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-muji-muted"></i>
-            <input id="tool-search" type="search" autocomplete="off" placeholder="搜尋工具、功能或適合對象" class="w-full rounded-xl border border-muji-border bg-muji-bg/70 py-3 pl-10 pr-4 text-sm text-muji-text placeholder:text-muji-muted/60 transition focus:border-muji-brand focus:bg-white focus:outline-none" />
-          </label>
-          <button id="favorites-filter" type="button" aria-label="只顯示我的最愛" title="我的最愛" aria-pressed="false" class="filter-chip inline-flex shrink-0 items-center justify-center rounded-xl border border-muji-border bg-white px-3 py-3 text-xs font-medium text-muji-brand transition hover:border-orange hover:text-orange">
-            <i data-lucide="heart" class="h-4 w-4"></i>
-          </button>
-        </div>
-        <div id="category-filters" class="mt-4 flex gap-2 overflow-x-auto pb-1" aria-label="工具分類"></div>
-        <div class="mt-3 flex items-center justify-between gap-3">
-          <p id="tool-result-summary" class="text-xs text-muji-muted" aria-live="polite"></p>
-          <button id="view-all-tools" type="button" class="hidden text-xs font-medium text-muji-brand hover:text-orange">查看全部</button>
-        </div>
-      </section>
-
-      <section id="scenario-entries" aria-label="投資情境快捷入口" data-aos="fade-up" data-aos-delay="80">
-        <div class="grid grid-cols-4 gap-2">
-          <button type="button" data-scenario-category="explore" class="scenario-entry group flex items-center gap-2 rounded-2xl border border-muji-border/80 bg-white/75 px-3 py-3 text-left transition hover:-translate-y-0.5 hover:border-muji-brand hover:bg-white">
-            <i data-lucide="sparkles" class="h-4 w-4 shrink-0 text-muji-brand transition-transform group-hover:scale-110"></i>
-            <span class="text-xs font-medium tracking-wide text-muji-text">找機會</span>
-          </button>
-          <button type="button" data-scenario-category="research" class="scenario-entry group flex items-center gap-2 rounded-2xl border border-muji-border/80 bg-white/75 px-3 py-3 text-left transition hover:-translate-y-0.5 hover:border-muji-brand hover:bg-white">
-            <i data-lucide="search-check" class="h-4 w-4 shrink-0 text-muji-brand transition-transform group-hover:scale-110"></i>
-            <span class="text-xs font-medium tracking-wide text-muji-text">做研究</span>
-          </button>
-          <button type="button" data-scenario-category="risk" class="scenario-entry group flex items-center gap-2 rounded-2xl border border-muji-border/80 bg-white/75 px-3 py-3 text-left transition hover:-translate-y-0.5 hover:border-muji-brand hover:bg-white">
-            <i data-lucide="shield-alert" class="h-4 w-4 shrink-0 text-muji-brand transition-transform group-hover:scale-110"></i>
-            <span class="text-xs font-medium tracking-wide text-muji-text">看風險</span>
-          </button>
-          <button type="button" data-scenario-category="allocation" class="scenario-entry group flex items-center gap-2 rounded-2xl border border-muji-border/80 bg-white/75 px-3 py-3 text-left transition hover:-translate-y-0.5 hover:border-muji-brand hover:bg-white">
-            <i data-lucide="landmark" class="h-4 w-4 shrink-0 text-muji-brand transition-transform group-hover:scale-110"></i>
-            <span class="text-xs font-medium tracking-wide text-muji-text">做配置</span>
-          </button>
-        </div>
-      </section>
-
-       <section id="home-tools" class="flex-none flex flex-col" aria-label="首頁工具">
-        <div class="mb-2 flex items-center justify-between">
-          <h2 id="home-tools-title" class="text-xs font-semibold leading-none tracking-[0.12em] text-muji-section">為你精選</h2>
-          <span class="text-[10px] leading-none text-muji-muted/70">最多 4 個</span>
-        </div>
-         <div id="home-card-grid" class="grid grid-cols-2 gap-3"></div>
-        <p id="home-empty" class="hidden flex-1 items-center justify-center rounded-2xl border border-dashed border-muji-border bg-white/55 px-8 text-center text-sm leading-6 text-muji-muted"></p>
-      </section>
-
+      <SearchBar />
+      <ScenarioSelector />
+      <HomeTools />
       <div id="category-sections" class="contents" aria-live="polite"></div>
     </main>
 
-    <!-- ================= 3. 頁尾資訊 ================= -->
-    <footer class="text-center flex flex-col items-center gap-2 mt-3 pt-3 pb-0 border-t border-muji-border/50" data-aos="fade-up">
-      <!-- ⭐ Telegram Bot 連結按鈕 -->
-      <a href="https://t.me/PRStK_Lab_bot" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer" class="flex items-center gap-2.5 px-7 py-2.5 text-[13px] text-muji-brand hover:text-white border border-muji-brand/30 rounded-full hover:bg-muji-brand hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 shadow-sm bg-white/50 backdrop-blur-sm">
-        <i data-lucide="send" class="w-3.5 h-3.5"></i>
-        <span class="font-medium tracking-widest">Together Better</span>
-      </a>
-      
-      <p class="text-[10px] text-muji-muted/60 tracking-widest font-light mt-1">
-        © 2026 PRStK Lab. All rights reserved.
-      </p>
-    </footer>
+    <Footer />
 
   </div>
 
-  <section id="tool-panel" role="dialog" aria-modal="true" aria-labelledby="tool-panel-title" aria-hidden="true" class="tool-panel-surface fixed inset-0 z-[60] hidden px-5 py-6 backdrop-blur-sm">
-    <div class="mx-auto flex h-full max-w-[720px] flex-col">
-      <div class="mb-5 flex items-center justify-between">
-        <div>
-          <p class="text-[10px] tracking-[0.15em] text-muji-muted">PRStK LAB</p>
-          <h2 id="tool-panel-title" class="mt-1 text-lg font-semibold text-muji-text">全部工具</h2>
-        </div>
-        <button id="close-tool-panel" type="button" aria-label="關閉全部工具" class="inline-flex h-10 w-10 items-center justify-center rounded-full border border-muji-border bg-white text-muji-brand transition hover:border-orange hover:text-orange">
-          <i data-lucide="x" class="h-4 w-4"></i>
-        </button>
-      </div>
-      <div id="tool-panel-grid" class="grid flex-1 auto-rows-min grid-cols-1 gap-3 overflow-y-auto pb-6 sm:grid-cols-2"></div>
-    </div>
-  </section>
+  <ToolPanel />
 
-  <!-- ================= 詳細資訊彈出抽屜 (Drawer) ================= -->
-  <!-- 遮罩背景 -->
-  <div id="drawer-overlay" aria-hidden="true"
-       class="fixed inset-0 bg-muji-text/30 backdrop-blur-[2px] z-[70] hidden opacity-0 transition-opacity duration-400">
-  </div>
-
-  <!-- 內容卡片 -->
-  <div id="info-drawer" role="dialog" aria-modal="true" aria-labelledby="drawer-title" aria-hidden="true" tabindex="-1"
-       class="fixed bottom-0 left-0 right-0 max-w-md mx-auto bg-white rounded-t-[28px] shadow-[0_-12px_40px_rgba(74,96,109,0.15)] z-[80] transform translate-y-full drawer-transition border-t border-muji-border max-h-[85vh] flex flex-col">
-    
-    <!-- 頂部滑動裝飾條 -->
-    <button type="button" data-drawer-close aria-label="關閉詳細資訊" class="flex-shrink-0 pt-3.5 pb-1 cursor-pointer flex justify-center w-full">
-      <div class="w-12 h-1.5 bg-muji-border/80 rounded-full hover:bg-muji-brand/40 transition-colors"></div>
-    </button>
-    
-    <!-- 抽屜內容 -->
-    <div class="px-7 pb-8 pt-2 overflow-y-auto flex-1 custom-scrollbar">
-      
-      <!-- 標題與網址 -->
-      <div class="flex justify-between items-start mb-6">
-        <div class="pr-4">
-          <h3 id="drawer-title" class="text-[19px] font-semibold tracking-wider text-muji-text">標題</h3>
-          <p id="drawer-subtitle" class="text-[11px] text-muji-brand mt-1.5 tracking-widest font-medium bg-muji-brandLight inline-block px-2.5 py-0.5 rounded-md"></p>
-        </div>
-        <button type="button" data-drawer-close aria-label="關閉詳細資訊" class="p-2 rounded-full hover:bg-muji-bg text-muji-muted hover:text-muji-brand transition-all flex-shrink-0 active:scale-95 bg-white shadow-sm border border-muji-border/30">
-          <i data-lucide="x" class="w-4.5 h-4.5"></i>
-        </button>
-      </div>
-
-      <!-- 詳細說明區塊 -->
-      <div class="space-y-4">
-        <!-- 核心功能 -->
-        <div class="bg-[#FCFAFC] p-5 rounded-2xl border border-muji-border/60 shadow-sm">
-          <h4 class="text-[12px] tracking-[0.15em] text-muji-brand font-bold flex items-center gap-2 mb-3.5">
-            <i data-lucide="sparkles" class="w-4 h-4"></i>
-            核心功能
-          </h4>
-          <ul id="drawer-features" class="text-[13px] text-muji-text font-normal leading-[1.75] space-y-3">
-          </ul>
-        </div>
-
-        <!-- 適合對象 -->
-        <div class="bg-[#FCFAFC] p-5 rounded-2xl border border-muji-border/60 shadow-sm">
-          <h4 class="text-[12px] tracking-[0.15em] text-muji-brand font-bold flex items-center gap-2 mb-3.5">
-            <i data-lucide="users" class="w-4 h-4"></i>
-            適合對象
-          </h4>
-          <ul id="drawer-targets" class="text-[13px] text-muji-text font-normal leading-[1.75] space-y-3">
-          </ul>
-        </div>
-      </div>
-
-      <!-- 快速前往按鈕 -->
-      <div class="mt-8 pt-1">
-        <a id="drawer-link" href="#" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer"
-           class="group flex items-center justify-center gap-2.5 w-full py-4 bg-muji-brand hover:bg-[#384a54] text-white text-[13.5px] font-medium tracking-widest rounded-xl transition-all duration-300 shadow-[0_4px_15px_rgba(74,96,109,0.2)] hover:shadow-[0_6px_20px_rgba(74,96,109,0.3)] hover:-translate-y-0.5 active:scale-[0.98]">
-          <span>開啟系統</span>
-          <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-1.5 transition-transform"></i>
-        </a>
-      </div>
-    </div>
-  </div>
+  <ToolPreviewDrawer />
 
   <!-- AOS 動畫庫 JS 初始化 -->
   <script is:inline src="https://unpkg.com/aos@2.3.1/dist/aos.js" integrity="sha384-wziAfh6b/qT+3LrqebF9WeK4+J5sehS6FA10J1t3a866kJ/fvU5UwofWnQyzLtwu" crossorigin="anonymous"></script>
@@ -536,33 +391,15 @@ const toolData = JSON.stringify(tools).replace(/</g, '\\u003c');
     categories.forEach(category => categoryFilters.append(makeFilterChip(category.id, category.label, category.icon)));
 
     const createToolCard = tool => {
-      const card = document.createElement('div');
-      const link = document.createElement('a');
-      const title = document.createElement('span');
-      const subtitle = document.createElement('span');
-      const detailButton = document.createElement('button');
-      const detailIcon = document.createElement('i');
-
-      card.className = 'relative group h-full';
+      const template = document.getElementById('tool-card-template');
+      if (!template) return null;
+      const card = template.content.firstElementChild.cloneNode(true);
+      const link = card.querySelector('[data-tool-link]');
+      const title = card.querySelector('[data-tool-name]');
+      const subtitle = card.querySelector('[data-tool-brand]');
       link.href = tool.url;
-      link.target = '_blank';
-      link.rel = 'noopener noreferrer';
-      link.referrerPolicy = 'no-referrer';
-      link.className = 'flex flex-col justify-center w-full h-full min-h-[76px] py-4 pl-3.5 pr-9 bg-white border border-muji-border/80 rounded-2xl shadow-sm card-hover-effect';
-      title.className = 'text-[13px] font-medium tracking-wide text-muji-text group-hover:text-muji-brand transition-colors leading-tight truncate';
       title.textContent = tool.name;
-      subtitle.className = 'text-[10px] text-muji-muted/80 tracking-wider mt-1.5 font-light block truncate';
       subtitle.textContent = tool.brandName;
-      link.append(title, subtitle);
-
-      detailButton.type = 'button';
-      detailButton.dataset.toolId = tool.id;
-      detailButton.className = 'tool-action info-action';
-      detailButton.setAttribute('aria-label', `詳細資訊：${tool.brandName}`);
-      detailIcon.setAttribute('data-lucide', 'info');
-      detailIcon.className = 'w-4 h-4 text-muji-muted/50 hover:text-muji-brand transition-colors';
-      detailButton.appendChild(detailIcon);
-      card.append(link, detailButton);
       return card;
     };
 
@@ -574,21 +411,19 @@ const toolData = JSON.stringify(tools).replace(/</g, '\\u003c');
       card.style.animationDelay = `${Math.min(index * 45, 180)}ms`;
       if (favorites.has(toolId)) card.classList.add('is-favorite');
 
-      const detailButton = card.querySelector('button[data-tool-id]');
+      const detailButton = card.querySelector('[data-tool-action="info"]');
+      const favoriteButton = card.querySelector('[data-tool-action="favorite"]');
+      const pinButton = card.querySelector('[data-tool-action="pin"]');
+      if (!detailButton || !favoriteButton || !pinButton) return;
+      detailButton.dataset.toolId = toolId;
       detailButton.dataset.drawerTrigger = toolId;
       detailButton.setAttribute('aria-controls', 'info-drawer');
       detailButton.setAttribute('aria-expanded', 'false');
+      detailButton.setAttribute('aria-label', `詳細資訊：${tool.brandName}`);
       detailButton.addEventListener('click', () => openDrawer(toolId));
 
-      const favoriteButton = document.createElement('button');
-      const favoriteIcon = document.createElement('i');
-      favoriteButton.type = 'button';
-      favoriteButton.className = 'tool-action favorite-action';
       favoriteButton.setAttribute('aria-label', `加入最愛：${tool.brandName}`);
       favoriteButton.setAttribute('aria-pressed', String(favorites.has(toolId)));
-      favoriteIcon.setAttribute('data-lucide', 'heart');
-      favoriteIcon.className = 'favorite-icon h-3.5 w-3.5';
-      favoriteButton.appendChild(favoriteIcon);
       favoriteButton.addEventListener('click', () => {
         if (favorites.has(toolId)) favorites.delete(toolId);
         else favorites.add(toolId);
@@ -597,17 +432,8 @@ const toolData = JSON.stringify(tools).replace(/</g, '\\u003c');
         card.classList.toggle('is-favorite', favorites.has(toolId));
         applyFilters();
       });
-      card.appendChild(favoriteButton);
-
-      const pinButton = document.createElement('button');
-      const pinIcon = document.createElement('i');
-      pinButton.type = 'button';
-      pinButton.className = 'tool-action pin-action pin-button';
       pinButton.setAttribute('aria-label', `釘選工具：${tool.brandName}`);
       pinButton.setAttribute('aria-pressed', String(pins.has(toolId)));
-      pinIcon.setAttribute('data-lucide', 'pin');
-      pinIcon.className = 'h-3.5 w-3.5';
-      pinButton.appendChild(pinIcon);
       pinButton.addEventListener('click', () => {
         if (pins.has(toolId)) {
           pins.delete(toolId);
@@ -621,7 +447,6 @@ const toolData = JSON.stringify(tools).replace(/</g, '\\u003c');
         pinButton.setAttribute('aria-pressed', String(pins.has(toolId)));
         applyFilters();
       });
-      card.appendChild(pinButton);
       toolCards.push({ card, section: null, tool, toolId });
     };
 
@@ -644,6 +469,7 @@ const toolData = JSON.stringify(tools).replace(/</g, '\\u003c');
           .filter(tool => tool.categories.includes(category.id))
           .forEach((tool, index) => {
             const card = createToolCard(tool);
+            if (!card) return;
             grid.appendChild(card);
             setupToolCard(card, tool, category, index);
           });

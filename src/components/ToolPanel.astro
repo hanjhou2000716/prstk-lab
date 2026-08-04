@@ -1,0 +1,14 @@
+<section id="tool-panel" role="dialog" aria-modal="true" aria-labelledby="tool-panel-title" aria-hidden="true" class="tool-panel-surface fixed inset-0 z-[60] hidden px-5 py-6 backdrop-blur-sm">
+  <div class="mx-auto flex h-full max-w-[720px] flex-col">
+    <div class="mb-5 flex items-center justify-between">
+      <div>
+        <p class="text-[10px] tracking-[0.15em] text-muji-muted">PRStK LAB</p>
+        <h2 id="tool-panel-title" class="mt-1 text-lg font-semibold text-muji-text">全部工具</h2>
+      </div>
+      <button id="close-tool-panel" type="button" aria-label="關閉全部工具" class="inline-flex h-10 w-10 items-center justify-center rounded-full border border-muji-border bg-white text-muji-brand transition hover:border-orange hover:text-orange">
+        <i data-lucide="x" class="h-4 w-4"></i>
+      </button>
+    </div>
+    <div id="tool-panel-grid" class="grid flex-1 auto-rows-min grid-cols-1 gap-3 overflow-y-auto pb-6 sm:grid-cols-2"></div>
+  </div>
+</section>
