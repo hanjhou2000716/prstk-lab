@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://hanjhou2000716.github.io/prstk-lab/sitemap.xml
