@@ -1,0 +1,161 @@
+// @ts-nocheck
+import { createClient } from '@supabase/supabase-js';
+
+const supabaseUrl = import.meta.env.PUBLIC_SUPABASE_URL || '';
+const supabaseKey = import.meta.env.PUBLIC_SUPABASE_PUBLISHABLE_KEY || '';
+const tableName = 'research_projects';
+
+export const isSupabaseConfigured = Boolean(supabaseUrl && supabaseKey);
+export const supabaseConfigHint = '請在建置環境設定 PUBLIC_SUPABASE_URL 與 PUBLIC_SUPABASE_PUBLISHABLE_KEY。';
+
+let client = null;
+const getClient = () => {
+  if (!isSupabaseConfigured) return null;
+  client ||= createClient(supabaseUrl, supabaseKey, {
+    auth: { autoRefreshToken: true, persistSession: true, detectSessionInUrl: true }
+  });
+  return client;
+};
+
+export async function getSession() {
+  const supabase = getClient();
+  if (!supabase) return { session: null, error: new Error(supabaseConfigHint) };
+  const { data, error } = await supabase.auth.getSession();
+  return { session: data?.session || null, error };
+}
+
+export async function signIn(email, password) {
+  const supabase = getClient();
+  if (!supabase) return { data: null, error: new Error(supabaseConfigHint) };
+  return supabase.auth.signInWithPassword({ email, password });
+}
+
+export async function signUp(email, password) {
+  const supabase = getClient();
+  if (!supabase) return { data: null, error: new Error(supabaseConfigHint) };
+  return supabase.auth.signUp({ email, password });
+}
+
+export async function signOut() {
+  const supabase = getClient();
+  if (!supabase) return { error: new Error(supabaseConfigHint) };
+  return supabase.auth.signOut();
+}
+
+export async function fetchProjects(userId) {
+  const supabase = getClient();
+  if (!supabase) return { projects: [], error: new Error(supabaseConfigHint) };
+  const { data, error } = await supabase
+    .from(tableName)
+    .select('id,payload,created_at,updated_at')
+    .eq('user_id', userId)
+    .order('updated_at', { ascending: false });
+  return { projects: (data || []).map(row => ({ ...row.payload, id: row.id, createdAt: row.created_at, updatedAt: row.updated_at })), error };
+}
+
+export async function upsertProjects(userId, projects) {
+  const supabase = getClient();
+  if (!supabase) return { error: new Error(supabaseConfigHint) };
+  const rows = projects.map(project => ({
+    id: project.id,
+    user_id: userId,
+    payload: project,
+    created_at: project.createdAt || new Date().toISOString(),
+    updated_at: project.updatedAt || new Date().toISOString()
+  }));
+  const { error: upsertError } = rows.length
+    ? await supabase.from(tableName).upsert(rows, { onConflict: 'user_id,id' })
+    : { error: null };
+  if (upsertError) return { error: upsertError };
+  const ids = new Set(projects.map(project => project.id));
+  const { data: remoteRows, error: listError } = await supabase.from(tableName).select('id').eq('user_id', userId);
+  if (listError) return { error: listError };
+  const staleIds = (remoteRows || []).map(row => row.id).filter(id => !ids.has(id));
+  if (staleIds.length) {
+    const { error: deleteError } = await supabase.from(tableName).delete().eq('user_id', userId).in('id', staleIds);
+    if (deleteError) return { error: deleteError };
+  }
+  return { error: null };
+}
+
+export function subscribeToAuth(callback) {
+  const supabase = getClient();
+  if (!supabase) return () => {};
+  const { data } = supabase.auth.onAuthStateChange((_event, session) => callback(session));
+  return () => data.subscription.unsubscribe();
+}
+
+export function bindWorkbenchControls({ getProjects, replaceProjects, onStatus = () => {} } = {}) {
+  const status = document.getElementById('sync-status');
+  const pullButton = document.getElementById('sync-pull');
+  const pushButton = document.getElementById('sync-push');
+  const signOutButton = document.getElementById('sync-sign-out');
+  if (!status || !pullButton || !pushButton || !signOutButton) return;
+  let currentSession = null;
+  const setStatus = message => { status.textContent = message; onStatus(message); };
+  const renderSession = session => {
+    currentSession = session;
+    const signedIn = Boolean(session?.user?.id);
+    pullButton.disabled = !signedIn;
+    pushButton.disabled = !signedIn;
+    signOutButton.hidden = !signedIn;
+    setStatus(signedIn ? `已連線：${session.user.email || '目前帳號'}。可手動同步研究案。` : (isSupabaseConfigured ? '尚未登入；請先開啟帳號設定。' : supabaseConfigHint));
+  };
+  const ensureSession = async () => {
+    if (currentSession) return currentSession;
+    const result = await getSession();
+    if (result.error) { setStatus(result.error.message); return null; }
+    renderSession(result.session);
+    return result.session;
+  };
+  pullButton.addEventListener('click', async () => {
+    const session = await ensureSession(); if (!session) return;
+    pullButton.disabled = true;
+    const { projects, error } = await fetchProjects(session.user.id);
+    if (error) setStatus(`載入失敗：${error.message}`);
+    else if (projects.length || !getProjects().length || window.confirm('雲端目前沒有研究案，要用空清單取代本機資料嗎？')) { replaceProjects(projects); setStatus(`已從雲端載入 ${projects.length} 個研究案。`); }
+    pullButton.disabled = false;
+  });
+  pushButton.addEventListener('click', async () => {
+    const session = await ensureSession(); if (!session) return;
+    pushButton.disabled = true;
+    const { error } = await upsertProjects(session.user.id, getProjects());
+    setStatus(error ? `同步失敗：${error.message}` : `已同步 ${getProjects().length} 個研究案。`);
+    pushButton.disabled = false;
+  });
+  signOutButton.addEventListener('click', async () => { const { error } = await signOut(); if (error) setStatus(`登出失敗：${error.message}`); else renderSession(null); });
+  renderSession(null);
+  getSession().then(({ session, error }) => error ? setStatus(error.message) : renderSession(session));
+  return subscribeToAuth(renderSession);
+}
+
+export function bindAccountControls({ onStatus = () => {} } = {}) {
+  const email = document.getElementById('account-email');
+  const password = document.getElementById('account-password');
+  const signInButton = document.getElementById('account-sign-in');
+  const signUpButton = document.getElementById('account-sign-up');
+  const signOutButton = document.getElementById('account-sign-out');
+  const sessionState = document.getElementById('account-session');
+  if (!email || !password || !signInButton || !signUpButton || !signOutButton || !sessionState) return;
+  const setStatus = message => { sessionState.textContent = message; onStatus(message); };
+  const renderSession = session => {
+    const userEmail = session?.user?.email;
+    sessionState.textContent = userEmail ? `已登入：${userEmail}` : (isSupabaseConfigured ? '尚未登入' : supabaseConfigHint);
+    signOutButton.hidden = !userEmail;
+    signInButton.disabled = Boolean(userEmail);
+    signUpButton.disabled = Boolean(userEmail);
+  };
+  const run = async action => {
+    signInButton.disabled = true; signUpButton.disabled = true;
+    const { data, error } = await action();
+    if (error) setStatus(`操作失敗：${error.message}`);
+    else if (data?.session) renderSession(data.session);
+    else setStatus('驗證信已寄出，請完成信箱確認後再登入。');
+    if (!data?.session) { signInButton.disabled = false; signUpButton.disabled = false; }
+  };
+  signInButton.addEventListener('click', () => run(() => signIn(email.value.trim(), password.value)));
+  signUpButton.addEventListener('click', () => run(() => signUp(email.value.trim(), password.value)));
+  signOutButton.addEventListener('click', async () => { const { error } = await signOut(); if (error) setStatus(`登出失敗：${error.message}`); else renderSession(null); });
+  getSession().then(({ session, error }) => error ? setStatus(error.message) : renderSession(session));
+  return subscribeToAuth(renderSession);
+}
