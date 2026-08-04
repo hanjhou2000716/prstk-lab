@@ -1,0 +1,33 @@
+name: 回報工具資訊
+description: 回報失效連結、錯誤資訊或補充資料來源
+title: "[工具回報] "
+labels: [tool-report]
+body:
+  - type: markdown
+    attributes:
+      value: 感謝協助維護 PRStK Lab 工具資料。請勿提交個人投資部位或敏感資訊。
+  - type: input
+    id: tool
+    attributes:
+      label: 工具名稱或 slug
+      placeholder: stockintelli
+    validations:
+      required: true
+  - type: dropdown
+    id: report-type
+    attributes:
+      label: 回報類型
+      options:
+        - 連結失效
+        - 資訊錯誤
+        - 補充資料來源
+        - 建議新工具
+    validations:
+      required: true
+  - type: textarea
+    id: details
+    attributes:
+      label: 詳細說明
+      description: 請提供可公開驗證的資訊、原始連結與發生日期。
+    validations:
+      required: true

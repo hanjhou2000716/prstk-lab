@@ -559,6 +559,7 @@ const bootstrap = () => {
       document.getElementById('drawer-title').innerText = data.name;
       document.getElementById('drawer-subtitle').innerText = data.brandName;
       document.getElementById('drawer-link').href = data.url;
+      document.getElementById('drawer-report').href = `https://github.com/hanjhou2000716/prstk-lab/issues/new?template=report-tool.yml&title=${encodeURIComponent(`[工具回報] ${data.brandName}`)}&labels=tool-report`;
 
       const featuresUl = document.getElementById('drawer-features');
       renderList(featuresUl, data.features, 'bg-muji-brand/60');
