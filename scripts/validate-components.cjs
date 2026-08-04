@@ -4,6 +4,7 @@ const path = require('node:path');
 const root = path.resolve(__dirname, '..');
 const pagePath = path.join(root, 'src', 'pages', 'index.astro');
 const page = fs.readFileSync(pagePath, 'utf8');
+const runtime = fs.readFileSync(path.join(root, 'src', 'scripts', 'main.ts'), 'utf8');
 const components = [
   'Header.astro',
   'SearchBar.astro',
@@ -32,7 +33,7 @@ for (const usage of ['<Header />', '<SearchBar />', '<ScenarioSelector />', '<To
   if (!page.includes(usage)) errors.push(`Missing component usage: ${usage}`);
 }
 
-if (!page.includes("document.getElementById('tool-card-template')")) errors.push('ToolCard template is not used by the catalog renderer.');
+if (!runtime.includes("document.getElementById('tool-card-template')")) errors.push('ToolCard template is not used by the catalog renderer.');
 if (page.includes('id="tool-panel"') || page.includes('id="info-drawer"')) errors.push('Panel or drawer markup remains duplicated in index.astro.');
 
 if (errors.length) {
