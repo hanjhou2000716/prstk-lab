@@ -43,6 +43,11 @@ jobs:
           npm run validate
           npm run astro:check
 
+      - name: Run unit and static smoke tests
+        run: |
+          npm run test:unit
+          npm run test:smoke
+
       - name: Build static site
         run: npm run build
 

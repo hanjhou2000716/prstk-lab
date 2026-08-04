@@ -38,7 +38,7 @@
     .tool-card { animation: card-enter 420ms cubic-bezier(0.16, 1, 0.3, 1) both; overflow: hidden; border-radius: 1rem; }
     .tool-card .card-hover-effect { padding-right: 3rem !important; }
     .tool-card .card-hover-effect > span:first-child { white-space: normal !important; overflow: hidden; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }
-    .tool-action { position: absolute; right: 0; z-index: 10; display: flex; width: 2.65rem; height: 33.333%; align-items: center; justify-content: center; border-left: 1px solid rgba(227, 221, 213, 0.55); background: rgba(255, 255, 255, 0.82); color: rgba(98, 93, 86, 0.78); transition: color 180ms ease, background 180ms ease; }
+    .tool-action { position: absolute; right: 0; z-index: 10; display: flex; width: 2.75rem; min-height: 2.75rem; height: 33.333%; align-items: center; justify-content: center; border-left: 1px solid rgba(227, 221, 213, 0.55); background: rgba(255, 255, 255, 0.82); color: rgba(98, 93, 86, 0.78); transition: color 180ms ease, background 180ms ease; }
     .tool-action:hover { background: #EEF2F4; color: #1F3546; }
     .favorite-action { top: 0; border-bottom: 1px solid rgba(227, 221, 213, 0.42); }
     .pin-action { top: 33.333%; border-bottom: 1px solid rgba(227, 221, 213, 0.42); }
@@ -70,7 +70,7 @@
     #home-card-grid.show-actions { grid-template-rows: repeat(2, 5.2rem); }
     #home-card-grid.show-actions .tool-card,
     #home-card-grid.show-actions .card-hover-effect { min-height: 5.2rem; }
-    #home-card-grid.show-actions .tool-action { display: flex; width: 2.45rem; }
+    #home-card-grid.show-actions .tool-action { display: flex; width: 2.75rem; }
     #home-card-grid.show-actions .card-hover-effect { padding: 0.55rem 2.8rem 0.55rem 0.65rem !important; }
     #home-tools { margin-top: 1.75rem !important; }
     #home-card-grid.is-updating { animation: content-settle 240ms ease-out both; }

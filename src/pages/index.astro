@@ -56,6 +56,7 @@ const structuredData = JSON.stringify({
 </head>
 
 <body class="bg-muji-bg text-muji-text font-sans min-h-[100dvh] flex flex-col justify-between overflow-x-hidden">
+  <a href="#main-content" class="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-full focus:bg-muji-brand focus:px-4 focus:py-3 focus:text-sm focus:text-white">跳至主要內容</a>
   <script is:inline id="tool-data" type="application/json" set:html={toolData}></script>
   <ToolCard />
   <!-- 背景微光裝飾（極簡無印風） -->
@@ -66,7 +67,7 @@ const structuredData = JSON.stringify({
     
     <Header />
 
-    <main class="flex-1 flex flex-col justify-start min-h-0 w-full space-y-3">
+    <main id="main-content" class="flex-1 flex flex-col justify-start min-h-0 w-full space-y-3" tabindex="-1">
       <SearchBar />
       <ScenarioSelector />
       <HomeTools />
