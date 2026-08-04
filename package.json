@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "astro dev",
     "build:css": "tailwindcss -i ./src/styles.css -o ./public/assets/styles.css --minify",
-    "build": "npm run build:css && npm run schema:validate && npm run cards:validate && npm run components:validate && npm run security:validate && npm run seo:validate && npm run research:validate && astro check && astro build",
+    "build": "npm run build:css && npm run schema:validate && npm run cards:validate && npm run components:validate && npm run security:validate && npm run seo:validate && npm run research:validate && npm run research-library:validate && astro check && astro build",
     "preview": "astro preview",
     "validate": "node scripts/validate-inline-js.cjs",
     "baseline:capture": "node scripts/capture-release-0-baseline.cjs",
@@ -19,6 +19,7 @@
     "security:validate": "node scripts/validate-external-assets.cjs",
     "seo:validate": "node scripts/validate-seo.cjs",
     "research:validate": "node scripts/validate-research.cjs",
+    "research-library:validate": "node scripts/validate-research-library.cjs",
     "links:check": "node scripts/check-links.cjs --output=link-report.json",
     "test:unit": "node --test tests/tool-catalog.test.cjs",
     "test:smoke": "node --test tests/static-smoke.test.cjs",

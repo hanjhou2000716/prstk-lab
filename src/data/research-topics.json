@@ -1,0 +1,11 @@
+[
+  {
+    "slug": "research-discipline",
+    "title": "研究紀律與證據鏈",
+    "summary": "把研究問題、工具、方法與來源串成可回顧的研究流程。",
+    "markets": ["台股", "美股"],
+    "tools": ["stockintelli", "quantgems", "stockvision-ai"],
+    "research": ["research-report-template"],
+    "methods": ["研究問題拆解", "證據與來源標記", "風險與失效條件"]
+  }
+]
