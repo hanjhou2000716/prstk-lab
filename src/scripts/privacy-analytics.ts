@@ -1,7 +1,7 @@
 // @ts-nocheck
 const consentKey = 'prstk-lab-analytics-consent-v1';
 const eventsKey = 'prstk-lab-analytics-events-v1';
-const allowedEvents = new Set(['search_started', 'scenario_selected', 'tool_opened', 'favorite_toggled', 'pin_toggled', 'compare_toggled', 'research_opened', 'sync_used']);
+const allowedEvents = new Set(['search_started', 'scenario_selected', 'tool_opened', 'favorite_toggled', 'pin_toggled', 'research_opened', 'sync_used']);
 const safeCategories = new Set(['explore', 'research', 'strategy', 'risk', 'allocation']);
 
 const readConsent = () => { try { return localStorage.getItem(consentKey) || 'unset'; } catch { return 'unset'; } };

@@ -123,13 +123,6 @@ const bootstrap = () => {
     const toolPanel = document.getElementById('tool-panel');
     const toolPanelGrid = document.getElementById('tool-panel-grid');
     const toolPanelTitle = document.getElementById('tool-panel-title');
-    const compareBar = document.getElementById('compare-bar');
-    const compareSummary = document.getElementById('compare-summary');
-    const openCompare = document.getElementById('open-compare');
-    const clearCompare = document.getElementById('clear-compare');
-    const comparePanel = document.getElementById('compare-panel');
-    const compareGrid = document.getElementById('compare-grid');
-    const closeCompare = document.getElementById('close-compare');
     const closeToolPanel = document.getElementById('close-tool-panel');
     const portalShell = document.getElementById('portal-shell');
     const drawerOverlay = document.getElementById('drawer-overlay');
@@ -137,15 +130,6 @@ const bootstrap = () => {
     const categorySections = document.getElementById('category-sections');
     const toolCards = [];
     const focusableSelector = 'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
-    const compareSet = new Set();
-
-    const statusLabels = {
-      verified: '已驗證',
-      'pending-verification': '待驗證',
-      beta: 'Beta',
-      'temporarily-unavailable': '暫時無法使用',
-      'discontinued': '已停止服務'
-    };
     const normalise = value => String(value || '').normalize('NFKC').toLocaleLowerCase('zh-TW').replace(/\s+/g, '');
     const readUrlState = () => {
       const params = new URLSearchParams(window.location.search);
@@ -214,12 +198,9 @@ const bootstrap = () => {
       const link = card.querySelector('[data-tool-link]');
       const title = card.querySelector('[data-tool-name]');
       const subtitle = card.querySelector('[data-tool-brand]');
-      const status = card.querySelector('[data-tool-status]');
       link.href = tool.url;
       title.textContent = tool.name;
       subtitle.textContent = tool.brandName;
-      status.textContent = statusLabels[tool.status] || '尚未驗證';
-      status.dataset.status = tool.status || 'unknown';
       link.addEventListener('click', () => recordRecentTool(tool.id));
       return card;
     };
@@ -259,8 +240,7 @@ const bootstrap = () => {
       const detailButton = card.querySelector('[data-tool-action="info"]');
       const favoriteButton = card.querySelector('[data-tool-action="favorite"]');
       const pinButton = card.querySelector('[data-tool-action="pin"]');
-      const compareButton = card.querySelector('[data-tool-action="compare"]');
-      if (!detailButton || !favoriteButton || !pinButton || !compareButton) return;
+      if (!detailButton || !favoriteButton || !pinButton) return;
       detailButton.dataset.toolId = toolId;
       detailButton.dataset.drawerTrigger = toolId;
       detailButton.setAttribute('aria-controls', 'info-drawer');
@@ -299,19 +279,6 @@ const bootstrap = () => {
         pinButton.setAttribute('aria-pressed', String(pins.has(toolId)));
         globalThis.prstkAnalytics?.track('pin_toggled', { toolId });
         applyFilters();
-      });
-      compareButton.setAttribute('aria-label', `加入比較：${tool.brandName}`);
-      compareButton.addEventListener('click', () => {
-        if (compareSet.has(toolId)) compareSet.delete(toolId);
-        else if (compareSet.size < 3) compareSet.add(toolId);
-        else {
-          resultSummary.textContent = '比較最多選擇 3 個工具。';
-          return;
-        }
-        card.classList.toggle('is-compared', compareSet.has(toolId));
-        compareButton.setAttribute('aria-pressed', String(compareSet.has(toolId)));
-        globalThis.prstkAnalytics?.track('compare_toggled', { toolId });
-        renderCompareBar();
       });
       toolCards.push({ card, section: null, tool, toolId });
     };
@@ -432,34 +399,6 @@ const bootstrap = () => {
     const renderPanel = entries => {
       toolPanelTitle.textContent = `全部工具 · ${entries.length}`;
       moveCardsTo(entries, toolPanelGrid);
-    };
-
-    const renderCompareBar = () => {
-      const count = compareSet.size;
-      compareBar.classList.toggle('hidden', count === 0);
-      compareSummary.textContent = `已選 ${count} / 3 個工具`;
-      openCompare.disabled = count < 2;
-    };
-
-    const renderComparePanel = () => {
-      compareGrid.replaceChildren();
-      [...compareSet].map(id => toolById.get(id)).filter(Boolean).forEach(tool => {
-        const card = document.createElement('article');
-        card.className = 'compare-card';
-        const features = (tool.features || []).slice(0, 2).map(item => `<li>${item}</li>`).join('');
-        card.innerHTML = `<div class="mb-3 flex items-start justify-between gap-3"><div><h3 class="text-sm font-semibold text-muji-text">${tool.name}</h3><p class="mt-1 text-[11px] text-muji-muted">${tool.brandName}</p></div><button type="button" data-remove-compare="${tool.id}" class="rounded-full p-1.5 text-muji-muted hover:bg-muji-bg hover:text-orange" aria-label="移除 ${tool.brandName}"><i data-lucide="x" class="h-3.5 w-3.5"></i></button></div><dl class="space-y-2 text-xs"><div><dt class="text-muji-muted">狀態</dt><dd class="font-medium text-muji-brand">${statusLabels[tool.status] || '尚未驗證'}</dd></div><div><dt class="text-muji-muted">價格</dt><dd class="font-medium text-muji-text">${tool.pricing || '尚未驗證'}</dd></div><div><dt class="text-muji-muted">適合對象</dt><dd class="font-medium text-muji-text">${(tool.targetUsers || [])[0] || '尚未驗證'}</dd></div></dl><ul class="mt-3 list-disc space-y-1 pl-4 text-[11px] leading-5 text-muji-muted">${features || '<li>尚未驗證</li>'}</ul>`;
-        compareGrid.append(card);
-      });
-      compareGrid.querySelectorAll('[data-remove-compare]').forEach(button => button.addEventListener('click', () => {
-        compareSet.delete(button.dataset.removeCompare);
-        document.querySelectorAll(`[data-tool-id="${button.dataset.removeCompare}"]`).forEach(card => {
-          card.classList.remove('is-compared');
-          card.querySelector('[data-tool-action="compare"]')?.setAttribute('aria-pressed', 'false');
-        });
-        renderCompareBar();
-        renderComparePanel();
-      }));
-      lucide.createIcons({ icons: lucide.icons });
     };
 
     const animateHomeUpdate = () => {
@@ -587,26 +526,6 @@ const bootstrap = () => {
       panelPreviousFocus?.focus?.();
     };
     closeToolPanel.addEventListener('click', closePanel);
-    openCompare?.addEventListener('click', () => {
-      if (compareSet.size < 2) return;
-      renderComparePanel();
-      comparePanel.classList.remove('hidden');
-      comparePanel.setAttribute('aria-hidden', 'false');
-      document.body.classList.add('tool-panel-open');
-      closeCompare.focus();
-    });
-    clearCompare?.addEventListener('click', () => {
-      compareSet.clear();
-      document.querySelectorAll('.tool-card.is-compared').forEach(card => card.classList.remove('is-compared'));
-      document.querySelectorAll('[data-tool-action="compare"]').forEach(button => button.setAttribute('aria-pressed', 'false'));
-      renderCompareBar();
-    });
-    const closeComparePanel = () => {
-      comparePanel.classList.add('hidden');
-      comparePanel.setAttribute('aria-hidden', 'true');
-      document.body.classList.remove('tool-panel-open');
-    };
-    closeCompare?.addEventListener('click', closeComparePanel);
     clearRecentTools?.addEventListener('click', () => {
       recentTools = [];
       saveRecentTools();
@@ -616,7 +535,6 @@ const bootstrap = () => {
     window.addEventListener('online', updateOfflineNotice);
     window.addEventListener('offline', updateOfflineNotice);
     applyFilters();
-    renderCompareBar();
     renderRecentTools();
     updateOfflineNotice();
     syncUrlState();
@@ -719,10 +637,6 @@ const bootstrap = () => {
         if (event.key === 'Escape') closePanel();
         else trapFocus(event, toolPanel);
         return;
-      }
-      if (!comparePanel.classList.contains('hidden')) {
-        if (event.key === 'Escape') closeComparePanel();
-        else trapFocus(event, comparePanel);
       }
     });
 
