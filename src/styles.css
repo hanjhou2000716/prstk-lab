@@ -14,11 +14,12 @@
       display: none;
     }
     .site-background {
-      background-color: #FAF8F5;
-      background-image: linear-gradient(rgba(250, 248, 245, 0.08), rgba(250, 248, 245, 0.08)), url('assets/prstk-geometric-background.jpg');
-      background-position: center;
+      background-color: #F5F7F8;
+      background-image: linear-gradient(rgba(245, 247, 248, 0.18), rgba(245, 247, 248, 0.18)), url('prstk-lab-background.jpg');
+      background-position: center top;
       background-repeat: no-repeat;
       background-size: cover;
+      opacity: 0.96;
     }
     :focus-visible {
       outline: 3px solid #D97745;
@@ -30,13 +31,33 @@
     }
     /* 卡片懸浮動畫優化，加入 hardware acceleration 避免卡頓 */
     .card-hover-effect {
-      transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-      will-change: transform, box-shadow;
+      transition: transform 220ms cubic-bezier(0.16, 1, 0.3, 1), box-shadow 220ms ease, border-color 220ms ease, background-color 220ms ease;
     }
     .card-hover-effect:hover {
       transform: translateY(-3px);
       box-shadow: 0 8px 24px -6px rgba(74, 96, 109, 0.15);
       border-color: rgba(74, 96, 109, 0.3);
+    }
+    #tool-search-panel {
+      box-shadow: 0 14px 34px -24px rgba(31, 53, 70, 0.32);
+    }
+    #tool-search-panel input,
+    #tool-search-panel .filter-chip,
+    #tool-search-panel #advanced-filter-toggle {
+      min-height: 2.75rem;
+    }
+    #category-filters .filter-chip {
+      box-shadow: 0 4px 12px -10px rgba(31, 53, 70, 0.55);
+    }
+    #category-filters .filter-chip[aria-pressed="true"] {
+      box-shadow: 0 7px 16px -10px rgba(31, 53, 70, 0.7);
+    }
+    .scenario-entry {
+      box-shadow: 0 7px 16px -13px rgba(31, 53, 70, 0.55);
+    }
+    .scenario-entry:hover,
+    .scenario-entry:focus-visible {
+      box-shadow: 0 10px 20px -14px rgba(31, 53, 70, 0.65);
     }
     .tool-card { animation: card-enter 420ms cubic-bezier(0.16, 1, 0.3, 1) both; overflow: hidden; border-radius: 1rem; }
     .tool-card .card-hover-effect { padding-right: 3rem !important; }
@@ -57,15 +78,16 @@
     .pin-button[aria-pressed="true"] { background: #D97745; color: #fff; border-color: #D97745; }
     .tool-panel-open { overflow: hidden; }
     .tool-panel-surface {
-      background-color: #FAF8F5;
-      background-image: linear-gradient(rgba(250, 250, 249, 0.62), rgba(250, 250, 249, 0.62)), url('assets/prstk-geometric-background.jpg');
-      background-position: center;
+      background-color: #F5F7F8;
+      background-image: linear-gradient(rgba(245, 247, 248, 0.82), rgba(245, 247, 248, 0.82)), url('prstk-lab-background.jpg');
+      background-position: center top;
       background-repeat: no-repeat;
       background-size: cover;
+      backdrop-filter: blur(12px);
       animation: panel-reveal 280ms cubic-bezier(0.16, 1, 0.3, 1) both;
     }
     .tool-panel-surface #tool-panel-grid { align-content: start; grid-auto-rows: max-content; scroll-padding: 0.25rem 0 1.5rem; }
-    .tool-panel-surface .tool-card .card-hover-effect { background: rgba(255, 255, 255, 0.88); }
+    .tool-panel-surface .tool-card .card-hover-effect { background: rgba(255, 255, 255, 0.92); }
     .tool-panel-surface .tool-card,
     .tool-panel-surface .tool-card .card-hover-effect { height: 8.25rem; min-height: 8.25rem; }
     #category-filters { scrollbar-width: none; }
