@@ -18,3 +18,9 @@ test('generated site has no inline executable script or unsafe CSP', () => {
   assert.doesNotMatch(output, /script-src[^>]*unsafe-inline/);
   assert.doesNotMatch(output, /<script>\s*(?:const|let|function|document\.)/);
 });
+
+test('generated site removes the retired compare feature', () => {
+  for (const marker of ['compare-bar', 'compare-panel', 'data-tool-action="compare"', 'columns-3', '比較工具']) {
+    assert.doesNotMatch(output, new RegExp(marker), `retired compare marker remains: ${marker}`);
+  }
+});
