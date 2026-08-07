@@ -15,7 +15,7 @@
     }
     .site-background {
       background-color: #F5F7F8;
-      background-image: linear-gradient(rgba(245, 247, 248, 0.18), rgba(245, 247, 248, 0.18)), url('prstk-lab-background.jpg');
+      background-image: linear-gradient(rgba(245, 247, 248, 0.18), rgba(245, 247, 248, 0.18)), url('prstk-lab-background.jpg?v=20260807-bg');
       background-position: center top;
       background-repeat: no-repeat;
       background-size: cover;
@@ -79,7 +79,7 @@
     .tool-panel-open { overflow: hidden; }
     .tool-panel-surface {
       background-color: #F5F7F8;
-      background-image: linear-gradient(rgba(245, 247, 248, 0.82), rgba(245, 247, 248, 0.82)), url('prstk-lab-background.jpg');
+      background-image: linear-gradient(rgba(245, 247, 248, 0.82), rgba(245, 247, 248, 0.82)), url('prstk-lab-background.jpg?v=20260807-bg');
       background-position: center top;
       background-repeat: no-repeat;
       background-size: cover;
