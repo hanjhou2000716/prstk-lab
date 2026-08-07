@@ -411,10 +411,10 @@ const bootstrap = () => {
       const displayEntries = isDefaultView && pinnedEntries.length
         ? [...pinnedEntries, ...recommendedEntries.filter(({ toolId }) => !pins.has(toolId))]
         : (isDefaultView ? recommendedEntries : entries);
-      const title = isDefaultView ? (pinnedEntries.length ? '我的首頁' : '為你精選') : (activeScenario ? scenarioTasks[activeScenario] || '搜尋結果' : '搜尋結果');
+      const title = isDefaultView ? '我的首頁' : (activeScenario ? scenarioTasks[activeScenario] || '搜尋結果' : '搜尋結果');
 
       homeTitle.textContent = title;
-      homeRecommendationNote.textContent = isDefaultView ? (pinnedEntries.length ? '釘選與個人推薦' : '依你的使用足跡推薦') : '最多 4 個';
+      homeRecommendationNote.textContent = '最多 4 個';
       homeEmpty.classList.toggle('hidden', displayEntries.length > 0);
       homeEmpty.classList.toggle('flex', displayEntries.length === 0);
       if (!displayEntries.length) {
