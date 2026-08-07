@@ -41,9 +41,10 @@
     .tool-card { animation: card-enter 420ms cubic-bezier(0.16, 1, 0.3, 1) both; overflow: hidden; border-radius: 1rem; }
     .tool-card .card-hover-effect { padding-right: 3rem !important; }
     .tool-card .card-hover-effect > span:first-child { white-space: normal !important; overflow: hidden; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }
-    .tool-action { position: absolute; right: 0; z-index: 10; display: flex; width: 2.9rem; min-height: 2.75rem; height: 33.333%; align-items: center; justify-content: center; border-left: 1px solid rgba(227, 221, 213, 0.55); background: rgba(255, 255, 255, 0.86); color: rgba(98, 93, 86, 0.78); transition: color 180ms ease, background 180ms ease, transform 180ms ease; }
+    .tool-action { position: absolute; right: 0; z-index: 10; display: flex; width: 2.9rem; min-height: 2.75rem; height: 2.75rem; align-items: center; justify-content: center; border-left: 1px solid rgba(227, 221, 213, 0.55); background: rgba(255, 255, 255, 0.88); color: rgba(98, 93, 86, 0.78); transition: color 180ms ease, background 180ms ease, transform 180ms ease; }
     .tool-action svg, .tool-action i { pointer-events: none; }
     .tool-action:hover { background: #EEF2F4; color: #1F3546; }
+    .tool-action:active { transform: scale(0.92); }
     .favorite-action { top: 0; border-bottom: 1px solid rgba(227, 221, 213, 0.42); }
     .pin-action { top: 33.333%; border-bottom: 1px solid rgba(227, 221, 213, 0.42); }
     .info-action { bottom: 0; }
@@ -57,16 +58,16 @@
     .tool-panel-open { overflow: hidden; }
     .tool-panel-surface {
       background-color: #FAF8F5;
-      background-image: linear-gradient(rgba(250, 250, 249, 0.82), rgba(250, 250, 249, 0.82)), url('assets/prstk-geometric-background.jpg');
+      background-image: linear-gradient(rgba(250, 250, 249, 0.62), rgba(250, 250, 249, 0.62)), url('assets/prstk-geometric-background.jpg');
       background-position: center;
       background-repeat: no-repeat;
       background-size: cover;
       animation: panel-reveal 280ms cubic-bezier(0.16, 1, 0.3, 1) both;
     }
-    .tool-panel-surface #tool-panel-grid { scroll-padding: 0.25rem 0 1.5rem; }
+    .tool-panel-surface #tool-panel-grid { align-content: start; grid-auto-rows: max-content; scroll-padding: 0.25rem 0 1.5rem; }
     .tool-panel-surface .tool-card .card-hover-effect { background: rgba(255, 255, 255, 0.88); }
     .tool-panel-surface .tool-card,
-    .tool-panel-surface .tool-card .card-hover-effect { min-height: 8.25rem; }
+    .tool-panel-surface .tool-card .card-hover-effect { height: 8.25rem; min-height: 8.25rem; }
     #category-filters { scrollbar-width: none; }
     #category-filters::-webkit-scrollbar { display: none; }
     /* 首頁只負責快速瀏覽；收藏、釘選與詳細資訊集中在完整工具面板。 */
@@ -78,7 +79,7 @@
     #home-card-grid .card-hover-effect > span:nth-child(2) { margin-top: 0.2rem !important; font-size: clamp(0.58rem, 2.3vw, 0.68rem) !important; }
     #home-card-grid.show-actions { grid-template-rows: repeat(2, 8.25rem); }
     #home-card-grid.show-actions .tool-card,
-    #home-card-grid.show-actions .card-hover-effect { min-height: 8.25rem; }
+    #home-card-grid.show-actions .card-hover-effect { height: 8.25rem; min-height: 8.25rem; }
     #home-card-grid.show-actions .tool-action { display: flex; width: 2.9rem; }
     #home-card-grid.show-actions .card-hover-effect { padding: 0.7rem 3rem 0.7rem 0.75rem !important; }
     #home-tools { margin-top: 1.75rem !important; }
@@ -145,9 +146,10 @@
       #home-card-grid .card-hover-effect { padding: 0.9rem 1rem !important; }
       #home-card-grid .card-hover-effect > span:first-child { font-size: 0.9rem !important; }
       #home-card-grid .card-hover-effect > span:nth-child(2) { font-size: 0.72rem !important; }
-      #home-card-grid.show-actions { grid-template-rows: repeat(2, 6.25rem); }
+      #home-card-grid.show-actions { grid-template-rows: repeat(2, 8.25rem); }
       #home-card-grid.show-actions .tool-card,
-      #home-card-grid.show-actions .card-hover-effect { min-height: 6.25rem; }
+      #home-card-grid.show-actions .card-hover-effect,
+      #home-card-grid.show-actions .tool-card { height: 8.25rem; min-height: 8.25rem; }
       .tool-panel-surface { background-position: center top; background-size: min(100vw, 720px) auto; }
       #category-filters { overflow-x: scroll; padding-bottom: 0.65rem; scrollbar-width: thin; scrollbar-color: #91A69A #EEF2F4; }
       #category-filters > .filter-chip { min-width: 6.5rem; justify-content: center; }
