@@ -1,7 +1,7 @@
-// @ts-nocheck
 import AOS from 'aos';
 import { createIcons, icons } from 'lucide';
 import 'aos/dist/aos.css';
+import type { Tool, ToolCategory } from '../types/tool';
 
 const lucide = {
   createIcons,
@@ -29,21 +29,21 @@ const bootstrap = () => {
     lucide.createIcons({ icons: lucide.icons });
 
     // Secure every external destination, including future cards added in HTML.
-    document.querySelectorAll('a[target="_blank"]').forEach(link => {
+    document.querySelectorAll<HTMLAnchorElement>('a[target="_blank"]').forEach(link => {
       link.rel = 'noopener noreferrer';
       link.referrerPolicy = 'no-referrer';
     });
 
-    let drawerPreviousFocus = null;
-    let panelPreviousFocus = null;
-    let closeTimer = null;
+    let drawerPreviousFocus: HTMLElement | null = null;
+    let panelPreviousFocus: HTMLElement | null = null;
+    let closeTimer: number | undefined;
 
     // 工具唯一資料來源：固定 ID、分類、內容與連結都在此維護。
     const toolDataElement = document.getElementById('tool-data');
-    const toolCatalog = toolDataElement ? JSON.parse(toolDataElement.textContent || '[]') : [];
+    const toolCatalog: Tool[] = toolDataElement ? JSON.parse(toolDataElement.textContent || '[]') : [];
 
 
-    const categories = [
+    const categories: Array<{ id: ToolCategory; label: string; icon: string }> = [
       { id: 'explore', label: '探索', icon: 'compass' },
       { id: 'research', label: '研究', icon: 'book-open' },
       { id: 'strategy', label: '策略', icon: 'chart-no-axes-combined' },
@@ -51,13 +51,13 @@ const bootstrap = () => {
       { id: 'allocation', label: '配置', icon: 'pie-chart' }
     ];
 
-    const toolById = new Map(toolCatalog.map(tool => [tool.id, tool]));
+    const toolById = new Map<string, Tool>(toolCatalog.map(tool => [tool.id, tool]));
     const favoritesStorageKey = 'prstk-lab-favorites-v2';
     const pinsStorageKey = 'prstk-lab-pins-v2';
     const legacyFavoritesStorageKey = 'prstk-lab-favorites';
     const legacyPinsStorageKey = 'prstk-lab-pins';
     const recentToolsStorageKey = 'prstk-lab-recent-tools-v1';
-    const scenarioTasks = {
+    const scenarioTasks: Record<string, string> = {
       'find-opportunities': '正在找投資機會',
       'research-security': '正在研究個股',
       'check-risk': '正在檢查風險',
@@ -98,47 +98,37 @@ const bootstrap = () => {
     let activeCategory = 'all';
     let activeScenario = '';
     let favoritesOnly = false;
-    const facetFilters = { pricing: '', status: '', requiresLogin: '', mobileSupport: '' };
     let panelOpen = false;
-    let currentMatches = [];
-    let homeRefreshTimer;
-    const toolSearch = document.getElementById('tool-search');
-    const favoritesFilter = document.getElementById('favorites-filter');
-    const categoryFilters = document.getElementById('category-filters');
-    const resultSummary = document.getElementById('tool-result-summary');
-    const homeGrid = document.getElementById('home-card-grid');
-    const homeTitle = document.getElementById('home-tools-title');
-    const homeRecommendationNote = document.getElementById('home-recommendation-note');
-    const recentToolsSection = document.getElementById('recent-tools');
-    const recentToolList = document.getElementById('recent-tool-list');
-    const clearRecentTools = document.getElementById('clear-recent-tools');
-    const offlineNotice = document.getElementById('offline-notice');
-    const homeEmpty = document.getElementById('home-empty');
-    const viewAllTools = document.getElementById('view-all-tools');
-    const advancedFilterToggle = document.getElementById('advanced-filter-toggle');
-    const advancedFilters = document.getElementById('advanced-filters');
-    const filterReset = document.getElementById('filter-reset');
-    const facetSelects = [...document.querySelectorAll('[data-facet]')];
-    const primaryNav = document.getElementById('primary-nav');
-    const toolPanel = document.getElementById('tool-panel');
-    const toolPanelGrid = document.getElementById('tool-panel-grid');
-    const toolPanelTitle = document.getElementById('tool-panel-title');
-    const closeToolPanel = document.getElementById('close-tool-panel');
-    const portalShell = document.getElementById('portal-shell');
-    const drawerOverlay = document.getElementById('drawer-overlay');
-    const infoDrawer = document.getElementById('info-drawer');
-    const categorySections = document.getElementById('category-sections');
-    const toolCards = [];
+    let currentMatches: ToolCardEntry[] = [];
+    let homeRefreshTimer: number | undefined;
+    const toolSearch = document.getElementById('tool-search') as HTMLInputElement;
+    const favoritesFilter = document.getElementById('favorites-filter') as HTMLButtonElement;
+    const categoryFilters = document.getElementById('category-filters') as HTMLElement;
+    const resultSummary = document.getElementById('tool-result-summary') as HTMLElement;
+    const homeGrid = document.getElementById('home-card-grid') as HTMLElement;
+    const homeTitle = document.getElementById('home-tools-title') as HTMLElement;
+    const homeRecommendationNote = document.getElementById('home-recommendation-note') as HTMLElement;
+    const offlineNotice = document.getElementById('offline-notice') as HTMLElement;
+    const homeEmpty = document.getElementById('home-empty') as HTMLElement;
+    const viewAllTools = document.getElementById('view-all-tools') as HTMLButtonElement;
+    const toolPanel = document.getElementById('tool-panel') as HTMLElement;
+    const toolPanelGrid = document.getElementById('tool-panel-grid') as HTMLElement;
+    const toolPanelTitle = document.getElementById('tool-panel-title') as HTMLElement;
+    const closeToolPanel = document.getElementById('close-tool-panel') as HTMLButtonElement;
+    const portalShell = document.getElementById('portal-shell') as HTMLElement;
+    const drawerOverlay = document.getElementById('drawer-overlay') as HTMLElement;
+    const infoDrawer = document.getElementById('info-drawer') as HTMLElement;
+    const categorySections = document.getElementById('category-sections') as HTMLElement;
+    type ToolCardEntry = { card: HTMLElement; section: HTMLElement | null; tool: Tool; toolId: string };
+    const toolCards: ToolCardEntry[] = [];
     const focusableSelector = 'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
-    const normalise = value => String(value || '').normalize('NFKC').toLocaleLowerCase('zh-TW').replace(/\s+/g, '');
+    const normalise = (value: unknown) => String(value || '').normalize('NFKC').toLocaleLowerCase('zh-TW').replace(/\s+/g, '');
     const readUrlState = () => {
       const params = new URLSearchParams(window.location.search);
       toolSearch.value = params.get('q') || '';
       activeCategory = params.get('category') || 'all';
       activeScenario = params.get('task') || '';
       favoritesOnly = params.get('favorites') === '1';
-      Object.keys(facetFilters).forEach(key => { facetFilters[key] = params.get(key) || ''; });
-      facetSelects.forEach(select => { select.value = facetFilters[select.dataset.facet] || ''; });
       favoritesFilter.setAttribute('aria-pressed', String(favoritesOnly));
     };
     const syncUrlState = () => {
@@ -147,11 +137,8 @@ const bootstrap = () => {
       if (activeCategory !== 'all') params.set('category', activeCategory);
       if (activeScenario) params.set('task', activeScenario);
       if (favoritesOnly) params.set('favorites', '1');
-      Object.entries(facetFilters).forEach(([key, value]) => { if (value) params.set(key, value); });
       const query = params.toString();
       window.history.replaceState(null, '', `${window.location.pathname}${query ? `?${query}` : ''}${window.location.hash}`);
-      const hasFacet = Object.values(facetFilters).some(Boolean);
-      filterReset.classList.toggle('hidden', !toolSearch.value.trim() && activeCategory === 'all' && !favoritesOnly && !hasFacet);
     };
 
     const trapFocus = (event, container) => {
@@ -189,15 +176,17 @@ const bootstrap = () => {
     categoryFilters.append(makeFilterChip('all', '全部', 'grid-2x2'));
     categories.forEach(category => categoryFilters.append(makeFilterChip(category.id, category.label, category.icon)));
     readUrlState();
-    categoryFilters.querySelectorAll('button[data-category]').forEach(chip => chip.setAttribute('aria-pressed', String(chip.dataset.category === activeCategory)));
+      categoryFilters.querySelectorAll<HTMLButtonElement>('button[data-category]').forEach(chip => chip.setAttribute('aria-pressed', String(chip.dataset.category === activeCategory)));
 
-    const createToolCard = tool => {
-      const template = document.getElementById('tool-card-template');
+    const createToolCard = (tool: Tool) => {
+      const template = document.getElementById('tool-card-template') as HTMLTemplateElement | null;
       if (!template) return null;
-      const card = template.content.firstElementChild.cloneNode(true);
-      const link = card.querySelector('[data-tool-link]');
+      const card = template.content.firstElementChild?.cloneNode(true) as HTMLElement | undefined;
+      if (!card) return null;
+      const link = card.querySelector<HTMLAnchorElement>('[data-tool-link]');
       const title = card.querySelector('[data-tool-name]');
       const subtitle = card.querySelector('[data-tool-brand]');
+      if (!link) return null;
       link.href = tool.url;
       title.textContent = tool.name;
       subtitle.textContent = tool.brandName;
@@ -208,28 +197,12 @@ const bootstrap = () => {
     const saveRecentTools = () => {
       try { localStorage.setItem(recentToolsStorageKey, JSON.stringify(recentTools)); } catch { /* Local browsing remains available. */ }
     };
-    const recordRecentTool = toolId => {
+    const recordRecentTool = (toolId: string) => {
       recentTools = [toolId, ...recentTools.filter(id => id !== toolId)].slice(0, 6);
       saveRecentTools();
-      renderRecentTools();
-    };
-    const renderRecentTools = () => {
-      recentToolList.replaceChildren();
-      recentTools.map(id => toolById.get(id)).filter(Boolean).slice(0, 4).forEach(tool => {
-        const link = document.createElement('a');
-        link.href = tool.url;
-        link.target = '_blank';
-        link.rel = 'noopener noreferrer';
-        link.referrerPolicy = 'no-referrer';
-        link.className = 'shrink-0 rounded-xl border border-muji-border bg-white px-3 py-2 text-[10px] text-muji-brand transition hover:border-muji-brand hover:bg-muji-brandLight';
-        link.textContent = tool.brandName;
-        link.addEventListener('click', () => recordRecentTool(tool.id));
-        recentToolList.append(link);
-      });
-      recentToolsSection.classList.toggle('hidden', recentTools.length === 0);
     };
 
-    const setupToolCard = (card, tool, category, index) => {
+    const setupToolCard = (card: HTMLElement, tool: Tool, category: { id: ToolCategory }, index: number) => {
       const toolId = tool.id;
       card.classList.add('tool-card');
       card.dataset.toolId = toolId;
@@ -237,23 +210,23 @@ const bootstrap = () => {
       card.style.animationDelay = `${Math.min(index * 40, 120)}ms`;
       if (favorites.has(toolId)) card.classList.add('is-favorite');
 
-      const badge = card.querySelector('[data-tool-badge]');
+      const badge = card.querySelector<HTMLElement>('[data-tool-badge]');
       if (badge) {
         const badgeLabel = tool.status === 'verified' ? '已驗證' : (tool.featured ? 'PRStK' : (tool.status === 'beta' ? 'Beta' : ''));
         badge.textContent = badgeLabel;
         badge.hidden = !badgeLabel;
       }
 
-      const detailButton = card.querySelector('[data-tool-action="info"]');
-      const favoriteButton = card.querySelector('[data-tool-action="favorite"]');
-      const pinButton = card.querySelector('[data-tool-action="pin"]');
+      const detailButton = card.querySelector<HTMLElement>('[data-tool-action="info"]');
+      const favoriteButton = card.querySelector<HTMLElement>('[data-tool-action="favorite"]');
+      const pinButton = card.querySelector<HTMLElement>('[data-tool-action="pin"]');
       if (!detailButton || !favoriteButton || !pinButton) return;
       detailButton.dataset.toolId = toolId;
       detailButton.dataset.drawerTrigger = toolId;
       detailButton.setAttribute('aria-controls', 'info-drawer');
       detailButton.setAttribute('aria-expanded', 'false');
       detailButton.setAttribute('aria-label', `詳細資訊：${tool.brandName}`);
-      const showDetails = event => {
+      const showDetails = (event: Event) => {
         event.preventDefault();
         event.stopPropagation();
         openDrawer(toolId);
@@ -322,7 +295,7 @@ const bootstrap = () => {
 
     renderCatalogSections();
 
-    const scoreSearchEntry = (entry, query) => {
+    const scoreSearchEntry = (entry: ToolCardEntry, query: string) => {
       const tool = entry.tool;
       const name = normalise(tool.name);
       const brand = normalise(tool.brandName);
@@ -358,11 +331,9 @@ const bootstrap = () => {
           ...tool.tags,
           ...tool.aliases
         ].map(normalise).join(' ');
-        const facetsMatch = Object.entries(facetFilters).every(([key, value]) => !value || String(tool[key] || 'unknown') === value);
         return (!query || searchableText.includes(query))
           && (activeCategory === 'all' || card.dataset.category === activeCategory)
-          && (!favoritesOnly || favorites.has(toolId))
-          && facetsMatch;
+          && (!favoritesOnly || favorites.has(toolId));
       });
       if (!query) return matches;
       return matches.sort((left, right) => {
@@ -371,7 +342,7 @@ const bootstrap = () => {
       });
     };
 
-    const moveCardsTo = (entries, target) => {
+    const moveCardsTo = (entries: ToolCardEntry[], target: HTMLElement) => {
       target.replaceChildren();
       toolCards.forEach(({ card }) => { card.hidden = true; });
       entries.forEach(({ card }) => {
@@ -396,7 +367,7 @@ const bootstrap = () => {
         .slice(0, 4);
     };
 
-    const getRecommendationContext = matchCount => {
+    const getRecommendationContext = (matchCount: number) => {
       const query = toolSearch.value.trim();
       if (query) return { title: '搜尋結果', note: `${matchCount} 個結果` };
 
@@ -415,7 +386,7 @@ const bootstrap = () => {
       return { title: '為你整理', note: 'PRStK 精選' };
     };
 
-    const renderHome = entries => {
+    const renderHome = (entries: ToolCardEntry[]) => {
       const isDefaultView = !toolSearch.value.trim() && activeCategory === 'all' && !favoritesOnly;
       const showHomeActions = activeCategory !== 'all';
       const pinnedEntries = toolCards.filter(({ toolId }) => pins.has(toolId));
@@ -438,10 +409,9 @@ const bootstrap = () => {
         ? (pinnedEntries.length ? `已釘選 ${pinnedEntries.length} / 4 個工具` : '預設推薦 4 個工具，可用圖釘自訂首頁')
         : (entries.length ? `找到 ${entries.length} 個工具，顯示前 4 個` : '沒有符合的工具');
       viewAllTools.classList.toggle('hidden', entries.length <= 4);
-      renderRecentTools();
     };
 
-    const renderPanel = entries => {
+    const renderPanel = (entries: ToolCardEntry[]) => {
       toolPanelTitle.textContent = `全部工具 · ${entries.length}`;
       moveCardsTo(entries, toolPanelGrid);
     };
@@ -463,9 +433,9 @@ const bootstrap = () => {
       }
     }
 
-    const setCategory = categoryId => {
+    const setCategory = (categoryId: ToolCategory | 'all') => {
       activeCategory = categoryId;
-      categoryFilters.querySelectorAll('button[data-category]').forEach(chip => {
+      categoryFilters.querySelectorAll<HTMLButtonElement>('button[data-category]').forEach(chip => {
         chip.setAttribute('aria-pressed', String(chip.dataset.category === categoryId));
       });
       applyFilters();
@@ -473,12 +443,12 @@ const bootstrap = () => {
     };
 
     categoryFilters.addEventListener('click', event => {
-      const button = event.target.closest('button[data-category]');
+      const button = (event.target as HTMLElement).closest<HTMLButtonElement>('button[data-category]');
       if (!button) return;
       activeScenario = '';
-      setCategory(button.dataset.category);
+      setCategory((button.dataset.category || 'all') as ToolCategory | 'all');
     });
-    document.querySelectorAll('[data-scenario-category]').forEach(button => {
+    document.querySelectorAll<HTMLButtonElement>('[data-scenario-category]').forEach(button => {
       button.setAttribute('aria-pressed', 'false');
       button.addEventListener('click', () => {
         toolSearch.value = '';
@@ -488,7 +458,7 @@ const bootstrap = () => {
         document.querySelectorAll('[data-scenario-category]').forEach(entry => {
           entry.setAttribute('aria-pressed', String(entry === button));
         });
-        setCategory(button.dataset.scenarioCategory);
+        setCategory((button.dataset.scenarioCategory || 'all') as ToolCategory);
       });
     });
     toolSearch.addEventListener('input', () => { activeScenario = ''; applyFilters(); syncUrlState(); });
@@ -498,61 +468,8 @@ const bootstrap = () => {
       applyFilters();
       syncUrlState();
     });
-    primaryNav?.addEventListener('click', event => {
-      const item = event.target.closest('[data-primary-nav]');
-      if (!item || item.tagName === 'A') return;
-      const action = item.dataset.navAction;
-      const category = item.dataset.navCategory;
-      if (item.dataset.primaryNav === 'tools') {
-        viewAllTools.click();
-        return;
-      }
-      if (category) {
-        toolSearch.value = '';
-        favoritesOnly = false;
-        favoritesFilter.setAttribute('aria-pressed', 'false');
-        setCategory(category);
-        document.getElementById('tool-search-panel')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        return;
-      }
-      if (action === 'favorites') {
-        favoritesOnly = true;
-        favoritesFilter.setAttribute('aria-pressed', 'true');
-        setCategory('all');
-        document.getElementById('home-tools')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        return;
-      }
-      if (action === 'catalog') {
-        favoritesOnly = false;
-        favoritesFilter.setAttribute('aria-pressed', 'false');
-        setCategory('all');
-        viewAllTools.click();
-      }
-    });
-    advancedFilterToggle?.addEventListener('click', () => {
-      const expanded = advancedFilters.hidden;
-      advancedFilters.hidden = !expanded;
-      advancedFilterToggle.setAttribute('aria-expanded', String(expanded));
-      advancedFilterToggle.classList.toggle('bg-muji-brand/5', expanded);
-    });
-    facetSelects.forEach(select => select.addEventListener('change', () => {
-      facetFilters[select.dataset.facet] = select.value;
-      applyFilters();
-      syncUrlState();
-    }));
-    filterReset?.addEventListener('click', () => {
-      toolSearch.value = '';
-      activeCategory = 'all';
-      favoritesOnly = false;
-      Object.keys(facetFilters).forEach(key => { facetFilters[key] = ''; });
-      facetSelects.forEach(select => { select.value = ''; });
-      favoritesFilter.setAttribute('aria-pressed', 'false');
-      categoryFilters.querySelectorAll('button[data-category]').forEach(chip => chip.setAttribute('aria-pressed', String(chip.dataset.category === 'all')));
-      applyFilters();
-      syncUrlState();
-    });
     viewAllTools.addEventListener('click', () => {
-      panelPreviousFocus = document.activeElement;
+      panelPreviousFocus = document.activeElement as HTMLElement | null;
       panelOpen = true;
       toolPanel.classList.remove('hidden');
       toolPanel.setAttribute('aria-hidden', 'false');
@@ -571,21 +488,15 @@ const bootstrap = () => {
       panelPreviousFocus?.focus?.();
     };
     closeToolPanel.addEventListener('click', closePanel);
-    clearRecentTools?.addEventListener('click', () => {
-      recentTools = [];
-      saveRecentTools();
-      renderRecentTools();
-    });
     const updateOfflineNotice = () => { offlineNotice.hidden = navigator.onLine; };
     window.addEventListener('online', updateOfflineNotice);
     window.addEventListener('offline', updateOfflineNotice);
     applyFilters();
-    renderRecentTools();
     updateOfflineNotice();
     syncUrlState();
     lucide.createIcons({ icons: lucide.icons });
 
-    function renderList(list, items, markerClass) {
+    function renderList(list: HTMLElement, items: string[], markerClass: string) {
       list.replaceChildren();
       items.forEach(item => {
         const li = document.createElement('li');
@@ -600,7 +511,7 @@ const bootstrap = () => {
       });
     }
 
-    function openDrawer(toolId) {
+    function openDrawer(toolId: string) {
       // Cards can be moved between views and older cached markup may carry a
       // slug rather than the canonical id. Resolve both forms so the detail
       // drawer never silently bails out when a card is re-parented.
@@ -610,12 +521,12 @@ const bootstrap = () => {
       if (!data) return;
       globalThis.prstkAnalytics?.track('tool_opened', { toolId });
       clearTimeout(closeTimer);
-      drawerPreviousFocus = document.activeElement;
+      drawerPreviousFocus = document.activeElement as HTMLElement | null;
       
-      document.getElementById('drawer-title').innerText = data.name;
-      document.getElementById('drawer-subtitle').innerText = data.brandName;
-      document.getElementById('drawer-link').href = data.url;
-      document.getElementById('drawer-report').href = `https://github.com/hanjhou2000716/prstk-lab/issues/new?template=report-tool.yml&title=${encodeURIComponent(`[工具回報] ${data.brandName}`)}&labels=tool-report`;
+      (document.getElementById('drawer-title') as HTMLElement).innerText = data.name;
+      (document.getElementById('drawer-subtitle') as HTMLElement).innerText = data.brandName;
+      (document.getElementById('drawer-link') as HTMLAnchorElement).href = data.url;
+      (document.getElementById('drawer-report') as HTMLAnchorElement).href = `https://github.com/hanjhou2000716/prstk-lab/issues/new?template=report-tool.yml&title=${encodeURIComponent(`[工具回報] ${data.brandName}`)}&labels=tool-report`;
 
       const featuresUl = document.getElementById('drawer-features');
       renderList(featuresUl, data.features, 'bg-muji-brand/60');
@@ -636,7 +547,7 @@ const bootstrap = () => {
       setTimeout(() => {
         drawerOverlay.classList.add('opacity-100');
         infoDrawer.classList.remove('translate-y-full');
-        infoDrawer.querySelector('[data-drawer-close]')?.focus();
+        (infoDrawer.querySelector('[data-drawer-close]') as HTMLElement | null)?.focus();
       }, 10);
     }
     function closeDrawer() {
@@ -665,7 +576,7 @@ const bootstrap = () => {
       if (!trigger) return;
       event.preventDefault();
       event.stopPropagation();
-      openDrawer(trigger.dataset.toolId);
+      openDrawer((trigger as HTMLElement).dataset.toolId || '');
     });
     document.querySelectorAll('[data-drawer-close]').forEach(button => {
       button.addEventListener('click', closeDrawer);
@@ -695,4 +606,4 @@ if (document.readyState === 'loading') {
 
 const loadPrivacyAnalytics = () => import('./privacy-analytics').catch(() => undefined);
 if ('requestIdleCallback' in window) window.requestIdleCallback(loadPrivacyAnalytics, { timeout: 2500 });
-else window.setTimeout(loadPrivacyAnalytics, 1200);
+else globalThis.setTimeout(loadPrivacyAnalytics, 1200);
