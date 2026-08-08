@@ -33,4 +33,4 @@ Never put a `service_role` key in `.env`, the browser bundle, or GitHub Pages. T
 
 ## Release 0 records
 
-The A01 inventory, screenshots and regression checklist are in [`docs/release-0`](./docs/release-0/).
+The A01 inventory, screenshots and regression checklist are in [`project-docs/release-0`](./project-docs/release-0/).
