@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { bindAccountControls, bindNotificationControls } from './workbench-sync';
 
 const bootstrap = () => {
