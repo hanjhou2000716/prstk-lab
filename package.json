@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "astro dev",
     "build:css": "tailwindcss -i ./src/styles.css -o ./public/assets/styles.css --minify",
-    "build": "npm run build:css && npm run schema:validate && npm run cards:validate && npm run components:validate && npm run security:validate && npm run seo:validate && npm run research:validate && npm run research-library:validate && npm run workbench:validate && npm run supabase:validate && npm run telegram:validate && npm run analytics:validate && npm run updates:validate && astro check && astro build",
+    "build": "npm run build:css && npm run schema:validate && npm run taxonomy:validate && npm run cards:validate && npm run components:validate && npm run security:validate && npm run seo:validate && npm run research:validate && npm run research-library:validate && npm run workbench:validate && npm run supabase:validate && npm run telegram:validate && npm run analytics:validate && npm run updates:validate && astro check && astro build",
     "preview": "astro preview",
     "validate": "node scripts/validate-inline-js.cjs",
     "baseline:capture": "node scripts/capture-release-0-baseline.cjs",
@@ -14,6 +14,7 @@
     "build:validate": "node scripts/validate-astro-build.cjs",
     "data:generate": "node scripts/generate-tool-data.cjs",
     "schema:validate": "node scripts/validate-tool-schema.cjs",
+    "taxonomy:validate": "node scripts/validate-tool-taxonomy.cjs",
     "cards:validate": "node scripts/validate-data-driven-cards.cjs",
     "components:validate": "node scripts/validate-components.cjs",
     "security:validate": "node scripts/validate-external-assets.cjs",
@@ -26,7 +27,7 @@
     "analytics:validate": "node scripts/validate-analytics.cjs",
     "updates:validate": "node scripts/validate-updates.cjs",
     "links:check": "node scripts/check-links.cjs --output=link-report.json",
-    "test:unit": "node --test tests/tool-catalog.test.cjs",
+    "test:unit": "node --test tests/tool-catalog.test.cjs tests/semantic-search.test.cjs",
     "test:smoke": "node --test tests/static-smoke.test.cjs",
     "performance:validate": "node scripts/validate-performance-budget.cjs"
   },
