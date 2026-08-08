@@ -1,5 +1,6 @@
-// @ts-nocheck
 import { createClient } from '@supabase/supabase-js';
+import type { Session, SupabaseClient } from '@supabase/supabase-js';
+import type { ResearchProject } from '../types/workbench';
 
 const supabaseUrl = import.meta.env.PUBLIC_SUPABASE_URL || '';
 const supabaseKey = import.meta.env.PUBLIC_SUPABASE_PUBLISHABLE_KEY || '';
@@ -9,8 +10,8 @@ const notificationTableName = 'notification_preferences';
 export const isSupabaseConfigured = Boolean(supabaseUrl && supabaseKey);
 export const supabaseConfigHint = '請在建置環境設定 PUBLIC_SUPABASE_URL 與 PUBLIC_SUPABASE_PUBLISHABLE_KEY。';
 
-let client = null;
-const getClient = () => {
+let client: SupabaseClient | null = null;
+const getClient = (): SupabaseClient | null => {
   if (!isSupabaseConfigured) return null;
   client ||= createClient(supabaseUrl, supabaseKey, {
     auth: { autoRefreshToken: true, persistSession: true, detectSessionInUrl: true }
@@ -18,20 +19,20 @@ const getClient = () => {
   return client;
 };
 
-export async function getSession() {
+export async function getSession(): Promise<{ session: Session | null; error: Error | null }> {
   const supabase = getClient();
   if (!supabase) return { session: null, error: new Error(supabaseConfigHint) };
   const { data, error } = await supabase.auth.getSession();
   return { session: data?.session || null, error };
 }
 
-export async function signIn(email, password) {
+export async function signIn(email: string, password: string) {
   const supabase = getClient();
   if (!supabase) return { data: null, error: new Error(supabaseConfigHint) };
   return supabase.auth.signInWithPassword({ email, password });
 }
 
-export async function signUp(email, password) {
+export async function signUp(email: string, password: string) {
   const supabase = getClient();
   if (!supabase) return { data: null, error: new Error(supabaseConfigHint) };
   return supabase.auth.signUp({ email, password });
@@ -43,7 +44,7 @@ export async function signOut() {
   return supabase.auth.signOut();
 }
 
-export async function fetchProjects(userId) {
+export async function fetchProjects(userId: string): Promise<{ projects: ResearchProject[]; error: Error | null }> {
   const supabase = getClient();
   if (!supabase) return { projects: [], error: new Error(supabaseConfigHint) };
   const { data, error } = await supabase
@@ -51,10 +52,10 @@ export async function fetchProjects(userId) {
     .select('id,payload,created_at,updated_at')
     .eq('user_id', userId)
     .order('updated_at', { ascending: false });
-  return { projects: (data || []).map(row => ({ ...row.payload, id: row.id, createdAt: row.created_at, updatedAt: row.updated_at })), error };
+  return { projects: (data || []).map(row => ({ ...(row.payload as ResearchProject), id: row.id, createdAt: row.created_at, updatedAt: row.updated_at })), error };
 }
 
-export async function upsertProjects(userId, projects) {
+export async function upsertProjects(userId: string, projects: ResearchProject[]) {
   const supabase = getClient();
   if (!supabase) return { error: new Error(supabaseConfigHint) };
   const rows = projects.map(project => ({
@@ -79,22 +80,22 @@ export async function upsertProjects(userId, projects) {
   return { error: null };
 }
 
-export function subscribeToAuth(callback) {
+export function subscribeToAuth(callback: (session: Session | null) => void): () => void {
   const supabase = getClient();
   if (!supabase) return () => {};
   const { data } = supabase.auth.onAuthStateChange((_event, session) => callback(session));
   return () => data.subscription.unsubscribe();
 }
 
-export function bindWorkbenchControls({ getProjects, replaceProjects, onStatus = () => {} } = {}) {
+export function bindWorkbenchControls({ getProjects, replaceProjects, onStatus = () => {} }: { getProjects: () => ResearchProject[]; replaceProjects: (projects: ResearchProject[]) => void; onStatus?: (message: string) => void }) {
   const status = document.getElementById('sync-status');
-  const pullButton = document.getElementById('sync-pull');
-  const pushButton = document.getElementById('sync-push');
-  const signOutButton = document.getElementById('sync-sign-out');
+  const pullButton = document.getElementById('sync-pull') as HTMLButtonElement | null;
+  const pushButton = document.getElementById('sync-push') as HTMLButtonElement | null;
+  const signOutButton = document.getElementById('sync-sign-out') as HTMLButtonElement | null;
   if (!status || !pullButton || !pushButton || !signOutButton) return;
   let currentSession = null;
-  const setStatus = message => { status.textContent = message; onStatus(message); };
-  const renderSession = session => {
+  const setStatus = (message: string) => { status.textContent = message; onStatus(message); };
+  const renderSession = (session: Session | null) => {
     currentSession = session;
     const signedIn = Boolean(session?.user?.id);
     pullButton.disabled = !signedIn;
@@ -102,7 +103,7 @@ export function bindWorkbenchControls({ getProjects, replaceProjects, onStatus =
     signOutButton.hidden = !signedIn;
     setStatus(signedIn ? `已連線：${session.user.email || '目前帳號'}。可手動同步研究案。` : (isSupabaseConfigured ? '尚未登入；請先開啟帳號設定。' : supabaseConfigHint));
   };
-  const ensureSession = async () => {
+  const ensureSession = async (): Promise<Session | null> => {
     if (currentSession) return currentSession;
     const result = await getSession();
     if (result.error) { setStatus(result.error.message); return null; }
@@ -130,23 +131,23 @@ export function bindWorkbenchControls({ getProjects, replaceProjects, onStatus =
   return subscribeToAuth(renderSession);
 }
 
-export function bindAccountControls({ onStatus = () => {} } = {}) {
-  const email = document.getElementById('account-email');
-  const password = document.getElementById('account-password');
-  const signInButton = document.getElementById('account-sign-in');
-  const signUpButton = document.getElementById('account-sign-up');
-  const signOutButton = document.getElementById('account-sign-out');
+export function bindAccountControls({ onStatus = () => {} }: { onStatus?: (message: string) => void } = {}) {
+  const email = document.getElementById('account-email') as HTMLInputElement | null;
+  const password = document.getElementById('account-password') as HTMLInputElement | null;
+  const signInButton = document.getElementById('account-sign-in') as HTMLButtonElement | null;
+  const signUpButton = document.getElementById('account-sign-up') as HTMLButtonElement | null;
+  const signOutButton = document.getElementById('account-sign-out') as HTMLButtonElement | null;
   const sessionState = document.getElementById('account-session');
   if (!email || !password || !signInButton || !signUpButton || !signOutButton || !sessionState) return;
-  const setStatus = message => { sessionState.textContent = message; onStatus(message); };
-  const renderSession = session => {
+  const setStatus = (message: string) => { sessionState.textContent = message; onStatus(message); };
+  const renderSession = (session: Session | null) => {
     const userEmail = session?.user?.email;
     sessionState.textContent = userEmail ? `已登入：${userEmail}` : (isSupabaseConfigured ? '尚未登入' : supabaseConfigHint);
     signOutButton.hidden = !userEmail;
     signInButton.disabled = Boolean(userEmail);
     signUpButton.disabled = Boolean(userEmail);
   };
-  const run = async action => {
+  const run = async (action: () => Promise<{ data: { session: Session | null } | null; error: Error | null }>) => {
     signInButton.disabled = true; signUpButton.disabled = true;
     const { data, error } = await action();
     if (error) setStatus(`操作失敗：${error.message}`);
@@ -162,16 +163,16 @@ export function bindAccountControls({ onStatus = () => {} } = {}) {
 }
 
 const notificationFields = ['latest_research', 'weekly_digest', 'tool_status', 'review_reminders', 'platform_updates'];
-const defaultNotificationPreferences = Object.fromEntries(notificationFields.map(field => [field, true]));
+const defaultNotificationPreferences: Record<string, boolean> = Object.fromEntries(notificationFields.map(field => [field, true]));
 
-export async function fetchNotificationPreferences(userId) {
+export async function fetchNotificationPreferences(userId: string): Promise<{ preferences: Record<string, boolean>; error: Error | null }> {
   const supabase = getClient();
   if (!supabase) return { preferences: defaultNotificationPreferences, error: new Error(supabaseConfigHint) };
   const { data, error } = await supabase.from(notificationTableName).select(notificationFields.join(',')).eq('user_id', userId).maybeSingle();
-  return { preferences: { ...defaultNotificationPreferences, ...(data || {}) }, error };
+  return { preferences: { ...defaultNotificationPreferences, ...(data && typeof data === 'object' ? data as Record<string, boolean> : {}) }, error };
 }
 
-export async function upsertNotificationPreferences(userId, preferences) {
+export async function upsertNotificationPreferences(userId: string, preferences: Record<string, boolean>) {
   const supabase = getClient();
   if (!supabase) return { error: new Error(supabaseConfigHint) };
   const values = Object.fromEntries(notificationFields.map(field => [field, preferences[field] !== false]));
@@ -188,16 +189,16 @@ export async function createTelegramLink() {
 export function bindNotificationControls() {
   const options = document.getElementById('notification-options');
   const status = document.getElementById('notification-status');
-  const saveButton = document.getElementById('save-notification-preferences');
-  const linkButton = document.getElementById('create-telegram-link');
-  const link = document.getElementById('telegram-link');
+  const saveButton = document.getElementById('save-notification-preferences') as HTMLButtonElement | null;
+  const linkButton = document.getElementById('create-telegram-link') as HTMLButtonElement | null;
+  const link = document.getElementById('telegram-link') as HTMLAnchorElement | null;
   if (!options || !status || !saveButton || !linkButton || !link) return;
   let currentSession = null;
-  const controls = Object.fromEntries(notificationFields.map(field => [field, document.querySelector(`[data-notification-pref="${field}"]`)]));
-  const setEnabled = enabled => { options.hidden = !enabled; Object.values(controls).forEach(control => { control.disabled = !enabled; }); saveButton.disabled = !enabled; linkButton.disabled = !enabled; };
-  const readPreferences = () => Object.fromEntries(notificationFields.map(field => [field, Boolean(controls[field]?.checked)]));
-  const writePreferences = preferences => notificationFields.forEach(field => { if (controls[field]) controls[field].checked = preferences[field] !== false; });
-  const renderSession = async session => {
+  const controls = Object.fromEntries(notificationFields.map(field => [field, document.querySelector<HTMLInputElement>(`[data-notification-pref="${field}"]`)])) as Record<string, HTMLInputElement | null>;
+  const setEnabled = (enabled: boolean) => { options.hidden = !enabled; Object.values(controls).forEach(control => { if (control) control.disabled = !enabled; }); saveButton.disabled = !enabled; linkButton.disabled = !enabled; };
+  const readPreferences = (): Record<string, boolean> => Object.fromEntries(notificationFields.map(field => [field, Boolean(controls[field]?.checked)]));
+  const writePreferences = (preferences: Record<string, boolean>) => notificationFields.forEach(field => { if (controls[field]) controls[field]!.checked = preferences[field] !== false; });
+  const renderSession = async (session: Session | null) => {
     currentSession = session;
     if (!session?.user?.id) { setEnabled(false); status.textContent = isSupabaseConfigured ? '尚未登入；登入後可設定通知。' : supabaseConfigHint; return; }
     setEnabled(true);
@@ -222,6 +223,6 @@ export function bindNotificationControls() {
     linkButton.disabled = false;
   });
   setEnabled(false);
-  getSession().then(({ session, error }) => error ? status.textContent = error.message : renderSession(session));
+  getSession().then(({ session, error }) => { if (error) status.textContent = error.message; else void renderSession(session); });
   return subscribeToAuth(renderSession);
 }
