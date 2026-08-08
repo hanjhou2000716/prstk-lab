@@ -63,6 +63,12 @@ const bootstrap = () => {
       'check-risk': '正在檢查風險',
       'plan-assets': '正在規劃長期資產'
     };
+    const scenarioCategories: Record<string, ToolCategory> = {
+      'find-opportunities': 'explore',
+      'research-security': 'research',
+      'check-risk': 'risk',
+      'plan-assets': 'allocation'
+    };
     const readStoredSet = key => {
       try {
         const values = JSON.parse(localStorage.getItem(key) || '[]');
@@ -386,6 +392,17 @@ const bootstrap = () => {
       return { title: '為你整理', note: 'PRStK 精選' };
     };
 
+    const getRecommendationReason = (tool: Tool): string => {
+      if (activeScenario && scenarioCategories[activeScenario] && tool.categories.includes(scenarioCategories[activeScenario])) return '符合你目前選擇的研究情境。';
+      if (pins.has(tool.id)) return '因為你已將它釘選到首頁。';
+      if (favorites.has(tool.id)) return '因為你曾將它加入最愛。';
+      if (recentTools.includes(tool.id)) return '符合你最近使用過的工具脈絡。';
+      if (tool.featured && tool.status === 'verified') return 'PRStK 精選，且目前標記為已驗證。';
+      if (tool.featured) return '由 PRStK 編輯精選。';
+      if (tool.status === 'verified') return '目前標記為已驗證。';
+      return '';
+    };
+
     const renderHome = (entries: ToolCardEntry[]) => {
       const isDefaultView = !toolSearch.value.trim() && activeCategory === 'all' && !favoritesOnly;
       const showHomeActions = activeCategory !== 'all';
@@ -533,6 +550,13 @@ const bootstrap = () => {
 
       const targetsUl = document.getElementById('drawer-targets');
       renderList(targetsUl, data.targetUsers, 'bg-muji-accent/60');
+
+      const reason = document.getElementById('drawer-recommendation-reason');
+      if (reason) {
+        const recommendationReason = getRecommendationReason(data);
+        reason.textContent = recommendationReason ? `為什麼推薦：${recommendationReason}` : '';
+        reason.hidden = !recommendationReason;
+      }
 
       document.querySelectorAll('[data-drawer-trigger]').forEach(button => {
         button.setAttribute('aria-expanded', 'false');

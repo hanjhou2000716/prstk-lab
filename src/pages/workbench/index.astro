@@ -29,9 +29,12 @@ const connectSrc = supabaseOrigin ? `'self' ${supabaseOrigin}` : "'self'";
           <label class="workbench-label">研究問題<textarea id="question" class="workbench-input" rows="2" placeholder="這次要回答什麼問題？"></textarea></label>
           <label class="workbench-label">投資假設<textarea id="hypothesis" class="workbench-input" rows="2"></textarea></label>
           <label class="workbench-label">證據與來源<textarea id="evidence" class="workbench-input" rows="2" placeholder="一行一項，可貼上原始連結"></textarea></label>
-          <label class="workbench-label">主要風險與失效條件<textarea id="risks" class="workbench-input" rows="2"></textarea></label>
+          <div class="grid gap-3 sm:grid-cols-2"><label class="workbench-label">原始來源<textarea id="sources" class="workbench-input" rows="2" placeholder="來源名稱、原始連結、發布日期"></textarea></label><label class="workbench-label">研究方法<textarea id="methodology" class="workbench-input" rows="2" placeholder="如何驗證這次研究問題？"></textarea></label></div>
+          <div class="grid gap-3 sm:grid-cols-2"><label class="workbench-label">前提與假設<textarea id="assumptions" class="workbench-input" rows="2"></textarea></label><label class="workbench-label">主要風險<textarea id="risks" class="workbench-input" rows="2"></textarea></label></div>
+          <label class="workbench-label">失效條件<textarea id="invalidationConditions" class="workbench-input" rows="2" placeholder="哪些證據出現時，應重新檢視假設？"></textarea></label>
           <div class="grid gap-3 sm:grid-cols-2"><label class="workbench-label">決策<select id="decision" class="workbench-input"><option value="觀望">觀望</option><option value="買入">買入</option><option value="賣出">賣出</option></select></label><label class="workbench-label">信心程度<select id="confidence" class="workbench-input"><option value="尚未評估">尚未評估</option><option value="低">低</option><option value="中">中</option><option value="高">高</option></select></label></div>
           <div class="grid gap-3 sm:grid-cols-2"><label class="workbench-label">狀態<select id="status" class="workbench-input"><option value="draft">草稿</option><option value="active">進行中</option><option value="completed">已完成</option><option value="archived">已封存</option></select></label><label class="workbench-label">下次檢查日期<input id="nextReviewDate" class="workbench-input" type="date"></label></div>
+          <label class="workbench-label">事後檢討<textarea id="reviewOutcome" class="workbench-input" rows="2" placeholder="回顧結果、偏差與下一步行動"></textarea></label>
           <button class="w-full rounded-2xl bg-muji-brand px-4 py-3 text-sm font-medium text-white transition hover:bg-[#384a54]" type="submit">儲存研究案</button>
         </form>
       </section>
