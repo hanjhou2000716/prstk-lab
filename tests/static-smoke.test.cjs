@@ -24,3 +24,13 @@ test('generated site removes the retired compare feature', () => {
     assert.doesNotMatch(output, new RegExp(marker), `retired compare marker remains: ${marker}`);
   }
 });
+
+test('generated homepage uses the segmented external entry footer', () => {
+  assert.doesNotMatch(output, /class="research-entry"/, 'retired PRStK Research strip remains');
+  assert.doesNotMatch(output, /Together Better/, 'retired Together Better label remains');
+  assert.match(output, /class="footer-entry-pill"/);
+  assert.match(output, /href="https:\/\/t\.me\/PRStK_Lab_bot"[^>]+target="_blank"[^>]+rel="noopener noreferrer"[^>]+referrerpolicy="no-referrer"/);
+  assert.match(output, /href="https:\/\/hanjhou2000716\.github\.io\/prstk-taiwan-etf-research\/index\.html"[^>]+target="_blank"[^>]+rel="noopener noreferrer"[^>]+referrerpolicy="no-referrer"/);
+  assert.match(output, /assets\/tg-logo\.webp/);
+  assert.match(output, /assets\/sfc-e-logo\.webp/);
+});
