@@ -315,6 +315,28 @@ const bootstrap = () => {
 
     renderCatalogSections();
 
+    const scoreSearchEntry = (entry, query) => {
+      const tool = entry.tool;
+      const name = normalise(tool.name);
+      const brand = normalise(tool.brandName);
+      const aliases = (tool.aliases || []).map(normalise);
+      const tags = (tool.tags || []).map(normalise);
+      const summary = normalise(tool.summary);
+      const description = normalise(tool.description);
+      let score = 0;
+      if (name === query) score += 10;
+      if (brand === query) score += 9;
+      if (aliases.some(value => value === query)) score += 8;
+      if (name.includes(query)) score += 6;
+      if (brand.includes(query)) score += 6;
+      if (aliases.some(value => value.includes(query))) score += 4;
+      if (tags.some(value => value === query)) score += 5;
+      if (tags.some(value => value.includes(query))) score += 3;
+      if (summary.includes(query)) score += 2;
+      if (description.includes(query)) score += 1;
+      return score;
+    };
+
     const getMatches = () => {
       const query = normalise(toolSearch.value);
       const matches = toolCards.filter(({ card, tool, toolId }) => {
@@ -337,11 +359,8 @@ const bootstrap = () => {
       });
       if (!query) return matches;
       return matches.sort((left, right) => {
-        const score = entry => {
-          const text = normalise([entry.tool.name, entry.tool.brandName, entry.tool.summary, entry.tool.tags, entry.tool.aliases].flat().join(' '));
-          return (text.startsWith(query) ? 4 : 0) + (normalise(entry.tool.name).includes(query) ? 3 : 0) + (text.includes(query) ? 1 : 0);
-        };
-        return score(right) - score(left);
+        return scoreSearchEntry(right, query) - scoreSearchEntry(left, query)
+          || left.tool.name.localeCompare(right.tool.name, 'zh-TW');
       });
     };
 
