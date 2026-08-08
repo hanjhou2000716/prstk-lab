@@ -39,8 +39,29 @@
       border-color: rgba(74, 96, 109, 0.3);
     }
     #tool-search-panel {
-      box-shadow: 0 14px 34px -24px rgba(31, 53, 70, 0.32);
+      background-color: rgba(255, 255, 255, 0.74);
+      border-color: rgba(227, 221, 213, 0.6);
+      box-shadow: 0 12px 30px -24px rgba(31, 53, 70, 0.27);
     }
+    .research-entry {
+      display: flex;
+      min-height: 2.25rem;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 0.7rem;
+      padding: 0.35rem 0.25rem;
+      color: #4A606D;
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      background: rgba(255, 255, 255, 0.45);
+      transition: color 180ms ease;
+    }
+    .research-entry:hover,
+    .research-entry:focus-visible { color: #1F3546; }
+    .research-entry-arrow { transition: transform 180ms ease; }
+    .research-entry:hover .research-entry-arrow,
+    .research-entry:focus-visible .research-entry-arrow { transform: translateX(3px); }
     #tool-search-panel input,
     #tool-search-panel .filter-chip,
     #tool-search-panel #advanced-filter-toggle {

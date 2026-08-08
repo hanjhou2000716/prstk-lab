@@ -370,6 +370,25 @@ const bootstrap = () => {
         .slice(0, 4);
     };
 
+    const getRecommendationContext = matchCount => {
+      const query = toolSearch.value.trim();
+      if (query) return { title: '搜尋結果', note: `${matchCount} 個結果` };
+
+      if (activeScenario) {
+        const scenarioTitle = scenarioTasks[activeScenario] || '研究工具';
+        return { title: scenarioTitle, note: `${Math.min(matchCount, 4)} 個適合工具` };
+      }
+
+      if (activeCategory !== 'all') {
+        const category = categories.find(entry => entry.id === activeCategory);
+        return { title: `${category?.label || '分類'}工具`, note: `${matchCount} 個工具` };
+      }
+
+      if (pins.size) return { title: '為你整理', note: '你的釘選' };
+      if (recentTools.length) return { title: '為你整理', note: '依最近使用' };
+      return { title: '為你整理', note: 'PRStK 精選' };
+    };
+
     const renderHome = entries => {
       const isDefaultView = !toolSearch.value.trim() && activeCategory === 'all' && !favoritesOnly;
       const showHomeActions = activeCategory !== 'all';
@@ -378,10 +397,10 @@ const bootstrap = () => {
       const displayEntries = isDefaultView && pinnedEntries.length
         ? [...pinnedEntries, ...recommendedEntries.filter(({ toolId }) => !pins.has(toolId))]
         : (isDefaultView ? recommendedEntries : entries);
-      const title = isDefaultView ? '我的首頁' : (activeScenario ? scenarioTasks[activeScenario] || '搜尋結果' : '搜尋結果');
+      const recommendationContext = getRecommendationContext(isDefaultView ? displayEntries.length : entries.length);
 
-      homeTitle.textContent = title;
-      homeRecommendationNote.textContent = '最多 4 個';
+      homeTitle.textContent = recommendationContext.title;
+      homeRecommendationNote.textContent = recommendationContext.note;
       homeEmpty.classList.toggle('hidden', displayEntries.length > 0);
       homeEmpty.classList.toggle('flex', displayEntries.length === 0);
       if (!displayEntries.length) {
