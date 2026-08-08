@@ -15,7 +15,7 @@
     }
     .site-background {
       background-color: #F5F7F8;
-      background-image: linear-gradient(rgba(245, 247, 248, 0.18), rgba(245, 247, 248, 0.18)), url('prstk-lab-background.jpg?v=20260807-bg');
+      background-image: linear-gradient(rgba(245, 247, 248, 0.18), rgba(245, 247, 248, 0.18)), url('prstk-lab-background.jpg');
       background-position: center top;
       background-repeat: no-repeat;
       background-size: cover;
@@ -27,7 +27,7 @@
     }
     /* 滑出抽屜動畫 */
     .drawer-transition {
-      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      transition: transform 0.32s cubic-bezier(0.16, 1, 0.3, 1);
     }
     /* 卡片懸浮動畫優化，加入 hardware acceleration 避免卡頓 */
     .card-hover-effect {
@@ -63,8 +63,7 @@
     .research-entry:hover .research-entry-arrow,
     .research-entry:focus-visible .research-entry-arrow { transform: translateX(3px); }
     #tool-search-panel input,
-    #tool-search-panel .filter-chip,
-    #tool-search-panel #advanced-filter-toggle {
+    #tool-search-panel .filter-chip {
       min-height: 2.75rem;
     }
     #category-filters .filter-chip {
@@ -92,15 +91,30 @@
     .info-action { bottom: 0; }
     .tool-card.is-favorite .favorite-icon { fill: #D97745; stroke: #D97745; }
     .filter-chip[aria-pressed="true"] { background: #1F3546; border-color: #1F3546; color: #fff; }
-    .scenario-entry[aria-pressed="true"] { background: #EEF2F4; border-color: #4A606D; box-shadow: 0 4px 14px rgba(74, 96, 109, 0.12); }
-    .primary-nav-item { display: inline-flex; min-height: 2.25rem; flex: 1 0 auto; align-items: center; justify-content: center; border-radius: 0.85rem; padding: 0.45rem 0.7rem; font-size: 0.7rem; font-weight: 500; letter-spacing: 0.04em; color: #4A606D; transition: background 180ms ease, color 180ms ease, transform 180ms ease; }
-    .primary-nav-item:hover, .primary-nav-item:focus-visible, .primary-nav-item[aria-current="page"] { background: #EEF2F4; color: #1F3546; }
-    .primary-nav-item:active { transform: scale(0.96); }
+    .scenario-entry[aria-pressed="true"],
+    .scenario-entry[aria-pressed="true"]:hover { background: #4A606D; border-color: #4A606D; color: #fff; box-shadow: 0 4px 14px rgba(74, 96, 109, 0.16); }
+    .scenario-entry[aria-pressed="true"] i,
+    .scenario-entry[aria-pressed="true"] svg,
+    .scenario-entry[aria-pressed="true"] span { color: #fff; }
+    .tool-panel-badge {
+      display: inline-flex;
+      width: fit-content;
+      align-items: center;
+      border: 1px solid rgba(74, 96, 109, 0.2);
+      border-radius: 999px;
+      background: rgba(238, 242, 244, 0.7);
+      color: #4A606D;
+      font-size: 0.6rem;
+      font-weight: 500;
+      line-height: 1;
+      padding: 0.2rem 0.4rem;
+    }
+    #home-card-grid [data-tool-badge] { display: none !important; }
     .pin-button[aria-pressed="true"] { background: #D97745; color: #fff; border-color: #D97745; }
     .tool-panel-open { overflow: hidden; }
     .tool-panel-surface {
       background-color: #F5F7F8;
-      background-image: linear-gradient(rgba(245, 247, 248, 0.82), rgba(245, 247, 248, 0.82)), url('prstk-lab-background.jpg?v=20260807-bg');
+      background-image: linear-gradient(rgba(245, 247, 248, 0.82), rgba(245, 247, 248, 0.82)), url('prstk-lab-background.jpg');
       background-position: center top;
       background-repeat: no-repeat;
       background-size: cover;
@@ -126,9 +140,6 @@
     #home-card-grid.show-actions .tool-action { display: flex; width: 2.9rem; }
     #home-card-grid.show-actions .card-hover-effect { padding: 0.7rem 3rem 0.7rem 0.75rem !important; }
     #home-tools { margin-top: 1.75rem !important; }
-    #tool-search-panel #advanced-filter-toggle,
-    #tool-search-panel #advanced-filters { display: none !important; }
-    #recent-tools,
     footer #risk-disclosure,
     footer #privacy-settings,
     footer a[href="updates/"] { display: none !important; }
@@ -143,12 +154,7 @@
       #portal-shell { padding-top: 4rem; }
       /* 搜尋區上移一行；情境入口保留原本的視覺位置。 */
       #portal-shell > header { margin-bottom: 1.5rem; }
-      #primary-nav { margin-top: -0.35rem; }
-      #primary-nav > div { justify-content: flex-start; }
-      .primary-nav-item { min-width: 3.8rem; }
-      #primary-nav > div,
       #category-filters { scrollbar-width: none; -ms-overflow-style: none; }
-      #primary-nav > div::-webkit-scrollbar,
       #category-filters::-webkit-scrollbar { display: none; }
       #logo-img { width: 77% !important; max-height: 12vh; }
       #tool-search-panel { padding: 0.75rem !important; }
@@ -246,13 +252,23 @@
       to { opacity: 1; transform: translateY(0); }
     }
     @media (prefers-reduced-motion: no-preference) {
+      #logo-img { animation: logo-fade 600ms ease both; }
+      #tool-search-panel { animation: search-reveal 460ms cubic-bezier(0.16, 1, 0.3, 1) 80ms both; }
       .scenario-entry { animation: scenario-pop 360ms cubic-bezier(0.16, 1, 0.3, 1) both; }
-      .scenario-entry:nth-child(2) { animation-delay: 40ms; }
-      .scenario-entry:nth-child(3) { animation-delay: 80ms; }
-      .scenario-entry:nth-child(4) { animation-delay: 120ms; }
+      .scenario-entry:nth-child(2) { animation-delay: 30ms; }
+      .scenario-entry:nth-child(3) { animation-delay: 60ms; }
+      .scenario-entry:nth-child(4) { animation-delay: 90ms; }
     }
     @keyframes scenario-pop {
       from { opacity: 0; transform: translateY(5px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes logo-fade {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    @keyframes search-reveal {
+      from { opacity: 0; transform: translateY(4px); }
       to { opacity: 1; transform: translateY(0); }
     }
     @media (prefers-reduced-motion: reduce) {

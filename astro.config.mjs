@@ -5,15 +5,15 @@ export default defineConfig({
   site: 'https://hanjhou2000716.github.io',
   base: '/prstk-lab',
   output: 'static',
-  // GitHub Pages' supported branch source is main:/docs. Keep A01 records in
-  // docs/release-0 while the generated site is emitted alongside them.
+  // GitHub Pages' supported branch source is main:/docs. Release notes and
+  // baseline records live in project-docs so docs/ remains generated output.
   outDir: './docs',
   build: {
     format: 'directory',
   },
   vite: {
     build: {
-      emptyOutDir: false,
+      emptyOutDir: true,
     },
   },
 });
