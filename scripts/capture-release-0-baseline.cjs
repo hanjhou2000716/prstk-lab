@@ -64,7 +64,7 @@ const baseline = {
   })),
 };
 
-const outputPath = path.join(repoRoot, 'docs', 'release-0', 'baseline-tools.json');
+const outputPath = path.join(repoRoot, 'project-docs', 'release-0', 'baseline-tools.json');
 fs.mkdirSync(path.dirname(outputPath), { recursive: true });
 fs.writeFileSync(outputPath, `${JSON.stringify(baseline, null, 2)}\n`, 'utf8');
 console.log(`Captured ${baseline.toolCount} tools across ${baseline.categoryCount} categories.`);

@@ -2,7 +2,7 @@ const fs = require('node:fs');
 const path = require('node:path');
 
 const repoRoot = path.resolve(__dirname, '..');
-const filePath = path.join(repoRoot, 'docs', 'release-0', 'baseline-tools.json');
+const filePath = path.join(repoRoot, 'project-docs', 'release-0', 'baseline-tools.json');
 const baseline = JSON.parse(fs.readFileSync(filePath, 'utf8'));
 
 if (baseline.schemaVersion !== 'release-0-a01-v1') throw new Error('Unexpected A01 schema version');

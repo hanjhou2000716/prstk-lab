@@ -1,0 +1,1 @@
+import{n as e,t}from"./workbench-sync.BLdd_zkv.js";var n=()=>{document.getElementById(`account-form`)?.addEventListener(`submit`,e=>e.preventDefault()),t(),e()};document.readyState===`loading`?document.addEventListener(`DOMContentLoaded`,n,{once:!0}):n();
