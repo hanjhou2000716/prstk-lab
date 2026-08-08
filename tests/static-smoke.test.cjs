@@ -7,7 +7,7 @@ const root = path.resolve(__dirname, '..');
 const output = fs.readFileSync(path.join(root, 'docs', 'index.html'), 'utf8');
 
 test('generated site keeps the one-page interaction anchors', () => {
-  for (const marker of ['tool-search', 'category-filters', 'scenario-entries', 'home-card-grid', 'tool-panel', 'info-drawer', 'tool-card-template']) {
+  for (const marker of ['tool-search', 'category-filters', 'scenario-entries', 'home-card-grid', 'tool-panel', 'info-drawer', 'tool-card-template', 'drawer-recommendation-reason']) {
     assert.ok(output.includes(`id="${marker}"`), `missing ${marker}`);
   }
   assert.match(output, /<script id="tool-data" type="application\/json">/);
