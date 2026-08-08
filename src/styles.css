@@ -45,7 +45,7 @@
     }
     .footer-entry-pill {
       display: flex;
-      width: min(100%, 26rem);
+      width: 8.5rem;
       min-height: 2.75rem;
       overflow: hidden;
       align-items: stretch;
@@ -56,17 +56,13 @@
     }
     .footer-entry-link {
       display: flex;
-      min-width: 0;
-      flex: 1 1 0%;
+      width: 4.25rem;
+      min-width: 4.25rem;
+      flex: 0 0 4.25rem;
       align-items: center;
       justify-content: center;
-      gap: 0.45rem;
-      padding: 0.55rem 0.75rem;
+      padding: 0.4rem;
       color: #4A606D;
-      font-size: 0.72rem;
-      font-weight: 500;
-      letter-spacing: 0.03em;
-      white-space: nowrap;
       transition: background-color 180ms ease, color 180ms ease;
     }
     .footer-entry-link + .footer-entry-link {
@@ -75,8 +71,8 @@
     .footer-entry-link:hover,
     .footer-entry-link:focus-visible { background: rgba(255, 255, 255, 0.72); color: #1F3546; }
     .footer-entry-logo { display: block; flex: 0 0 auto; object-fit: contain; }
-    .footer-entry-logo-telegram { width: 1.2rem; height: 1.2rem; border-radius: 999px; }
-    .footer-entry-logo-sfc { width: 3rem; height: 1.15rem; }
+    .footer-entry-logo-telegram { width: 2rem; height: 2rem; border-radius: 999px; }
+    .footer-entry-logo-sfc { width: 4.1rem; height: 1.4rem; }
     #tool-search-panel input,
     #tool-search-panel .filter-chip {
       min-height: 2.75rem;
@@ -187,8 +183,6 @@
       #scenario-entries .scenario-entry i { width: 0.9rem; height: 0.9rem; }
       #scenario-entries .scenario-entry span { font-size: 0.64rem; letter-spacing: 0; }
       footer { margin-top: 0.75rem !important; flex-shrink: 0; }
-      .footer-entry-pill { width: 100%; }
-      .footer-entry-link { padding-inline: 0.55rem; font-size: 0.66rem; }
     }
     @media (max-width: 640px) and (max-height: 740px) {
       #portal-shell { padding-top: clamp(2rem, 7vh, 3rem); }
