@@ -71,7 +71,7 @@
     .footer-entry-link:hover,
     .footer-entry-link:focus-visible { background: rgba(255, 255, 255, 0.72); color: #1F3546; }
     .footer-entry-logo { display: block; flex: 0 0 auto; object-fit: contain; }
-    .footer-entry-logo-telegram { width: 2rem; height: 2rem; border-radius: 999px; }
+    .footer-entry-logo-dinv { width: 4.1rem; height: 1.7rem; }
     .footer-entry-logo-sfc { width: 4.1rem; height: 1.4rem; }
     #tool-search-panel input,
     #tool-search-panel .filter-chip {

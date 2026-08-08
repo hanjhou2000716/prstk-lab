@@ -31,7 +31,8 @@ test('generated homepage uses the segmented external entry footer', () => {
   assert.match(output, /class="footer-entry-pill"/);
   assert.match(output, /href="https:\/\/t\.me\/PRStK_Lab_bot"[^>]+target="_blank"[^>]+rel="noopener noreferrer"[^>]+referrerpolicy="no-referrer"/);
   assert.match(output, /href="https:\/\/hanjhou2000716\.github\.io\/prstk-taiwan-etf-research\/index\.html"[^>]+target="_blank"[^>]+rel="noopener noreferrer"[^>]+referrerpolicy="no-referrer"/);
-  assert.match(output, /assets\/tg-logo\.webp/);
+  assert.match(output, /assets\/d-inv-logo\.webp/);
+  assert.doesNotMatch(output, /assets\/tg-logo\.webp|footer-entry-logo-telegram/, 'the left footer entry should use the D.INV logo');
   assert.match(output, /assets\/sfc-e-logo\.webp/);
   assert.doesNotMatch(output, /<span>Telegram<\/span>|<span>PRStK Research<\/span>/, 'footer buttons should be icon-only');
   assert.equal((output.match(/class="footer-entry-link"/g) || []).length, 2, 'expected two icon-only footer links');
