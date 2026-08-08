@@ -1,6 +1,13 @@
 ---
-// @ts-nocheck
-const { sources = [] } = Astro.props;
+type EvidenceSource = {
+  name: string;
+  url: string;
+  publishedAt: string;
+  retrievedAt: string;
+  firstParty: boolean;
+};
+
+const { sources = [] } = Astro.props as { sources?: EvidenceSource[] };
 ---
 <section class="mt-8 border-t border-muji-border pt-5" aria-labelledby="evidence-title">
   <h2 id="evidence-title" class="text-base font-semibold">證據與來源</h2>
