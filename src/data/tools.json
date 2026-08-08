@@ -477,9 +477,9 @@
     "mobileSupport": "unknown",
     "dataSources": [],
     "updateFrequency": "unknown",
-    "status": "pending-verification",
-    "lastVerifiedAt": "2026-08-04",
-    "verifiedBy": "PRStK Lab A03 baseline migration",
+    "status": "unavailable",
+    "lastVerifiedAt": "2026-08-08",
+    "verifiedBy": "PRStK Lab link monitor",
     "features": [
       "多維籌碼量化：整合證交所與分點籌碼，運用統計模型（Z-score、Edge Score）將龐雜數據轉化為客觀的量化訊號。",
       "全自動日更新：每日收盤後自動串接並更新各大合法數據源，省去手動整理時間，高效直擊法人動向。"
@@ -871,9 +871,9 @@
     "mobileSupport": "unknown",
     "dataSources": [],
     "updateFrequency": "unknown",
-    "status": "pending-verification",
-    "lastVerifiedAt": "2026-08-04",
-    "verifiedBy": "PRStK Lab A03 baseline migration",
+    "status": "unavailable",
+    "lastVerifiedAt": "2026-08-08",
+    "verifiedBy": "PRStK Lab link monitor",
     "features": [
       "交易紀律工具：提供個人化交易計畫模板、風控規則與停損停利設定。",
       "策略回測功能：快速回測交易策略歷史表現，掌握台股勝率與損益期望值。"

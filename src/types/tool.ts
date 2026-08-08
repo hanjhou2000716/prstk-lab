@@ -14,6 +14,8 @@ export interface Tool {
   tags: string[];
   aliases: string[];
   status: string;
+  lastVerifiedAt?: string;
+  verifiedBy?: string;
   featured: boolean;
   url: string;
   pricing?: string;
