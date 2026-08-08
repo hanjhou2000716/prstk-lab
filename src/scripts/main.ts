@@ -234,8 +234,15 @@ const bootstrap = () => {
       card.classList.add('tool-card');
       card.dataset.toolId = toolId;
       card.dataset.category = category.id;
-      card.style.animationDelay = `${Math.min(index * 45, 180)}ms`;
+      card.style.animationDelay = `${Math.min(index * 40, 120)}ms`;
       if (favorites.has(toolId)) card.classList.add('is-favorite');
+
+      const badge = card.querySelector('[data-tool-badge]');
+      if (badge) {
+        const badgeLabel = tool.status === 'verified' ? '已驗證' : (tool.featured ? 'PRStK' : (tool.status === 'beta' ? 'Beta' : ''));
+        badge.textContent = badgeLabel;
+        badge.hidden = !badgeLabel;
+      }
 
       const detailButton = card.querySelector('[data-tool-action="info"]');
       const favoriteButton = card.querySelector('[data-tool-action="favorite"]');
@@ -645,7 +652,7 @@ const bootstrap = () => {
       closeTimer = setTimeout(() => {
         drawerOverlay.classList.add('hidden');
         drawerPreviousFocus?.focus?.();
-      }, 400); // 對應 css 動畫的 0.4s
+      }, 320); // 對應 css 動畫的 0.32s
     }
 
     drawerOverlay.addEventListener('click', closeDrawer);
