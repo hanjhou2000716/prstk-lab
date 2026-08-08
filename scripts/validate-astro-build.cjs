@@ -8,7 +8,7 @@ const requiredFiles = [
   'index.html',
   'manifest.json',
   'assets/styles.css',
-  'assets/prstk-geometric-background.jpg',
+  'assets/prstk-lab-background.jpg',
   'PRStK app.png',
   'PRStK Lab-Remove.png',
 ];
@@ -23,12 +23,14 @@ for (const fragment of ['/prstk-lab/_astro/', 'assets/styles.css', 'manifest.jso
   if (!html.includes(fragment)) throw new Error(`Built HTML is missing expected asset reference: ${fragment}`);
 }
 
-const generatedCss = fs.readdirSync(path.join(buildRoot, '_astro'))
-  .filter(file => file.endsWith('.css'))
-  .map(file => fs.readFileSync(path.join(buildRoot, '_astro', file), 'utf8'))
-  .join('\n');
-if (!generatedCss.includes('assets/prstk-geometric-background.jpg')) {
-  throw new Error('Generated CSS is missing the geometric background reference');
+const generatedCss = [
+  ...fs.readdirSync(path.join(buildRoot, '_astro'))
+    .filter(file => file.endsWith('.css'))
+    .map(file => fs.readFileSync(path.join(buildRoot, '_astro', file), 'utf8')),
+  fs.readFileSync(path.join(buildRoot, 'assets', 'styles.css'), 'utf8'),
+].join('\n');
+if (!generatedCss.includes('prstk-lab-background.jpg')) {
+  throw new Error('Generated CSS is missing the branded background reference');
 }
 
 for (const tool of tools) {
