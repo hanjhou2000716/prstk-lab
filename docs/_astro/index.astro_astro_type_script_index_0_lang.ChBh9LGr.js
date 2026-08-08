@@ -1,1 +1,0 @@
-import{n as e,t}from"./workbench-sync.BF5CeH_a.js";var n=()=>{document.getElementById(`account-form`)?.addEventListener(`submit`,e=>e.preventDefault()),t(),e()};document.readyState===`loading`?document.addEventListener(`DOMContentLoaded`,n,{once:!0}):n();

@@ -29,7 +29,7 @@
     "analytics:validate": "node scripts/validate-analytics.cjs",
     "updates:validate": "node scripts/validate-updates.cjs",
     "links:check": "node scripts/check-links.cjs --output=link-report.json",
-    "test:unit": "node --test tests/tool-catalog.test.cjs tests/semantic-search.test.cjs tests/workbench-contract.test.cjs",
+    "test:unit": "node --test tests/tool-catalog.test.cjs tests/semantic-search.test.cjs tests/workbench-contract.test.cjs tests/recommendation-contract.test.cjs",
     "test:smoke": "node --test tests/static-smoke.test.cjs",
     "performance:validate": "node scripts/validate-performance-budget.cjs"
   },

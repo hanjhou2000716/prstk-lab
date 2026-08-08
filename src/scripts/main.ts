@@ -357,9 +357,12 @@ const bootstrap = () => {
       });
     };
 
+    const isUnavailable = (tool: Tool) => tool.status === 'unavailable' || tool.status === 'stopped';
+
     const getRecommendedEntries = () => {
       const recentCategories = new Set(recentTools.map(id => toolById.get(id)?.categories || []).flat());
       return [...toolCards]
+        .filter(({ tool }) => !isUnavailable(tool))
         .map(entry => ({
           entry,
           score: (entry.tool.featured ? 3 : 0)
@@ -406,12 +409,13 @@ const bootstrap = () => {
     const renderHome = (entries: ToolCardEntry[]) => {
       const isDefaultView = !toolSearch.value.trim() && activeCategory === 'all' && !favoritesOnly;
       const showHomeActions = activeCategory !== 'all';
-      const pinnedEntries = toolCards.filter(({ toolId }) => pins.has(toolId));
+      const scenarioEntries = activeScenario ? entries.filter(({ tool }) => !isUnavailable(tool)) : entries;
+      const pinnedEntries = toolCards.filter(({ toolId, tool }) => pins.has(toolId) && !isUnavailable(tool));
       const recommendedEntries = getRecommendedEntries();
       const displayEntries = isDefaultView && pinnedEntries.length
         ? [...pinnedEntries, ...recommendedEntries.filter(({ toolId }) => !pins.has(toolId))]
-        : (isDefaultView ? recommendedEntries : entries);
-      const recommendationContext = getRecommendationContext(isDefaultView ? displayEntries.length : entries.length);
+        : (isDefaultView ? recommendedEntries : scenarioEntries);
+      const recommendationContext = getRecommendationContext(isDefaultView ? displayEntries.length : scenarioEntries.length);
 
       homeTitle.textContent = recommendationContext.title;
       homeRecommendationNote.textContent = recommendationContext.note;
@@ -550,6 +554,19 @@ const bootstrap = () => {
 
       const targetsUl = document.getElementById('drawer-targets');
       renderList(targetsUl, data.targetUsers, 'bg-muji-accent/60');
+
+      const status = document.getElementById('drawer-status');
+      if (status) {
+        const statusLabels: Record<string, string> = {
+          verified: '已驗證',
+          unavailable: '暫時無法使用',
+          stopped: '已停止服務',
+          beta: 'Beta',
+          'pending-verification': '待重新驗證',
+          unknown: '尚未驗證'
+        };
+        status.textContent = `狀態：${statusLabels[data.status] || data.status} · 最後檢查 ${data.lastVerifiedAt || '未記錄'}`;
+      }
 
       const reason = document.getElementById('drawer-recommendation-reason');
       if (reason) {
