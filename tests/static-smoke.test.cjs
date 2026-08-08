@@ -5,6 +5,7 @@ const path = require('node:path');
 
 const root = path.resolve(__dirname, '..');
 const output = fs.readFileSync(path.join(root, 'docs', 'index.html'), 'utf8');
+const styles = fs.readFileSync(path.join(root, 'docs', 'assets', 'styles.css'), 'utf8');
 
 test('generated site keeps the one-page interaction anchors', () => {
   for (const marker of ['tool-search', 'category-filters', 'scenario-entries', 'home-card-grid', 'tool-panel', 'info-drawer', 'tool-card-template', 'drawer-recommendation-reason']) {
@@ -36,4 +37,7 @@ test('generated homepage uses the segmented external entry footer', () => {
   assert.match(output, /assets\/sfc-e-logo\.webp/);
   assert.doesNotMatch(output, /<span>Telegram<\/span>|<span>PRStK Research<\/span>/, 'footer buttons should be icon-only');
   assert.equal((output.match(/class="footer-entry-link"/g) || []).length, 2, 'expected two icon-only footer links');
+  assert.match(styles, /width:min\(12rem,calc\(100vw - 2rem\)\)/, 'footer pill should stay compact on narrow screens');
+  assert.match(styles, /flex:1 1 50%/, 'footer segments should remain equal width');
+  assert.match(styles, /object-position:center/, 'footer logos should be visually centered');
 });
