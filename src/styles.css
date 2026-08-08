@@ -43,25 +43,40 @@
       border-color: rgba(227, 221, 213, 0.6);
       box-shadow: 0 12px 30px -24px rgba(31, 53, 70, 0.27);
     }
-    .research-entry {
+    .footer-entry-pill {
       display: flex;
-      min-height: 2.25rem;
+      width: min(100%, 26rem);
+      min-height: 2.75rem;
+      overflow: hidden;
+      align-items: stretch;
+      border: 1px solid rgba(74, 96, 109, 0.28);
+      border-radius: 999px;
+      background: rgba(238, 242, 244, 0.82);
+      box-shadow: 0 8px 20px -18px rgba(31, 53, 70, 0.65);
+    }
+    .footer-entry-link {
+      display: flex;
+      min-width: 0;
+      flex: 1 1 0%;
       align-items: center;
-      justify-content: space-between;
-      margin-top: 0.7rem;
-      padding: 0.35rem 0.25rem;
+      justify-content: center;
+      gap: 0.45rem;
+      padding: 0.55rem 0.75rem;
       color: #4A606D;
       font-size: 0.72rem;
       font-weight: 500;
-      letter-spacing: 0.04em;
-      background: rgba(255, 255, 255, 0.45);
-      transition: color 180ms ease;
+      letter-spacing: 0.03em;
+      white-space: nowrap;
+      transition: background-color 180ms ease, color 180ms ease;
     }
-    .research-entry:hover,
-    .research-entry:focus-visible { color: #1F3546; }
-    .research-entry-arrow { transition: transform 180ms ease; }
-    .research-entry:hover .research-entry-arrow,
-    .research-entry:focus-visible .research-entry-arrow { transform: translateX(3px); }
+    .footer-entry-link + .footer-entry-link {
+      border-left: 1px solid rgba(74, 96, 109, 0.2);
+    }
+    .footer-entry-link:hover,
+    .footer-entry-link:focus-visible { background: rgba(255, 255, 255, 0.72); color: #1F3546; }
+    .footer-entry-logo { display: block; flex: 0 0 auto; object-fit: contain; }
+    .footer-entry-logo-telegram { width: 1.2rem; height: 1.2rem; border-radius: 999px; }
+    .footer-entry-logo-sfc { width: 3rem; height: 1.15rem; }
     #tool-search-panel input,
     #tool-search-panel .filter-chip {
       min-height: 2.75rem;
@@ -172,6 +187,8 @@
       #scenario-entries .scenario-entry i { width: 0.9rem; height: 0.9rem; }
       #scenario-entries .scenario-entry span { font-size: 0.64rem; letter-spacing: 0; }
       footer { margin-top: 0.75rem !important; flex-shrink: 0; }
+      .footer-entry-pill { width: 100%; }
+      .footer-entry-link { padding-inline: 0.55rem; font-size: 0.66rem; }
     }
     @media (max-width: 640px) and (max-height: 740px) {
       #portal-shell { padding-top: clamp(2rem, 7vh, 3rem); }
