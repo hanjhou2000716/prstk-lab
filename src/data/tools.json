@@ -1584,5 +1584,138 @@
     "relatedResearch": [],
     "riskNotice": "外部服務內容可能延遲或變更，不構成投資建議。",
     "featured": false
+  },
+  {
+    "id": "smc-radar",
+    "slug": "smc-radar",
+    "name": "🐋 聰明錢戰情艙",
+    "brandName": "SMC Radar",
+    "summary": "以 Smart Money Concepts 識別市場結構轉折、機構訂單塊與流動性池，追蹤主力資金布局。",
+    "description": "以 Smart Money Concepts 識別市場結構轉折、機構訂單塊與流動性池，追蹤主力資金布局。 即時偵測台股流動性掃蕩與高勝率進出場訊號，協助從機構流動性與籌碼結構視角評估交易機會。",
+    "categories": [
+      "strategy"
+    ],
+    "useCases": [
+      "偏好 SMC、價格行為學與主力軌跡分析的台股短線及波段交易者。",
+      "希望從機構流動性與籌碼結構視角評估交易機會的自主投資人。"
+    ],
+    "markets": [
+      "台股"
+    ],
+    "assetClasses": [
+      "股票"
+    ],
+    "analysisTypes": [
+      "技術分析",
+      "籌碼"
+    ],
+    "pricing": "unknown",
+    "requiresLogin": "unknown",
+    "language": [],
+    "mobileSupport": "unknown",
+    "dataSources": [],
+    "updateFrequency": "unknown",
+    "status": "pending-verification",
+    "lastVerifiedAt": "2026-08-20",
+    "verifiedBy": "PRStK Lab catalog submission; service not independently verified",
+    "features": [
+      "自動標記市場結構轉折（BOS／CHoCH）、機構訂單塊（Order Block）與流動性池。",
+      "運用聰明錢概念演算法偵測台股流動性掃蕩與進出場訊號。"
+    ],
+    "limitations": [
+      "服務內容、資料更新與登入要求尚待 PRStK Lab 逐項驗證，使用前請以外部服務公告為準。"
+    ],
+    "targetUsers": [
+      "偏好 SMC（聰明錢概念）、價格行為學（Price Action）與主力軌跡分析的台股短線及波段交易者。",
+      "想跳脫傳統落後指標、從機構流動性與籌碼結構視角評估交易機會的自主投資人。"
+    ],
+    "tags": [
+      "台股",
+      "籌碼",
+      "技術分析",
+      "波段",
+      "選股"
+    ],
+    "aliases": [
+      "SMC",
+      "聰明錢",
+      "Smart Money Concepts",
+      "BOS",
+      "CHoCH",
+      "Order Block"
+    ],
+    "url": "https://smcstocks.com/",
+    "screenshots": [],
+    "relatedTools": [],
+    "relatedResearch": [],
+    "riskNotice": "外部服務內容可能延遲或變更，不構成投資建議。",
+    "featured": false
+  },
+  {
+    "id": "easystock-dev",
+    "slug": "easystock-dev",
+    "name": "🧩 易股智簡",
+    "brandName": "EasyStock Dev",
+    "summary": "以極簡介面快速篩選台股技術、財務與籌碼指標，並用模組化看板呈現市場數據。",
+    "description": "以極簡介面快速篩選台股技術、財務與籌碼指標，大幅提升看盤效率。 整合台股即時與歷史行情，提供無廣告雜訊、結構清晰的直觀圖表與數據視圖。",
+    "categories": [
+      "explore"
+    ],
+    "useCases": [
+      "追求介面簡潔俐落、希望快速查詢台股核心數據的上班族與自主投資人。",
+      "喜愛開發者極簡風格、注重流暢操作體驗與純粹數據呈現的理性交易者。"
+    ],
+    "markets": [
+      "台股"
+    ],
+    "assetClasses": [
+      "股票"
+    ],
+    "analysisTypes": [
+      "技術分析",
+      "基本面",
+      "籌碼"
+    ],
+    "pricing": "unknown",
+    "requiresLogin": "unknown",
+    "language": [],
+    "mobileSupport": "unknown",
+    "dataSources": [],
+    "updateFrequency": "unknown",
+    "status": "pending-verification",
+    "lastVerifiedAt": "2026-08-20",
+    "verifiedBy": "PRStK Lab catalog submission; service not independently verified",
+    "features": [
+      "快速過濾台股關鍵技術、財務與籌碼指標。",
+      "整合台股即時與歷史行情，提供模組化視覺看板與直觀數據視圖。"
+    ],
+    "limitations": [
+      "服務內容、資料更新與登入要求尚待 PRStK Lab 逐項驗證，使用前請以外部服務公告為準。"
+    ],
+    "targetUsers": [
+      "追求介面簡潔俐落、希望快速查詢台股核心數據的上班族與自主投資人。",
+      "喜愛開發者極簡風格、注重流暢操作體驗與純粹數據呈現的理性交易者。"
+    ],
+    "tags": [
+      "台股",
+      "選股",
+      "技術分析",
+      "基本面",
+      "籌碼"
+    ],
+    "aliases": [
+      "易股智簡",
+      "EasyStock",
+      "台股篩選",
+      "台股數據",
+      "技術面選股",
+      "籌碼選股"
+    ],
+    "url": "https://tw.easystock.dev/",
+    "screenshots": [],
+    "relatedTools": [],
+    "relatedResearch": [],
+    "riskNotice": "外部服務內容可能延遲或變更，不構成投資建議。",
+    "featured": false
   }
 ]
