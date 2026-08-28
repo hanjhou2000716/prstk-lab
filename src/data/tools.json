@@ -171,55 +171,199 @@
     "featured": false
   },
   {
-    "id": "tradelens",
-    "slug": "tradelens",
-    "name": "🕸️ 交易解構情報台",
-    "brandName": "TradeLens",
-    "summary": "社群大數據清洗：從海量公開貼文中去重與清洗，精煉出真正具備實戰參考價值的交易訊號與觀點脈絡。",
-    "description": "社群大數據清洗：從海量公開貼文中去重與清洗，精煉出真正具備實戰參考價值的交易訊號與觀點脈絡。 實戰流派深度拆解：將市場活躍帳號歸納為五大操作流派，逐一拆解其核心手法、風控停損紀律與操作侷限性邊界。",
+    "id": "digital-garden",
+    "slug": "digital-garden",
+    "name": "🌱 數園智庫",
+    "brandName": "DigitalGarden",
+    "summary": "以數位花園串接投資觀點、研究框架與數據筆記，沉澱可持續迭代的個人知識網絡。",
+    "description": "網狀知識網絡與策略沉澱：將碎片化的投資觀點、研究框架與數據筆記結構化串接，打造有機生長的個人投資知識庫。極簡模組化呈現：以現代數位花園架構呈現深度研究內容，便於回顧、驗證並迭代長期投資思維。",
     "categories": [
       "research"
     ],
     "useCases": [
-      "希望學習多種市場實戰交易手法與建立專屬操作框架的投資人。",
-      "需要過濾社群雜訊、尋找高價值市場情報與籌碼脈絡的專業交易者。"
+      "體系化累積投資框架、重視思維複利的研究型投資人。",
+      "想擺脫雜亂筆記、建立結構化市場洞察庫的自主學習者。"
     ],
-    "markets": [],
-    "assetClasses": [],
-    "analysisTypes": [],
+    "markets": [
+      "全球"
+    ],
+    "assetClasses": [
+      "股票"
+    ],
+    "analysisTypes": [
+      "基本面",
+      "產業研究"
+    ],
     "pricing": "unknown",
     "requiresLogin": "unknown",
-    "language": [],
+    "language": [
+      "中文"
+    ],
     "mobileSupport": "unknown",
     "dataSources": [],
     "updateFrequency": "unknown",
     "status": "pending-verification",
-    "lastVerifiedAt": "2026-08-04",
-    "verifiedBy": "PRStK Lab A03 baseline migration",
+    "lastVerifiedAt": "2026-08-28",
+    "verifiedBy": "PRStK Lab catalog submission; service not independently verified",
     "features": [
-      "社群大數據清洗：從海量公開貼文中去重與清洗，精煉出真正具備實戰參考價值的交易訊號與觀點脈絡。",
-      "實戰流派深度拆解：將市場活躍帳號歸納為五大操作流派，逐一拆解其核心手法、風控停損紀律與操作侷限性邊界。"
+      "將投資觀點、研究框架與數據筆記結構化串接成網狀知識網絡。",
+      "以極簡模組化數位花園呈現研究內容，支援回顧、驗證與迭代。"
     ],
     "limitations": [
-      "尚未完成逐項服務驗證，使用前請以外部服務最新說明為準。"
+      "服務內容、資料更新與登入要求尚待 PRStK Lab 逐項驗證，使用前請以外部服務公告為準。"
     ],
     "targetUsers": [
-      "希望學習多種市場實戰交易手法與建立專屬操作框架的投資人。",
-      "需要過濾社群雜訊、尋找高價值市場情報與籌碼脈絡的專業交易者。"
+      "偏好體系化累積投資框架、重視思維複利的研究型投資人。",
+      "想擺脫雜亂筆記、建立專屬結構化市場洞察庫的自主學習者。"
     ],
     "tags": [
       "全球",
-      "新聞",
-      "市場情緒",
-      "產業研究"
+      "產業研究",
+      "長期投資",
+      "資產配置"
     ],
     "aliases": [
-      "交易情報",
-      "社群分析",
-      "市場聲音",
-      "交易流派"
+      "數園智庫",
+      "Digital Garden",
+      "投資知識庫",
+      "研究筆記"
     ],
-    "url": "https://threads.hypertridemeng.com/",
+    "url": "https://digitalgarden-five-azure.vercel.app/",
+    "screenshots": [],
+    "relatedTools": [],
+    "relatedResearch": [],
+    "riskNotice": "外部服務內容可能延遲或變更，不構成投資建議。",
+    "featured": false
+  },
+  {
+    "id": "twrs-matrix",
+    "slug": "twrs-matrix",
+    "name": "🎯 台股強弱矩陣",
+    "brandName": "TWRS Matrix",
+    "summary": "以相對強度與族群輪動視角監控台股動能，快速辨識領跑大盤的強勢股與主流資金轉移。",
+    "description": "相對強度（RS）動能監控：即時運算個股相對於大盤與族群的相對強弱度，快速識別領跑大盤的強勢股。產業族群輪動掃描：視覺化呈現板塊與概念股的強弱位階變化，掌握主流資金轉移軌跡。",
+    "categories": [
+      "strategy"
+    ],
+    "useCases": [
+      "專注於順勢交易與動能策略的台股投資人。",
+      "希望捕捉主流族群領漲股、避開弱勢落後標的的波段交易者。"
+    ],
+    "markets": [
+      "台股"
+    ],
+    "assetClasses": [
+      "股票"
+    ],
+    "analysisTypes": [
+      "技術分析",
+      "量化"
+    ],
+    "pricing": "unknown",
+    "requiresLogin": "unknown",
+    "language": [
+      "中文"
+    ],
+    "mobileSupport": "unknown",
+    "dataSources": [],
+    "updateFrequency": "unknown",
+    "status": "pending-verification",
+    "lastVerifiedAt": "2026-08-28",
+    "verifiedBy": "PRStK Lab catalog submission; service not independently verified",
+    "features": [
+      "即時運算個股相對於大盤與族群的相對強弱度，辨識強勢股。",
+      "視覺化掃描產業族群輪動與概念股強弱位階變化。"
+    ],
+    "limitations": [
+      "服務內容、資料更新與登入要求尚待 PRStK Lab 逐項驗證，使用前請以外部服務公告為準。"
+    ],
+    "targetUsers": [
+      "專注於順勢交易與動能策略的台股投資人。",
+      "希望捕捉主流族群領漲股、避開弱勢落後標的的波段交易者。"
+    ],
+    "tags": [
+      "台股",
+      "技術分析",
+      "選股",
+      "波段",
+      "產業輪動"
+    ],
+    "aliases": [
+      "TWRS",
+      "強弱矩陣",
+      "相對強度",
+      "RS動能",
+      "族群輪動"
+    ],
+    "url": "https://twrs.tw/",
+    "screenshots": [],
+    "relatedTools": [],
+    "relatedResearch": [],
+    "riskNotice": "外部服務內容可能延遲或變更，不構成投資建議。",
+    "featured": false
+  },
+  {
+    "id": "ais-cloud",
+    "slug": "ais-cloud",
+    "name": "🔮 智策極光",
+    "brandName": "AIS Cloud",
+    "summary": "以雲端 AI 運算整合多維度市場訊號，產出前瞻洞察與動態策略、風險評估參考。",
+    "description": "雲端 AI 智慧決策運算：採用高擴展性雲端運算架構與機器學習模型，即時運算多維度市場訊號並產出前瞻洞察。動態策略與風險評估：結合多層次數據特徵萃取，生成投資輔助決策指標與動態風控建議。",
+    "categories": [
+      "risk"
+    ],
+    "useCases": [
+      "追求前沿 AI 技術、希望以模型輔助日常決策的科技型投資人。",
+      "需要雲端算力支撐、快速取得市場研判與風險評估的專業交易者。"
+    ],
+    "markets": [
+      "全球"
+    ],
+    "assetClasses": [
+      "股票"
+    ],
+    "analysisTypes": [
+      "量化",
+      "風控",
+      "技術分析"
+    ],
+    "pricing": "unknown",
+    "requiresLogin": "unknown",
+    "language": [
+      "中文"
+    ],
+    "mobileSupport": "unknown",
+    "dataSources": [],
+    "updateFrequency": "unknown",
+    "status": "pending-verification",
+    "lastVerifiedAt": "2026-08-28",
+    "verifiedBy": "PRStK Lab catalog submission; service not independently verified",
+    "features": [
+      "以雲端 AI 與機器學習模型即時運算多維度市場訊號。",
+      "結合特徵萃取產出動態策略與風險評估參考指標。"
+    ],
+    "limitations": [
+      "服務內容、資料更新與登入要求尚待 PRStK Lab 逐項驗證，使用前請以外部服務公告為準。"
+    ],
+    "targetUsers": [
+      "追求前沿 AI 技術、希望以模型輔助日常決策的科技型投資人。",
+      "需要雲端算力支撐、快速取得市場研判與風險評估的專業交易者。"
+    ],
+    "tags": [
+      "全球",
+      "量化",
+      "風控",
+      "技術分析",
+      "選股"
+    ],
+    "aliases": [
+      "AIS Cloud",
+      "智策極光",
+      "雲端AI",
+      "AI決策",
+      "動態風控"
+    ],
+    "url": "https://ais-pre-gv4a6whhq7ghvlfzyhlyku-600298803862.asia-northeast1.run.app/",
     "screenshots": [],
     "relatedTools": [],
     "relatedResearch": [],
@@ -400,20 +544,28 @@
   {
     "id": "echoequity",
     "slug": "echoequity",
-    "name": "🌊 波段區間定位",
-    "brandName": "EchoEquity",
-    "summary": "魚之美學基準值：將複雜的財務公式轉化為「魚頭、魚身、魚尾、瘋狂區」的優雅視覺分區，讓人一眼看透股價所處的生命週期與安全距離。",
-    "description": "魚之美學基準值：將複雜的財務公式轉化為「魚頭、魚身、魚尾、瘋狂區」的優雅視覺分區，讓人一眼看透股價所處的生命週期與安全距離。 一站式多維度整合：溫柔揉合官方即時行情、權證期貨、全市場資金流向，甚至連 PODCAST 節目的個股足跡都能跨裝置追蹤與回溯。",
+    "name": "📊 台股量子動能",
+    "brandName": "TWETQ Engine",
+    "summary": "以多因子量化模型掃描台股動能、基本面與籌碼條件，提供客觀的選股與數據評估參考。",
+    "description": "台股多因子量化篩選：透過統計模型與演算法，全自動掃描並篩選符合動能、基本面與籌碼優勢的台股個股。客觀訊號與數據評估：以數據指標取代主觀交易情緒，提升盤後選股效率。",
     "categories": [
       "strategy"
     ],
     "useCases": [
-      "崇尚減法投資的漫遊者：厭倦繁雜名詞與擁擠介面，想跟著直覺引導、看懂價格區間的台股新手。",
-      "追求優雅紀律的量化交易者：想透過市場排行與財務模型快速掃描，尋找「魚身波段」的理性投資人。"
+      "拒絕憑感覺交易、重視統計期望值與客觀訊號的量化投資人。",
+      "需要在盤後快速從台股市場篩選標的的波段與短線交易者。"
     ],
-    "markets": [],
-    "assetClasses": [],
-    "analysisTypes": [],
+    "markets": [
+      "台股"
+    ],
+    "assetClasses": [
+      "股票"
+    ],
+    "analysisTypes": [
+      "量化",
+      "技術分析",
+      "基本面"
+    ],
     "pricing": "unknown",
     "requiresLogin": "unknown",
     "language": [],
@@ -421,31 +573,32 @@
     "dataSources": [],
     "updateFrequency": "unknown",
     "status": "pending-verification",
-    "lastVerifiedAt": "2026-08-04",
-    "verifiedBy": "PRStK Lab A03 baseline migration",
+    "lastVerifiedAt": "2026-08-28",
+    "verifiedBy": "PRStK Lab catalog submission; service not independently verified",
     "features": [
-      "魚之美學基準值：將複雜的財務公式轉化為「魚頭、魚身、魚尾、瘋狂區」的優雅視覺分區，讓人一眼看透股價所處的生命週期與安全距離。",
-      "一站式多維度整合：溫柔揉合官方即時行情、權證期貨、全市場資金流向，甚至連 PODCAST 節目的個股足跡都能跨裝置追蹤與回溯。"
+      "以多因子統計模型自動篩選台股動能、基本面與籌碼優勢標的。",
+      "提供客觀量化訊號與數據評估，降低主觀情緒對選股的干擾。"
     ],
     "limitations": [
-      "尚未完成逐項服務驗證，使用前請以外部服務最新說明為準。"
+      "服務內容、資料更新與登入要求尚待 PRStK Lab 逐項驗證，使用前請以外部服務公告為準。"
     ],
     "targetUsers": [
-      "崇尚減法投資的漫遊者：厭倦繁雜名詞與擁擠介面，想跟著直覺引導、看懂價格區間的台股新手。",
-      "追求優雅紀律的量化交易者：想透過市場排行與財務模型快速掃描，尋找「魚身波段」的理性投資人。"
+      "拒絕憑感覺交易、重視統計期望值與客觀訊號的量化投資人。",
+      "需要在盤後快速從台股市場篩選標的的波段與短線交易者。"
     ],
     "tags": [
       "台股",
+      "量化",
       "選股",
       "技術分析",
       "基本面",
-      "波段"
+      "籌碼"
     ],
     "aliases": [
-      "波段選股",
-      "價格區間",
-      "魚身模型",
-      "安全距離"
+      "TWETQ",
+      "台股量子",
+      "量化動能",
+      "多因子選股"
     ],
     "url": "https://twetq.com/",
     "screenshots": [],
@@ -1611,7 +1764,9 @@
     ],
     "pricing": "unknown",
     "requiresLogin": "unknown",
-    "language": [],
+    "language": [
+      "中文"
+    ],
     "mobileSupport": "unknown",
     "dataSources": [],
     "updateFrequency": "unknown",
@@ -1678,7 +1833,9 @@
     ],
     "pricing": "unknown",
     "requiresLogin": "unknown",
-    "language": [],
+    "language": [
+      "中文"
+    ],
     "mobileSupport": "unknown",
     "dataSources": [],
     "updateFrequency": "unknown",
