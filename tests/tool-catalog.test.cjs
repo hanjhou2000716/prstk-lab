@@ -7,7 +7,7 @@ const root = path.resolve(__dirname, '..');
 const tools = JSON.parse(fs.readFileSync(path.join(root, 'src', 'data', 'tools.json'), 'utf8'));
 
 test('catalog keeps all baseline tools with unique IDs and slugs', () => {
-  assert.equal(tools.length, 32);
+  assert.equal(tools.length, 34);
   assert.equal(new Set(tools.map(tool => tool.id)).size, tools.length);
   assert.equal(new Set(tools.map(tool => tool.slug)).size, tools.length);
 });
