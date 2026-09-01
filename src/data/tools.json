@@ -1874,5 +1874,136 @@
     "relatedResearch": [],
     "riskNotice": "外部服務內容可能延遲或變更，不構成投資建議。",
     "featured": false
+  },
+  {
+    "id": "clec-tw",
+    "slug": "clec-tw",
+    "name": "💎 智集量化",
+    "brandName": "ClecTW",
+    "summary": "聚合台股財務、技術與籌碼指標，透過多維條件篩選與自動化策略分析整理客觀決策資訊。",
+    "description": "整合台股多源財務、技術與籌碼指標，提供高效率的客觀數據篩選模型。透過演算法過濾市場雜訊，將繁複指標轉化為結構化的決策輔助資訊。",
+    "categories": [
+      "research"
+    ],
+    "useCases": [
+      "偏好以數據為本、重視基本面與量化指標交叉比對的理性投資人。",
+      "需要快速整合台股多重條件、提升盤後選股效率的專業交易者。"
+    ],
+    "markets": [
+      "台股"
+    ],
+    "assetClasses": [
+      "股票"
+    ],
+    "analysisTypes": [
+      "量化",
+      "基本面",
+      "技術分析",
+      "籌碼"
+    ],
+    "pricing": "unknown",
+    "requiresLogin": "unknown",
+    "language": [],
+    "mobileSupport": "unknown",
+    "dataSources": [],
+    "updateFrequency": "unknown",
+    "status": "pending-verification",
+    "lastVerifiedAt": "2026-09-01",
+    "verifiedBy": "PRStK Lab catalog submission; service not independently verified",
+    "features": [
+      "整合台股多源財務、技術與籌碼指標，提供多維數據聚合與條件篩選。",
+      "透過自動化策略分析過濾市場雜訊，將指標轉化為結構化決策輔助資訊。"
+    ],
+    "limitations": [
+      "服務內容、資料更新與登入要求尚待 PRStK Lab 逐項驗證，使用前請以外部服務公告為準。"
+    ],
+    "targetUsers": [
+      "偏好以數據為本、重視基本面與量化指標交叉比對的理性投資人。",
+      "需要快速整合台股多重條件、提升盤後選股效率的專業交易者。"
+    ],
+    "tags": [
+      "台股",
+      "量化",
+      "選股",
+      "基本面",
+      "技術分析",
+      "籌碼"
+    ],
+    "aliases": [
+      "ClecTW",
+      "智集量化",
+      "台股量化",
+      "多維數據",
+      "條件選股"
+    ],
+    "url": "https://clectw.com/",
+    "screenshots": [],
+    "relatedTools": [],
+    "relatedResearch": [],
+    "riskNotice": "外部服務內容可能延遲或變更，不構成投資建議。",
+    "featured": false
+  },
+  {
+    "id": "rocketstock-ai",
+    "slug": "rocketstock-ai",
+    "name": "🚀 火箭動能",
+    "brandName": "RocketStock AI",
+    "summary": "以動能演算法監控放量突破與強勢趨勢，協助快速掌握市場資金焦點。",
+    "description": "運用動能演算法即時偵測放量突破與強勢趨勢個股，快速捕捉潛在飆股動向。整合量價異動與資金焦點，自動篩選處於起漲或動能延續階段的強勢標的。",
+    "categories": [
+      "strategy"
+    ],
+    "useCases": [
+      "專注於動能交易、波段突破與強勢股操作的積極型交易者。",
+      "希望第一時間掌握市場主流資金焦點、提高資金運用效率的自主投資人。"
+    ],
+    "markets": [],
+    "assetClasses": [
+      "股票"
+    ],
+    "analysisTypes": [
+      "量化",
+      "技術分析"
+    ],
+    "pricing": "unknown",
+    "requiresLogin": "unknown",
+    "language": [],
+    "mobileSupport": "unknown",
+    "dataSources": [],
+    "updateFrequency": "unknown",
+    "status": "pending-verification",
+    "lastVerifiedAt": "2026-09-01",
+    "verifiedBy": "PRStK Lab catalog submission; service not independently verified",
+    "features": [
+      "運用動能演算法即時偵測放量突破與強勢趨勢個股。",
+      "整合量價異動與資金焦點，自動篩選起漲或動能延續階段的強勢標的。"
+    ],
+    "limitations": [
+      "服務內容、資料更新與登入要求尚待 PRStK Lab 逐項驗證，使用前請以外部服務公告為準。"
+    ],
+    "targetUsers": [
+      "專注於動能交易、波段突破與強勢股操作的積極型交易者。",
+      "希望第一時間掌握市場主流資金焦點、提高資金運用效率的自主投資人。"
+    ],
+    "tags": [
+      "量化",
+      "技術分析",
+      "波段",
+      "選股",
+      "資金流"
+    ],
+    "aliases": [
+      "RocketStock",
+      "RocketStock AI",
+      "火箭動能",
+      "動能選股",
+      "突破選股"
+    ],
+    "url": "https://rocketstock.zeabur.app/",
+    "screenshots": [],
+    "relatedTools": [],
+    "relatedResearch": [],
+    "riskNotice": "外部服務內容可能延遲或變更，不構成投資建議。",
+    "featured": false
   }
 ]

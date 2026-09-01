@@ -15,7 +15,7 @@ const slugs = new Set();
 const urls = new Set();
 
 if (!Array.isArray(tools)) throw new Error('src/data/tools.json must contain an array');
-if (tools.length !== 32) throw new Error(`Expected 32 tools, found ${tools.length}`);
+if (tools.length !== 34) throw new Error(`Expected 34 tools, found ${tools.length}`);
 
 for (const tool of tools) {
   for (const field of required) {
