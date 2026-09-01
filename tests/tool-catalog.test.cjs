@@ -44,3 +44,19 @@ test('legacy favorite and pin migration can resolve every catalog index', () => 
     assert.ok(tools[index].id, `missing id at index ${index}`);
   }
 });
+
+test('new catalog tools remain unfeatured and use the requested categories', () => {
+  const expected = {
+    'clec-tw': 'research',
+    'rocketstock-ai': 'strategy'
+  };
+  for (const [id, category] of Object.entries(expected)) {
+    const tool = tools.find(item => item.id === id);
+    assert.ok(tool, `missing ${id}`);
+    assert.deepEqual(tool.categories, [category]);
+    assert.equal(tool.status, 'pending-verification');
+    assert.equal(tool.featured, false);
+    assert.match(tool.url, /^https:\/\//);
+  }
+  assert.equal(tools.filter(tool => tool.featured).length, 4);
+});

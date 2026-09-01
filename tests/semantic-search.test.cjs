@@ -22,7 +22,7 @@ const score = (tool, rawQuery) => {
   return value;
 };
 
-const acceptanceQueries = ['ETF', 'ETF 重疊', '台股 ETF', '質押', '質押維持率', '法人', '法人籌碼', '退休', '槓桿', 'AI', '台股', '美股', '回測', '量化', '選股', '技術分析', '風控', '資產配置', '產業輪動', '資金流', 'SMC', '聰明錢', 'Order Block', 'EasyStock', '台股數據', 'DigitalGarden', '數園智庫', 'TWETQ', '台股量子', 'TWRS', '相對強度', 'AIS Cloud', '智策極光'];
+const acceptanceQueries = ['ETF', 'ETF 重疊', '台股 ETF', '質押', '質押維持率', '法人', '法人籌碼', '退休', '槓桿', 'AI', '台股', '美股', '回測', '量化', '選股', '技術分析', '風控', '資產配置', '產業輪動', '資金流', 'SMC', '聰明錢', 'Order Block', 'EasyStock', '台股數據', 'DigitalGarden', '數園智庫', 'TWETQ', '台股量子', 'TWRS', '相對強度', 'AIS Cloud', '智策極光', 'ClecTW', '智集量化', '台股量化', 'RocketStock', '火箭動能', '動能選股'];
 
 for (const query of acceptanceQueries) {
   test(`semantic search: ${query}`, () => {
