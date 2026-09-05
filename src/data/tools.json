@@ -608,62 +608,6 @@
     "featured": false
   },
   {
-    "id": "quants-tw",
-    "slug": "quants-tw",
-    "name": "🔬 量子矩陣平台",
-    "brandName": "Quants.tw",
-    "summary": "多維籌碼量化：整合證交所與分點籌碼，運用統計模型（Z-score、Edge Score）將龐雜數據轉化為客觀的量化訊號。",
-    "description": "多維籌碼量化：整合證交所與分點籌碼，運用統計模型（Z-score、Edge Score）將龐雜數據轉化為客觀的量化訊號。 全自動日更新：每日收盤後自動串接並更新各大合法數據源，省去手動整理時間，高效直擊法人動向。",
-    "categories": [
-      "strategy"
-    ],
-    "useCases": [
-      "想擺脫主觀直覺、偏好用「統計數據與機構級工具」理性決策的自主投資人。",
-      "需要一站式快速掌握大戶持股集中度、分點券商流向與市場重大訊息的專業交易者。"
-    ],
-    "markets": [],
-    "assetClasses": [],
-    "analysisTypes": [],
-    "pricing": "unknown",
-    "requiresLogin": "unknown",
-    "language": [],
-    "mobileSupport": "unknown",
-    "dataSources": [],
-    "updateFrequency": "unknown",
-    "status": "unavailable",
-    "lastVerifiedAt": "2026-08-08",
-    "verifiedBy": "PRStK Lab link monitor",
-    "features": [
-      "多維籌碼量化：整合證交所與分點籌碼，運用統計模型（Z-score、Edge Score）將龐雜數據轉化為客觀的量化訊號。",
-      "全自動日更新：每日收盤後自動串接並更新各大合法數據源，省去手動整理時間，高效直擊法人動向。"
-    ],
-    "limitations": [
-      "尚未完成逐項服務驗證，使用前請以外部服務最新說明為準。"
-    ],
-    "targetUsers": [
-      "想擺脫主觀直覺、偏好用「統計數據與機構級工具」理性決策的自主投資人。",
-      "需要一站式快速掌握大戶持股集中度、分點券商流向與市場重大訊息的專業交易者。"
-    ],
-    "tags": [
-      "全球",
-      "量化",
-      "回測",
-      "技術分析"
-    ],
-    "aliases": [
-      "量化平台",
-      "策略回測",
-      "因子研究",
-      "量化分析"
-    ],
-    "url": "https://quants.tw/",
-    "screenshots": [],
-    "relatedTools": [],
-    "relatedResearch": [],
-    "riskNotice": "外部服務內容可能延遲或變更，不構成投資建議。",
-    "featured": false
-  },
-  {
     "id": "beta-align",
     "slug": "beta-align",
     "name": "⚖️ 極智再平衡系統",
@@ -2000,6 +1944,132 @@
       "突破選股"
     ],
     "url": "https://rocketstock.zeabur.app/",
+    "screenshots": [],
+    "relatedTools": [],
+    "relatedResearch": [],
+    "riskNotice": "外部服務內容可能延遲或變更，不構成投資建議。",
+    "featured": false
+  },
+  {
+    "id": "steadygo",
+    "slug": "steadygo",
+    "name": "⚓ 穩舵智控",
+    "brandName": "SteadyGo",
+    "summary": "整合資產與持倉水位的動態監控看板，協助以系統化模型落實穩健配置與週期導航。",
+    "description": "即時整合多維度資產數據與持倉水位，提供結構清晰、無雜訊的視覺化監控看板。透過系統化模型追蹤市場波動與資產權重，輔助投資人落實抗震且持續複利的紀律配置。",
+    "categories": [
+      "allocation"
+    ],
+    "useCases": [
+      "追求資產平穩增長、注重下檔風險控管的穩健型長期投資人。",
+      "需要一站式動態儀表板即時掌握整體部位水位的理性管理者。"
+    ],
+    "markets": [],
+    "assetClasses": [],
+    "analysisTypes": [],
+    "pricing": "unknown",
+    "requiresLogin": "unknown",
+    "language": [],
+    "mobileSupport": "unknown",
+    "dataSources": [],
+    "updateFrequency": "unknown",
+    "status": "pending-verification",
+    "lastVerifiedAt": "2026-09-05",
+    "verifiedBy": "PRStK Lab catalog submission; service not independently verified",
+    "features": [
+      "即時整合多維度資產數據與持倉水位，提供結構清晰的視覺化監控看板。",
+      "透過系統化模型追蹤市場波動與資產權重，輔助穩健配置與週期導航。"
+    ],
+    "limitations": [
+      "服務內容、資料更新與登入要求尚待 PRStK Lab 逐項驗證，使用前請以外部服務公告為準。"
+    ],
+    "targetUsers": [
+      "追求資產平穩增長、注重下檔風險控管的穩健型長期投資人。",
+      "需要一站式動態儀表板即時掌握整體部位水位的理性管理者。"
+    ],
+    "tags": [
+      "資產配置",
+      "風控",
+      "波動",
+      "回撤",
+      "長期投資"
+    ],
+    "aliases": [
+      "SteadyGo",
+      "穩舵智控",
+      "資產巡航",
+      "配置導航",
+      "部位水位"
+    ],
+    "url": "https://steadygo.navitide.app/dashboard",
+    "screenshots": [],
+    "relatedTools": [],
+    "relatedResearch": [],
+    "riskNotice": "外部服務內容可能延遲或變更，不構成投資建議。",
+    "featured": false
+  },
+  {
+    "id": "finguider",
+    "slug": "finguider",
+    "name": "💡 美股智導",
+    "brandName": "FinGuider",
+    "summary": "整合跨市場資料與多因子模型，將財務指標與市場訊號整理為直觀的投資決策指引。",
+    "description": "整合跨市場數據與多因子量化模型，將繁雜的財務指標轉化為直觀的決策指引。自動化評估個股與資產價值位階，協助投資人快速鎖定具備成長潛力與勝率的布局方向。",
+    "categories": [
+      "explore"
+    ],
+    "useCases": [
+      "希望獲取清晰投資導航、減少海量數據摸索時間的自主投資人。",
+      "需要全方位整合財務指標與市場訊號、輔助優化交易決策的理性投資者。"
+    ],
+    "markets": [
+      "美股",
+      "全球"
+    ],
+    "assetClasses": [
+      "股票"
+    ],
+    "analysisTypes": [
+      "量化",
+      "基本面",
+      "技術分析"
+    ],
+    "pricing": "unknown",
+    "requiresLogin": "unknown",
+    "language": [],
+    "mobileSupport": "unknown",
+    "dataSources": [],
+    "updateFrequency": "unknown",
+    "status": "pending-verification",
+    "lastVerifiedAt": "2026-09-05",
+    "verifiedBy": "PRStK Lab catalog submission; service not independently verified",
+    "features": [
+      "整合跨市場數據與多因子量化模型，將財務指標轉化為直觀決策指引。",
+      "自動化評估個股與資產價值位階，整合市場訊號以協助辨識布局方向。"
+    ],
+    "limitations": [
+      "服務內容、資料更新與登入要求尚待 PRStK Lab 逐項驗證，使用前請以外部服務公告為準。"
+    ],
+    "targetUsers": [
+      "希望獲取清晰投資導航、減少海量數據摸索時間的自主投資人。",
+      "需要全方位整合財務指標與市場訊號、輔助優化交易決策的理性投資者。"
+    ],
+    "tags": [
+      "美股",
+      "全球",
+      "量化",
+      "基本面",
+      "技術分析",
+      "選股"
+    ],
+    "aliases": [
+      "FinGuider",
+      "美股智導",
+      "投資導航",
+      "美股選股",
+      "多因子分析"
+    ],
+    "url": "https://finguider.cc/home",
     "screenshots": [],
     "relatedTools": [],
     "relatedResearch": [],

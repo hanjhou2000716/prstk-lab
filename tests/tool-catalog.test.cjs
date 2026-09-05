@@ -7,7 +7,7 @@ const root = path.resolve(__dirname, '..');
 const tools = JSON.parse(fs.readFileSync(path.join(root, 'src', 'data', 'tools.json'), 'utf8'));
 
 test('catalog keeps all baseline tools with unique IDs and slugs', () => {
-  assert.equal(tools.length, 34);
+  assert.equal(tools.length, 35);
   assert.equal(new Set(tools.map(tool => tool.id)).size, tools.length);
   assert.equal(new Set(tools.map(tool => tool.slug)).size, tools.length);
 });
@@ -50,6 +50,20 @@ test('new catalog tools remain unfeatured and use the requested categories', () 
     'clec-tw': 'research',
     'rocketstock-ai': 'strategy'
   };
+  for (const [id, category] of Object.entries(expected)) {
+    const tool = tools.find(item => item.id === id);
+    assert.ok(tool, `missing ${id}`);
+    assert.deepEqual(tool.categories, [category]);
+    assert.equal(tool.status, 'pending-verification');
+    assert.equal(tool.featured, false);
+    assert.match(tool.url, /^https:\/\//);
+  }
+  assert.equal(tools.filter(tool => tool.featured).length, 4);
+});
+
+test('SteadyGo and FinGuider replace the retired Quants.tw entry', () => {
+  assert.equal(tools.find(item => item.id === 'quants-tw'), undefined);
+  const expected = { steadygo: 'allocation', finguider: 'explore' };
   for (const [id, category] of Object.entries(expected)) {
     const tool = tools.find(item => item.id === id);
     assert.ok(tool, `missing ${id}`);

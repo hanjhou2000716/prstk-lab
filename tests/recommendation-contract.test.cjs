@@ -10,7 +10,7 @@ test('unavailable tools are excluded from homepage recommendations', () => {
   assert.match(main, /\.filter\(\(\{ tool \}\) => !isUnavailable\(tool\)\)/);
   assert.match(main, /pins\.has\(toolId\) && !isUnavailable\(tool\)/);
   assert.match(main, /const scenarioEntries = activeScenario \? entries\.filter\(\(\{ tool \}\) => !isUnavailable\(tool\)\) : entries/);
-  for (const id of ['quants-tw', 'solitude']) {
+  for (const id of ['solitude']) {
     const tool = tools.find(item => item.id === id);
     assert.equal(tool.status, 'unavailable', `${id} should be marked unavailable after link checks`);
   }
