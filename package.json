@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "astro dev",
     "build:css": "tailwindcss -i ./src/styles.css -o ./public/assets/styles.css --minify",
-    "check": "npm run schema:validate && npm run taxonomy:validate && npm run cards:validate && npm run components:validate && npm run security:validate && npm run seo:validate && npm run research:validate && npm run research-library:validate && npm run workbench:validate && npm run supabase:validate && npm run telegram:validate && npm run analytics:validate && npm run updates:validate && astro check",
+    "check": "npm run dependencies:validate && npm run schema:validate && npm run taxonomy:validate && npm run cards:validate && npm run components:validate && npm run security:validate && npm run seo:validate && npm run research:validate && npm run research-library:validate && npm run workbench:validate && npm run supabase:validate && npm run telegram:validate && npm run analytics:validate && npm run updates:validate && astro check",
     "test": "npm run test:unit && npm run test:smoke",
     "build": "npm run build:css && npm run check && npm run test && astro build",
     "preview": "astro preview",
@@ -28,6 +28,7 @@
     "telegram:validate": "node scripts/validate-telegram.cjs",
     "analytics:validate": "node scripts/validate-analytics.cjs",
     "updates:validate": "node scripts/validate-updates.cjs",
+    "dependencies:validate": "node scripts/validate-dependencies.cjs",
     "links:check": "node scripts/check-links.cjs --output=link-report.json",
     "test:unit": "node --test tests/tool-catalog.test.cjs tests/semantic-search.test.cjs tests/workbench-contract.test.cjs tests/recommendation-contract.test.cjs",
     "test:smoke": "node --test tests/static-smoke.test.cjs",
@@ -44,5 +45,8 @@
     "@supabase/supabase-js": "^2.112.0",
     "aos": "^2.3.4",
     "lucide": "^0.468.0"
+  },
+  "overrides": {
+    "fast-uri": "3.1.6"
   }
 }
