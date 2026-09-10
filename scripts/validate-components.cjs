@@ -8,7 +8,6 @@ const runtime = fs.readFileSync(path.join(root, 'src', 'scripts', 'main.ts'), 'u
 const components = [
   'Header.astro',
   'SearchBar.astro',
-  'ScenarioSelector.astro',
   'ToolCard.astro',
   'HomeTools.astro',
   'ToolPanel.astro',
@@ -25,11 +24,11 @@ for (const component of components) {
   if (!fs.existsSync(componentPath)) errors.push(`Missing component: ${component}`);
 }
 
-for (const importName of ['Header', 'SearchBar', 'ScenarioSelector', 'ToolCard', 'HomeTools', 'ToolPanel', 'ToolPreviewDrawer', 'Footer']) {
+for (const importName of ['Header', 'SearchBar', 'ToolCard', 'HomeTools', 'ToolPanel', 'ToolPreviewDrawer', 'Footer']) {
   if (!page.includes(`import ${importName} from`)) errors.push(`Missing page import: ${importName}`);
 }
 
-for (const usage of ['<Header />', '<SearchBar />', '<ScenarioSelector />', '<ToolCard />', '<HomeTools />', '<ToolPanel />', '<ToolPreviewDrawer />', '<Footer />']) {
+for (const usage of ['<Header />', '<SearchBar />', '<ToolCard />', '<HomeTools />', '<ToolPanel />', '<ToolPreviewDrawer />', '<Footer />']) {
   if (!page.includes(usage)) errors.push(`Missing component usage: ${usage}`);
 }
 

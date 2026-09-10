@@ -57,6 +57,8 @@ const bootstrap = () => {
     const legacyFavoritesStorageKey = 'prstk-lab-favorites';
     const legacyPinsStorageKey = 'prstk-lab-pins';
     const recentToolsStorageKey = 'prstk-lab-recent-tools-v1';
+    // Legacy deep links remain readable even though the visual scenario
+    // shortcuts were removed from the homepage.
     const scenarioTasks: Record<string, string> = {
       'find-opportunities': '正在找投資機會',
       'research-security': '正在研究個股',
@@ -68,6 +70,10 @@ const bootstrap = () => {
       'research-security': 'research',
       'check-risk': 'risk',
       'plan-assets': 'allocation'
+    };
+    const resolveLegacyScenario = (task: string | null) => {
+      const value = task || '';
+      return Object.prototype.hasOwnProperty.call(scenarioCategories, value) ? value : '';
     };
     const readStoredSet = key => {
       try {
@@ -132,8 +138,10 @@ const bootstrap = () => {
     const readUrlState = () => {
       const params = new URLSearchParams(window.location.search);
       toolSearch.value = params.get('q') || '';
-      activeCategory = params.get('category') || 'all';
-      activeScenario = params.get('task') || '';
+      const requestedCategory = params.get('category') || 'all';
+      activeCategory = categories.some(category => category.id === requestedCategory) ? requestedCategory as ToolCategory : 'all';
+      activeScenario = resolveLegacyScenario(params.get('task'));
+      if (activeScenario) activeCategory = scenarioCategories[activeScenario];
       favoritesOnly = params.get('favorites') === '1';
       favoritesFilter.setAttribute('aria-pressed', String(favoritesOnly));
     };
@@ -409,13 +417,13 @@ const bootstrap = () => {
     const renderHome = (entries: ToolCardEntry[]) => {
       const isDefaultView = !toolSearch.value.trim() && activeCategory === 'all' && !favoritesOnly;
       const showHomeActions = activeCategory !== 'all';
-      const scenarioEntries = activeScenario ? entries.filter(({ tool }) => !isUnavailable(tool)) : entries;
+      const visibleEntries = activeScenario ? entries.filter(({ tool }) => !isUnavailable(tool)) : entries;
       const pinnedEntries = toolCards.filter(({ toolId, tool }) => pins.has(toolId) && !isUnavailable(tool));
       const recommendedEntries = getRecommendedEntries();
       const displayEntries = isDefaultView && pinnedEntries.length
         ? [...pinnedEntries, ...recommendedEntries.filter(({ toolId }) => !pins.has(toolId))]
-        : (isDefaultView ? recommendedEntries : scenarioEntries);
-      const recommendationContext = getRecommendationContext(isDefaultView ? displayEntries.length : scenarioEntries.length);
+        : (isDefaultView ? recommendedEntries : visibleEntries);
+      const recommendationContext = getRecommendationContext(isDefaultView ? displayEntries.length : visibleEntries.length);
 
       homeTitle.textContent = recommendationContext.title;
       homeRecommendationNote.textContent = recommendationContext.note;
@@ -428,8 +436,8 @@ const bootstrap = () => {
       homeGrid.classList.toggle('show-actions', showHomeActions);
       resultSummary.textContent = isDefaultView
         ? (pinnedEntries.length ? `已釘選 ${pinnedEntries.length} / 4 個工具` : '預設推薦 4 個工具，可用圖釘自訂首頁')
-        : (entries.length ? `找到 ${entries.length} 個工具，顯示前 4 個` : '沒有符合的工具');
-      viewAllTools.classList.toggle('hidden', entries.length <= 4);
+        : (visibleEntries.length ? `找到 ${visibleEntries.length} 個工具，顯示前 4 個` : '沒有符合的工具');
+      viewAllTools.classList.toggle('hidden', visibleEntries.length <= 4);
     };
 
     const renderPanel = (entries: ToolCardEntry[]) => {
@@ -468,19 +476,6 @@ const bootstrap = () => {
       if (!button) return;
       activeScenario = '';
       setCategory((button.dataset.category || 'all') as ToolCategory | 'all');
-    });
-    document.querySelectorAll<HTMLButtonElement>('[data-scenario-category]').forEach(button => {
-      button.setAttribute('aria-pressed', 'false');
-      button.addEventListener('click', () => {
-        toolSearch.value = '';
-        activeScenario = button.dataset.scenarioTask || '';
-        favoritesOnly = false;
-        favoritesFilter.setAttribute('aria-pressed', 'false');
-        document.querySelectorAll('[data-scenario-category]').forEach(entry => {
-          entry.setAttribute('aria-pressed', String(entry === button));
-        });
-        setCategory((button.dataset.scenarioCategory || 'all') as ToolCategory);
-      });
     });
     toolSearch.addEventListener('input', () => { activeScenario = ''; applyFilters(); syncUrlState(); });
     favoritesFilter.addEventListener('click', () => {
