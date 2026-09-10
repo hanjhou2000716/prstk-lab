@@ -8,11 +8,19 @@ const output = fs.readFileSync(path.join(root, 'docs', 'index.html'), 'utf8');
 const styles = fs.readFileSync(path.join(root, 'docs', 'assets', 'styles.css'), 'utf8');
 
 test('generated site keeps the one-page interaction anchors', () => {
-  for (const marker of ['tool-search', 'category-filters', 'scenario-entries', 'home-card-grid', 'tool-panel', 'info-drawer', 'tool-card-template', 'drawer-recommendation-reason']) {
+  for (const marker of ['tool-search', 'category-filters', 'home-card-grid', 'tool-panel', 'info-drawer', 'tool-card-template', 'drawer-recommendation-reason']) {
     assert.ok(output.includes(`id="${marker}"`), `missing ${marker}`);
   }
   assert.match(output, /<script id="tool-data" type="application\/json">/);
   assert.match(output, /_astro\/index\.[^"']+\.js/);
+});
+
+test('homepage removes the retired scenario shortcut row', () => {
+  assert.doesNotMatch(output, /id="scenario-entries"/);
+  assert.doesNotMatch(output, /class="[^"]*scenario-entry/);
+  for (const label of ['找機會', '做研究', '看風險', '做配置']) {
+    assert.doesNotMatch(output, new RegExp(`<span[^>]*>${label}<\\/span>`), `retired scenario label remains: ${label}`);
+  }
 });
 
 test('generated site has no inline executable script or unsafe CSP', () => {
