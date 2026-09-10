@@ -73,6 +73,11 @@
     .footer-entry-logo { display: block; flex: 0 0 auto; object-fit: contain; object-position: center; }
     .footer-entry-logo-dinv,
     .footer-entry-logo-sfc { width: 4.5rem; height: 1.8rem; }
+    .site-footer {
+      margin-top: auto !important;
+      flex-shrink: 0;
+      padding-bottom: max(0.25rem, env(safe-area-inset-bottom));
+    }
     #tool-search-panel input,
     #tool-search-panel .filter-chip {
       min-height: 2.75rem;
@@ -165,7 +170,7 @@
       #home-card-grid { gap: 0.65rem; grid-template-rows: repeat(2, 3.85rem); }
       #home-card-grid .tool-card,
       #home-card-grid .card-hover-effect { min-height: 3.85rem; }
-      footer { margin-top: 0.75rem !important; flex-shrink: 0; }
+      #portal-shell > main { margin-bottom: 0.75rem; }
     }
     @media (max-width: 640px) and (max-height: 740px) {
       #portal-shell { padding-top: clamp(2rem, 7vh, 3rem); }
@@ -200,7 +205,7 @@
       #category-filters::-webkit-scrollbar { display: block; height: 7px; }
       #category-filters::-webkit-scrollbar-track { background: #EEF2F4; border-radius: 999px; }
       #category-filters::-webkit-scrollbar-thumb { background: #91A69A; border: 2px solid #EEF2F4; border-radius: 999px; }
-      footer { margin-top: clamp(0.75rem, 2vh, 1rem) !important; }
+      #portal-shell > main { margin-bottom: clamp(0.75rem, 2vh, 1rem); }
       .site-background { background-position: center top; background-size: min(100vw, 720px) auto; }
 
       /* Keep the preview drawer a centered bottom sheet on desktop. These

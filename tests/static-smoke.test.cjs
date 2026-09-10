@@ -45,7 +45,15 @@ test('generated homepage uses the segmented external entry footer', () => {
   assert.match(output, /assets\/sfc-e-logo\.webp/);
   assert.doesNotMatch(output, /<span>Telegram<\/span>|<span>PRStK Research<\/span>/, 'footer buttons should be icon-only');
   assert.equal((output.match(/class="footer-entry-link"/g) || []).length, 2, 'expected two icon-only footer links');
+  assert.match(output, /class="site-footer /, 'homepage footer should expose the bottom-alignment hook');
   assert.match(styles, /width:min\(12rem,calc\(100vw - 2rem\)\)/, 'footer pill should stay compact on narrow screens');
   assert.match(styles, /flex:1 1 50%/, 'footer segments should remain equal width');
   assert.match(styles, /object-position:center/, 'footer logos should be visually centered');
+});
+
+test('footer stays at the bottom on short pages without fixed positioning', () => {
+  assert.match(styles, /\.site-footer\{[^}]*margin-top:auto!important/, 'footer should consume remaining flex space');
+  assert.match(styles, /\.site-footer\{[^}]*safe-area-inset-bottom/, 'footer should respect mobile safe-area insets');
+  assert.match(styles, /#portal-shell>main\{[^}]*margin-bottom:/, 'main content should keep a minimum gap before footer');
+  assert.doesNotMatch(styles, /\.site-footer\{[^}]*position:(?:fixed|sticky)/, 'footer must remain in document flow');
 });
