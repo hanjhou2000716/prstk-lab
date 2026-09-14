@@ -1,0 +1,3 @@
+# Astro/Vite emits compact bundles that may contain intentional whitespace
+# inside template literals (for example base64 decoding tables).
+docs/_astro/*.js whitespace=-trailing-space
