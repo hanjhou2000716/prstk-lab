@@ -35,3 +35,23 @@ test('tool detail exposes verification status and last check date', () => {
   assert.match(fs.readFileSync('src/components/ToolDetail.astro', 'utf8'), /drawer-status/);
   assert.match(main, /最後檢查/);
 });
+
+test('mobile navigation uses layered history and preserves session state', () => {
+  for (const marker of [
+    "type AppView = 'home' | 'panel' | 'drawer'",
+    "const sessionStorageKey = 'prstk-lab-session-v1'",
+    'window.history.pushState',
+    "window.history.back()",
+    "window.addEventListener('popstate'",
+    "document.addEventListener('visibilitychange'",
+    "window.addEventListener('pagehide'",
+    "window.addEventListener('pageshow'"
+  ]) assert.match(main, new RegExp(marker.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')), `missing navigation contract: ${marker}`);
+  assert.match(main, /drawerSource: DrawerSource/);
+  assert.match(main, /homeScrollY: number/);
+  assert.match(main, /panelScrollTop: number/);
+  assert.match(main, /drawerScrollTop: number/);
+  assert.match(main, /const hasExplicitUrlState = \(\)/);
+  assert.match(main, /if \(distance >= 80\) closeDrawer\(\)/);
+  assert.match(fs.readFileSync('src/components/ToolPreviewDrawer.astro', 'utf8'), /data-drawer-handle/);
+});

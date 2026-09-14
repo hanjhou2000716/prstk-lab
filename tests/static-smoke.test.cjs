@@ -57,3 +57,9 @@ test('footer stays at the bottom on short pages without fixed positioning', () =
   assert.match(styles, /#portal-shell>main\{[^}]*margin-bottom:/, 'main content should keep a minimum gap before footer');
   assert.doesNotMatch(styles, /\.site-footer\{[^}]*position:(?:fixed|sticky)/, 'footer must remain in document flow');
 });
+
+test('generated drawer exposes a touch-only drag handle', () => {
+  assert.match(output, /data-drawer-handle/);
+  assert.match(styles, /\.drawer-drag-handle\{[^}]*touch-action:none/);
+  assert.match(styles, /#info-drawer\.drawer-dragging\{[^}]*transition:none!important/);
+});

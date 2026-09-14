@@ -34,9 +34,32 @@ const bootstrap = () => {
       link.referrerPolicy = 'no-referrer';
     });
 
+    type AppView = 'home' | 'panel' | 'drawer';
+    type DrawerSource = 'home' | 'panel';
+    type AppHistoryState = {
+      prstkLab: true;
+      view: AppView;
+      drawerToolId?: string;
+      drawerSource?: DrawerSource;
+    };
+    type SessionSnapshot = {
+      version: 1;
+      view: AppView;
+      drawerToolId: string | null;
+      drawerSource: DrawerSource;
+      search: string;
+      category: ToolCategory | 'all';
+      activeScenario: string;
+      favoritesOnly: boolean;
+      homeScrollY: number;
+      panelScrollTop: number;
+      drawerScrollTop: number;
+    };
+
     let drawerPreviousFocus: HTMLElement | null = null;
     let panelPreviousFocus: HTMLElement | null = null;
     let closeTimer: number | undefined;
+    let openTimer: number | undefined;
 
     // 工具唯一資料來源：固定 ID、分類、內容與連結都在此維護。
     const toolDataElement = document.getElementById('tool-data');
@@ -57,6 +80,7 @@ const bootstrap = () => {
     const legacyFavoritesStorageKey = 'prstk-lab-favorites';
     const legacyPinsStorageKey = 'prstk-lab-pins';
     const recentToolsStorageKey = 'prstk-lab-recent-tools-v1';
+    const sessionStorageKey = 'prstk-lab-session-v1';
     // Legacy deep links remain readable even though the visual scenario
     // shortcuts were removed from the homepage.
     const scenarioTasks: Record<string, string> = {
@@ -111,6 +135,10 @@ const bootstrap = () => {
     let activeScenario = '';
     let favoritesOnly = false;
     let panelOpen = false;
+    let drawerOpen = false;
+    let currentDrawerToolId: string | null = null;
+    let drawerSource: DrawerSource = 'home';
+    let homeScrollY = 0;
     let currentMatches: ToolCardEntry[] = [];
     let homeRefreshTimer: number | undefined;
     const toolSearch = document.getElementById('tool-search') as HTMLInputElement;
@@ -130,11 +158,81 @@ const bootstrap = () => {
     const portalShell = document.getElementById('portal-shell') as HTMLElement;
     const drawerOverlay = document.getElementById('drawer-overlay') as HTMLElement;
     const infoDrawer = document.getElementById('info-drawer') as HTMLElement;
+    const drawerScrollRegion = infoDrawer.querySelector<HTMLElement>('.custom-scrollbar');
+    const drawerHandle = infoDrawer.querySelector<HTMLButtonElement>('[data-drawer-handle]');
     const categorySections = document.getElementById('category-sections') as HTMLElement;
     type ToolCardEntry = { card: HTMLElement; section: HTMLElement | null; tool: Tool; toolId: string };
     const toolCards: ToolCardEntry[] = [];
     const focusableSelector = 'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
     const normalise = (value: unknown) => String(value || '').normalize('NFKC').toLocaleLowerCase('zh-TW').replace(/\s+/g, '');
+    const isAppHistoryState = (value: unknown): value is AppHistoryState => {
+      if (!value || typeof value !== 'object') return false;
+      const state = value as Partial<AppHistoryState>;
+      return state.prstkLab === true && (state.view === 'home' || state.view === 'panel' || state.view === 'drawer');
+    };
+    const getCurrentView = (): AppView => currentDrawerToolId ? 'drawer' : (panelOpen ? 'panel' : 'home');
+    const makeHistoryState = (view: AppView, toolId?: string, source: DrawerSource = drawerSource): AppHistoryState => ({
+      prstkLab: true,
+      view,
+      ...(view === 'drawer' && toolId ? { drawerToolId: toolId, drawerSource: source } : {})
+    });
+    const replaceAppHistoryState = (view = getCurrentView(), toolId = currentDrawerToolId, source = drawerSource) => {
+      window.history.replaceState(makeHistoryState(view, toolId || undefined, source), '', window.location.href);
+    };
+    const pushAppHistoryState = (view: AppView, toolId?: string, source: DrawerSource = drawerSource) => {
+      window.history.pushState(makeHistoryState(view, toolId, source), '', window.location.href);
+    };
+    const hasExplicitUrlState = () => {
+      const params = new URLSearchParams(window.location.search);
+      return ['q', 'category', 'task', 'favorites'].some(key => params.has(key));
+    };
+    const readSessionSnapshot = (): SessionSnapshot | null => {
+      try {
+        const value = JSON.parse(sessionStorage.getItem(sessionStorageKey) || 'null') as Partial<SessionSnapshot> | null;
+        if (!value || value.version !== 1) return null;
+        const category = value.category || 'all';
+        const validCategory = category === 'all' || categories.some(entry => entry.id === category);
+        const view = value.view === 'panel' || value.view === 'drawer' ? value.view : 'home';
+        const toolId = typeof value.drawerToolId === 'string' && toolById.has(value.drawerToolId) ? value.drawerToolId : null;
+        return {
+          version: 1,
+          view: view === 'drawer' && !toolId ? 'home' : view,
+          drawerToolId: toolId,
+          drawerSource: value.drawerSource === 'panel' ? 'panel' : 'home',
+          search: typeof value.search === 'string' ? value.search : '',
+          category: validCategory ? category as ToolCategory | 'all' : 'all',
+          activeScenario: typeof value.activeScenario === 'string' && Object.prototype.hasOwnProperty.call(scenarioCategories, value.activeScenario) ? value.activeScenario : '',
+          favoritesOnly: value.favoritesOnly === true,
+          homeScrollY: Number.isFinite(value.homeScrollY) && value.homeScrollY >= 0 ? value.homeScrollY : 0,
+          panelScrollTop: Number.isFinite(value.panelScrollTop) && value.panelScrollTop >= 0 ? value.panelScrollTop : 0,
+          drawerScrollTop: Number.isFinite(value.drawerScrollTop) && value.drawerScrollTop >= 0 ? value.drawerScrollTop : 0
+        };
+      } catch {
+        return null;
+      }
+    };
+    const saveSessionState = () => {
+      try {
+        if (getCurrentView() === 'home') homeScrollY = Math.max(0, window.scrollY || 0);
+        const snapshot: SessionSnapshot = {
+          version: 1,
+          view: getCurrentView(),
+          drawerToolId: currentDrawerToolId,
+          drawerSource,
+          search: toolSearch?.value || '',
+          category: activeCategory as ToolCategory | 'all',
+          activeScenario,
+          favoritesOnly,
+          homeScrollY,
+          panelScrollTop: Math.max(0, toolPanelGrid?.scrollTop || 0),
+          drawerScrollTop: Math.max(0, drawerScrollRegion?.scrollTop || 0)
+        };
+        sessionStorage.setItem(sessionStorageKey, JSON.stringify(snapshot));
+      } catch {
+        // Session storage can be disabled; navigation remains fully usable.
+      }
+    };
+    const initialHistoryState = isAppHistoryState(window.history.state) ? window.history.state : null;
     const readUrlState = () => {
       const params = new URLSearchParams(window.location.search);
       toolSearch.value = params.get('q') || '';
@@ -152,7 +250,13 @@ const bootstrap = () => {
       if (activeScenario) params.set('task', activeScenario);
       if (favoritesOnly) params.set('favorites', '1');
       const query = params.toString();
-      window.history.replaceState(null, '', `${window.location.pathname}${query ? `?${query}` : ''}${window.location.hash}`);
+      const view = getCurrentView();
+      window.history.replaceState(
+        makeHistoryState(view, currentDrawerToolId || undefined, drawerSource),
+        '',
+        `${window.location.pathname}${query ? `?${query}` : ''}${window.location.hash}`
+      );
+      saveSessionState();
     };
 
     const trapFocus = (event, container) => {
@@ -484,7 +588,28 @@ const bootstrap = () => {
       applyFilters();
       syncUrlState();
     });
-    viewAllTools.addEventListener('click', () => {
+    const hidePanel = (restoreFocus = true) => {
+      if (!panelOpen) return;
+      panelOpen = false;
+      toolPanel.classList.add('hidden');
+      toolPanel.setAttribute('aria-hidden', 'true');
+      document.body.classList.remove('tool-panel-open');
+      portalShell.inert = false;
+      applyFilters();
+      const panelScrollTop = toolPanelGrid.scrollTop;
+      window.requestAnimationFrame(() => {
+        window.scrollTo({ top: homeScrollY, behavior: 'auto' });
+        toolPanelGrid.scrollTop = panelScrollTop;
+        if (restoreFocus) panelPreviousFocus?.focus?.();
+      });
+      saveSessionState();
+    };
+    const openPanel = ({ fromHistory = false, focus = true, scrollTop = 0 }: { fromHistory?: boolean; focus?: boolean; scrollTop?: number } = {}) => {
+      if (panelOpen) return;
+      if (!fromHistory && (!isAppHistoryState(window.history.state) || window.history.state.view !== 'panel')) {
+        pushAppHistoryState('panel');
+      }
+      homeScrollY = Math.max(0, window.scrollY || 0);
       panelPreviousFocus = document.activeElement as HTMLElement | null;
       panelOpen = true;
       toolPanel.classList.remove('hidden');
@@ -492,17 +617,19 @@ const bootstrap = () => {
       document.body.classList.add('tool-panel-open');
       portalShell.inert = true;
       renderPanel(currentMatches);
-      closeToolPanel.focus();
-    });
-    const closePanel = () => {
-      panelOpen = false;
-      toolPanel.classList.add('hidden');
-      toolPanel.setAttribute('aria-hidden', 'true');
-      document.body.classList.remove('tool-panel-open');
-      portalShell.inert = false;
-      applyFilters();
-      panelPreviousFocus?.focus?.();
+      toolPanelGrid.scrollTop = scrollTop;
+      if (focus) closeToolPanel.focus();
+      saveSessionState();
     };
+    const closePanel = () => {
+      if (!panelOpen) return;
+      if (isAppHistoryState(window.history.state) && window.history.state.view === 'panel') {
+        window.history.back();
+      } else {
+        hidePanel();
+      }
+    };
+    viewAllTools.addEventListener('click', () => openPanel());
     closeToolPanel.addEventListener('click', closePanel);
     const updateOfflineNotice = () => { offlineNotice.hidden = navigator.onLine; };
     window.addEventListener('online', updateOfflineNotice);
@@ -527,7 +654,31 @@ const bootstrap = () => {
       });
     }
 
-    function openDrawer(toolId: string) {
+    function hideDrawer(restoreFocus = true) {
+      if (!drawerOpen && infoDrawer.classList.contains('translate-y-full')) return;
+      drawerOpen = false;
+      currentDrawerToolId = null;
+      clearTimeout(openTimer);
+      infoDrawer.classList.remove('drawer-dragging');
+      infoDrawer.style.removeProperty('--drawer-drag-y');
+      infoDrawer.classList.remove('opacity-100');
+      infoDrawer.classList.add('translate-y-full');
+      drawerOverlay.classList.remove('opacity-100');
+      drawerOverlay.setAttribute('aria-hidden', 'true');
+      infoDrawer.setAttribute('aria-hidden', 'true');
+      if (panelOpen) toolPanel.inert = false;
+      else portalShell.inert = false;
+      document.querySelectorAll('[data-drawer-trigger]').forEach(button => button.setAttribute('aria-expanded', 'false'));
+
+      clearTimeout(closeTimer);
+      closeTimer = window.setTimeout(() => {
+        drawerOverlay.classList.add('hidden');
+        if (restoreFocus) drawerPreviousFocus?.focus?.();
+      }, 320); // 對應 css 動畫的 0.32s
+      saveSessionState();
+    }
+
+    function openDrawer(toolId: string, { fromHistory = false, source, focus = true, scrollTop = 0 }: { fromHistory?: boolean; source?: DrawerSource; focus?: boolean; scrollTop?: number } = {}) {
       // Cards can be moved between views and older cached markup may carry a
       // slug rather than the canonical id. Resolve both forms so the detail
       // drawer never silently bails out when a card is re-parented.
@@ -537,6 +688,18 @@ const bootstrap = () => {
       if (!data) return;
       globalThis.prstkAnalytics?.track('tool_opened', { toolId });
       clearTimeout(closeTimer);
+      clearTimeout(openTimer);
+      if (!drawerOpen && !fromHistory) {
+        drawerSource = source || (panelOpen ? 'panel' : 'home');
+        if (!isAppHistoryState(window.history.state) || window.history.state.view !== 'drawer') {
+          pushAppHistoryState('drawer', data.id, drawerSource);
+        }
+      } else if (source) {
+        drawerSource = source;
+      }
+      if (!panelOpen) homeScrollY = Math.max(0, window.scrollY || 0);
+      currentDrawerToolId = data.id;
+      drawerOpen = true;
       drawerPreviousFocus = document.activeElement as HTMLElement | null;
       
       (document.getElementById('drawer-title') as HTMLElement).innerText = data.name;
@@ -580,27 +743,144 @@ const bootstrap = () => {
       infoDrawer.setAttribute('aria-hidden', 'false');
       if (panelOpen) toolPanel.inert = true;
       else portalShell.inert = true;
-      setTimeout(() => {
+      infoDrawer.style.removeProperty('--drawer-drag-y');
+      infoDrawer.classList.remove('drawer-dragging');
+      if (drawerScrollRegion) drawerScrollRegion.scrollTop = scrollTop;
+      openTimer = window.setTimeout(() => {
         drawerOverlay.classList.add('opacity-100');
         infoDrawer.classList.remove('translate-y-full');
-        (infoDrawer.querySelector('[data-drawer-close]') as HTMLElement | null)?.focus();
+        if (focus) (infoDrawer.querySelector('[data-drawer-close]') as HTMLElement | null)?.focus();
       }, 10);
+      saveSessionState();
     }
-    function closeDrawer() {
-      drawerOverlay.classList.remove('opacity-100');
-      infoDrawer.classList.add('translate-y-full');
-      drawerOverlay.setAttribute('aria-hidden', 'true');
-      infoDrawer.setAttribute('aria-hidden', 'true');
-      if (panelOpen) toolPanel.inert = false;
-      else portalShell.inert = false;
-      document.querySelectorAll('[data-drawer-trigger]').forEach(button => button.setAttribute('aria-expanded', 'false'));
-      
-      clearTimeout(closeTimer);
-      closeTimer = setTimeout(() => {
-        drawerOverlay.classList.add('hidden');
-        drawerPreviousFocus?.focus?.();
-      }, 320); // 對應 css 動畫的 0.32s
-    }
+    const closeDrawer = () => {
+      if (!drawerOpen) return;
+      if (isAppHistoryState(window.history.state) && window.history.state.view === 'drawer') {
+        window.history.back();
+      } else {
+        hideDrawer();
+      }
+    };
+
+    const applyHistoryState = (state: AppHistoryState | null) => {
+      const view = state?.view || 'home';
+      if (view === 'drawer') {
+        const toolId = state?.drawerToolId || '';
+        const source = state?.drawerSource === 'panel' ? 'panel' : 'home';
+        if (!toolById.has(toolId)) {
+          hideDrawer(false);
+          hidePanel(false);
+          replaceAppHistoryState('home');
+          return;
+        }
+        if (source === 'panel') {
+          if (!panelOpen) openPanel({ fromHistory: true, focus: false });
+        } else if (panelOpen) {
+          hidePanel(false);
+        }
+        openDrawer(toolId, { fromHistory: true, source, focus: false, scrollTop: readSessionSnapshot()?.drawerScrollTop || 0 });
+        return;
+      }
+      const drawerFocusTarget = drawerPreviousFocus;
+      const panelFocusTarget = panelPreviousFocus;
+      const wasPanelOpen = panelOpen;
+      if (drawerOpen) hideDrawer(false);
+      if (view === 'panel') {
+        if (!panelOpen) openPanel({ fromHistory: true, focus: false, scrollTop: readSessionSnapshot()?.panelScrollTop || 0 });
+        window.requestAnimationFrame(() => drawerFocusTarget?.focus?.());
+        return;
+      }
+      if (panelOpen) hidePanel(false);
+      window.requestAnimationFrame(() => {
+        window.scrollTo({ top: homeScrollY, behavior: 'auto' });
+        (wasPanelOpen ? panelFocusTarget : drawerFocusTarget)?.focus?.();
+      });
+    };
+
+    const restoreSessionSnapshot = (snapshot: SessionSnapshot | null, { seedHistory = false }: { seedHistory?: boolean } = {}) => {
+      if (!snapshot) return;
+      toolSearch.value = snapshot.search;
+      activeCategory = snapshot.category;
+      activeScenario = snapshot.activeScenario;
+      if (activeScenario) activeCategory = scenarioCategories[activeScenario];
+      favoritesOnly = snapshot.favoritesOnly;
+      homeScrollY = snapshot.homeScrollY;
+      categoryFilters.querySelectorAll<HTMLButtonElement>('button[data-category]').forEach(chip => {
+        chip.setAttribute('aria-pressed', String(chip.dataset.category === activeCategory));
+      });
+      applyFilters();
+
+      const view = snapshot.view === 'drawer' && snapshot.drawerToolId ? 'drawer' : snapshot.view;
+      if (view === 'panel') {
+        if (seedHistory) {
+          replaceAppHistoryState('home');
+          pushAppHistoryState('panel');
+        } else replaceAppHistoryState('panel');
+        openPanel({ fromHistory: true, focus: false, scrollTop: snapshot.panelScrollTop });
+      } else if (view === 'drawer' && snapshot.drawerToolId) {
+        if (snapshot.drawerSource === 'panel') {
+          if (seedHistory) {
+            replaceAppHistoryState('home');
+            pushAppHistoryState('panel');
+          } else replaceAppHistoryState('panel');
+          openPanel({ fromHistory: true, focus: false, scrollTop: snapshot.panelScrollTop });
+        }
+        if (seedHistory) pushAppHistoryState('drawer', snapshot.drawerToolId, snapshot.drawerSource);
+        else replaceAppHistoryState('drawer', snapshot.drawerToolId, snapshot.drawerSource);
+        openDrawer(snapshot.drawerToolId, {
+          fromHistory: true,
+          source: snapshot.drawerSource,
+          focus: false,
+          scrollTop: snapshot.drawerScrollTop
+        });
+      } else {
+        replaceAppHistoryState('home');
+        window.requestAnimationFrame(() => window.scrollTo({ top: homeScrollY, behavior: 'auto' }));
+      }
+      syncUrlState();
+    };
+
+    drawerHandle?.addEventListener('pointerdown', event => {
+      if (!drawerOpen || (event.pointerType === 'mouse' && event.button !== 0)) return;
+      drawerHandle.setPointerCapture?.(event.pointerId);
+      infoDrawer.classList.add('drawer-dragging');
+      infoDrawer.style.setProperty('--drawer-drag-y', '0px');
+      drawerHandle.dataset.dragPointerId = String(event.pointerId);
+      drawerHandle.dataset.dragStartY = String(event.clientY);
+      event.preventDefault();
+    });
+    drawerHandle?.addEventListener('pointermove', event => {
+      if (drawerHandle.dataset.dragPointerId !== String(event.pointerId)) return;
+      const startY = Number(drawerHandle.dataset.dragStartY || event.clientY);
+      const distance = Math.max(0, event.clientY - startY);
+      infoDrawer.style.setProperty('--drawer-drag-y', `${distance}px`);
+      event.preventDefault();
+    });
+    const finishDrawerDrag = (event: PointerEvent) => {
+      if (drawerHandle?.dataset.dragPointerId !== String(event.pointerId)) return;
+      const startY = Number(drawerHandle.dataset.dragStartY || event.clientY);
+      const distance = Math.max(0, event.clientY - startY);
+      delete drawerHandle.dataset.dragPointerId;
+      delete drawerHandle.dataset.dragStartY;
+      drawerHandle.releasePointerCapture?.(event.pointerId);
+      infoDrawer.classList.remove('drawer-dragging');
+      infoDrawer.style.removeProperty('--drawer-drag-y');
+      if (distance >= 80) closeDrawer();
+    };
+    drawerHandle?.addEventListener('pointerup', finishDrawerDrag);
+    drawerHandle?.addEventListener('pointercancel', finishDrawerDrag);
+
+    window.addEventListener('popstate', event => {
+      applyHistoryState(isAppHistoryState(event.state) ? event.state : null);
+      saveSessionState();
+    });
+    document.addEventListener('visibilitychange', () => {
+      if (document.visibilityState === 'hidden') saveSessionState();
+    });
+    window.addEventListener('pagehide', saveSessionState);
+    window.addEventListener('pageshow', event => {
+      if (event.persisted) restoreSessionSnapshot(readSessionSnapshot());
+    });
 
     drawerOverlay.addEventListener('click', closeDrawer);
     // Tool cards are moved between the home grid and the catalog panel at runtime.
@@ -619,7 +899,6 @@ const bootstrap = () => {
     });
 
     document.addEventListener('keydown', event => {
-      const drawerOpen = !infoDrawer.classList.contains('translate-y-full');
       if (drawerOpen) {
         if (event.key === 'Escape') closeDrawer();
         else trapFocus(event, infoDrawer);
@@ -631,6 +910,16 @@ const bootstrap = () => {
         return;
       }
     });
+
+    const sessionSnapshot = !hasExplicitUrlState() ? readSessionSnapshot() : null;
+    if (initialHistoryState && !hasExplicitUrlState()) {
+      applyHistoryState(initialHistoryState);
+    } else if (sessionSnapshot) {
+      restoreSessionSnapshot(sessionSnapshot, { seedHistory: true });
+    } else {
+      replaceAppHistoryState('home');
+      saveSessionState();
+    }
 
 };
 

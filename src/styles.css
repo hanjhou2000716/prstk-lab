@@ -29,6 +29,14 @@
     .drawer-transition {
       transition: transform 0.32s cubic-bezier(0.16, 1, 0.3, 1);
     }
+    .drawer-drag-handle {
+      touch-action: none;
+      user-select: none;
+    }
+    #info-drawer.drawer-dragging {
+      transform: translate3d(0, var(--drawer-drag-y, 0px), 0) !important;
+      transition: none !important;
+    }
     /* 卡片懸浮動畫優化，加入 hardware acceleration 避免卡頓 */
     .card-hover-effect {
       transition: transform 220ms cubic-bezier(0.16, 1, 0.3, 1), box-shadow 220ms ease, border-color 220ms ease, background-color 220ms ease;
@@ -221,6 +229,9 @@
       }
       #info-drawer:not(.translate-y-full) {
         transform: translate3d(-50%, 0, 0);
+      }
+      #info-drawer.drawer-dragging {
+        transform: translate3d(-50%, var(--drawer-drag-y, 0px), 0) !important;
       }
     }
     @media (max-width: 480px) {
